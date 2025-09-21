@@ -1,0 +1,163 @@
+# Dependencies
+**/node_modules/
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+**/pnpm-debug.log*
+
+# Build outputs
+**/dist/
+**/build/
+**/.next/
+**/out/
+
+# Environment variables
+**/.env
+**/.env.local
+**/.env.development.local
+**/.env.test.local
+**/.env.production.local
+**/.env.backup
+
+# Database
+**/database.sqlite
+**/db.sqlite3
+**/*.db
+
+# Python
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+**/*.so
+**/.Python
+**/env/
+**/venv/
+**/ENV/
+**/env.bak/
+**/venv.bak/
+**/.venv/
+**/pip-log.txt
+**/pip-delete-this-directory.txt
+
+# Docker
+**/.dockerignore
+**/Dockerfile.prod
+**/docker-compose.override.yml
+**/docker-compose.prod.yml
+
+# Logs
+**/logs/
+**/*.log
+
+# Cache
+**/.cache/
+**/cache/
+**/.parcel-cache/
+**/.npm/
+**/.yarn/
+**/coverage/
+
+# IDE and Editor files
+**/.vscode/
+**/.idea/
+**/*.swp
+**/*.swo
+**/*~
+**/.project
+**/.classpath
+**/.settings/
+
+# OS generated files
+**/.DS_Store
+**/.DS_Store?
+**/._*
+**/.Spotlight-V100
+**/.Trashes
+**/ehthumbs.db
+**/Thumbs.db
+**/desktop.ini
+
+# Temporary files
+**/tmp/
+**/temp/
+**/*.tmp
+**/*.temp
+
+# Backup files
+**/*.bak
+**/*.backup
+**/*.old
+
+# Runtime data
+**/pids/
+**/*.pid
+**/*.seed
+**/*.pid.lock
+
+# Optional npm cache directory
+**/.npm
+
+# Optional eslint cache
+**/.eslintcache
+
+# Microbundle cache
+**/.rpt2_cache/
+**/.rts2_cache_cjs/
+**/.rts2_cache_es/
+**/.rts2_cache_umd/
+
+# TypeScript cache
+**/*.tsbuildinfo
+
+# Output of 'npm pack'
+**/*.tgz
+**/*.tar.gz
+
+# Yarn Integrity file
+**/.yarn-integrity
+
+# Large media files (optional - descomenta si tienes archivos multimedia grandes)
+# **/*.mp4
+# **/*.avi
+# **/*.mov
+# **/*.wmv
+# **/*.flv
+# **/*.webm
+# **/*.mkv
+# **/*.m4v
+
+# Jupyter Notebook
+**/.ipynb_checkpoints
+
+# pyenv
+**/.python-version
+
+# Sensitive configuration files
+**/config/production.json
+**/config/staging.json
+**/secrets.json
+
+# SSL certificates
+**/*.pem
+**/*.key
+**/*.crt
+**/*.cer
+
+# Test coverage
+**/coverage/
+**/.nyc_output/
+**/.coverage
+**/htmlcov/
+
+# Package files
+**/*.deb
+**/*.rpm
+**/*.pkg
+**/*.dmg
+**/*.msi
+**/*.exe
+**/*.zip (excepto archivos específicos que necesites)
+
+# Storybook
+**/.storybook-out/
+**/storybook-static/
