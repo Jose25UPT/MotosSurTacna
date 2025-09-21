@@ -8,7 +8,7 @@ export default function TiendasPage() {
       <div className="relative w-full h-[60vh] md:h-[70vh] overflow-hidden">
         {/* Imagen de fondo */}
         <img
-          src="https://scontent.flim2-1.fna.fbcdn.net/v/t39.30808-6/487692578_1105013185003786_3339753605493780961_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeGDhkZzu89jRh8ksEm0Iga3NP3YzVA_Z1I0_djNUD9nUn431xXj1I1CLYoootm-DxPLt5-v2cnDtLqZFYm9zKBL&_nc_ohc=dYT9j0doY0MQ7kNvwESrhyc&_nc_oc=AdmdQWZsFuBk4G5D5JRTSKs4ZTQCrpdy86u-1vpfOMwkvmb40j5dzHoVz4-qMQ1USHqQegVzlD7Or6zGqeUh5PYH&_nc_zt=23&_nc_ht=scontent.flim2-1.fna&_nc_gid=oKuQLe9l18OMjb90lbsirg&oh=00_AfW4uf5u5ygwieagrtGoMKS6NSrB61QiUit6gdUE_Oq7eA&oe=68A12FF4"
+          src="/assets/portada.webp"
           alt="Hero Motossur"
           className="w-full h-full object-cover brightness-50"
         />
