@@ -135,12 +135,10 @@ export default function Home() {
       <section className="relative h-[calc(100vh-80px)] w-full flex items-center justify-center">
         {/* Imagen hero local */}
         <div className="absolute w-full h-full inset-0">
-          <Image
+          <img
             src="/assets/portada.webp"
             alt="Hero Motossur principal"
-            fill
             className="object-cover w-full h-full brightness-[0.4]"
-            priority
           />
         </div>
         <div className="relative z-20 text-center text-white p-4">
