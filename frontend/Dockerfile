@@ -19,7 +19,7 @@ ENV NODE_ENV=production
 
 # Copiar solo lo necesario desde builder
 COPY --from=builder /app/package.json ./
-COPY --from=builder /app/next.config.js ./
+COPY --from=builder /app/next.config.ts ./
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
