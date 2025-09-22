@@ -3,15 +3,20 @@ services:
   db:
     image: postgres:15
     container_name: postgres_tienda_motos
+    restart: unless-stopped
     environment:
-      - POSTGRES_DB=tienda_motos
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      POSTGRES_DB: tienda_motos
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
-      - ./bd/tienda_motos.sql:/docker-entrypoint-initdb.d/tienda_motos.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   backend:
     build: ./backend
     container_name: backend_motos
