@@ -11,17 +11,18 @@ services:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
+      - ./bd/tienda_motos.sql:/docker-entrypoint-initdb.d/tienda_motos.sql
   backend:
     build: ./backend
     container_name: backend_motos
     depends_on:
       - db
     environment:
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
-      - DB_NAME=tienda_motos
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=tienda_motos
     ports:
       - "8000:8000"
     volumes:
