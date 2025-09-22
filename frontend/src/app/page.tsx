@@ -136,7 +136,7 @@ export default function Home() {
         {/* Imagen hero local */}
         <div className="absolute w-full h-full inset-0">
           <img
-            src="/assets/portada.webp"
+            src="/assets/portada.jpg"
             alt="Hero Motossur principal"
             className="object-cover w-full h-full brightness-[0.4]"
           />
