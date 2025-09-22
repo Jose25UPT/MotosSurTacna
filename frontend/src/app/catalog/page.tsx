@@ -33,18 +33,27 @@ export default function CatalogPage() {
 
   const fetchData = useCallback(async () => {
     setLoading(true);
-    const [motorcycleData, brandData] = await Promise.all([
-      getMotorcycles(),
-      getBrands()
-    ]);
-    // Mapear year y price a número para evitar problemas con los filtros
-  // No forzar a number aquí, mantenemos el tipo original para evitar conflictos con el tipo Motorcycle
-  setMotorcycles(motorcycleData);
-    // Asegura que brands sea un array de strings
-    const brandNames = Array.isArray(brandData)
-      ? brandData.map(b => typeof b === "string" ? b : (b as any).brand)
-      : [];
-    setBrands(brandNames);
+    try {
+      console.log('🔍 Iniciando fetchData...');
+      const [motorcycleData, brandData] = await Promise.all([
+        getMotorcycles(),
+        getBrands()
+      ]);
+      console.log('🏍️ Datos de motos recibidos:', motorcycleData?.length || 0, 'motos');
+      console.log('🏷️ Datos de marcas recibidos:', brandData?.length || 0, 'marcas');
+      
+      // Mapear year y price a número para evitar problemas con los filtros
+      // No forzar a number aquí, mantenemos el tipo original para evitar conflictos con el tipo Motorcycle
+      setMotorcycles(motorcycleData);
+      // Asegura que brands sea un array de strings
+      const brandNames = Array.isArray(brandData)
+        ? brandData.map(b => typeof b === "string" ? b : (b as any).brand)
+        : [];
+      setBrands(brandNames);
+      console.log('✅ Estado actualizado - motos:', motorcycleData?.length, 'marcas:', brandNames?.length);
+    } catch (error) {
+      console.error('❌ Error en fetchData:', error);
+    }
     setLoading(false);
   }, []);
 
@@ -74,6 +83,9 @@ export default function CatalogPage() {
   }, [maxPrice, minYear, maxYear]);
 
   const filteredAndSortedMotorcycles = useMemo(() => {
+    console.log('🔄 Filtrando motos. Total disponibles:', motorcycles.length);
+    console.log('🔧 Filtros activos - Marca:', selectedBrand, 'Búsqueda:', searchQuery, 'Precio:', priceRange, 'Año:', yearRange);
+    
     let filtered = motorcycles.filter(motorcycle => {
       const normalize = (str: string) => str?.toLowerCase().trim();
       const brandMatch = selectedBrand === 'all' || normalize(motorcycle.brand) === normalize(selectedBrand);
@@ -94,6 +106,8 @@ export default function CatalogPage() {
       const yearMatch = motorcycle.year >= yearRange[0] && motorcycle.year <= yearRange[1];
       return brandMatch && searchMatch && priceMatch && yearMatch;
     });
+
+    console.log('✅ Motos después del filtrado:', filtered.length);
 
     if (sortOrder === 'price-asc') {
       filtered.sort((a, b) => Number(a.price_soles) - Number(b.price_soles));
