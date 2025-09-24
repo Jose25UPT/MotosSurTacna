@@ -63,9 +63,7 @@ export async function updatePromoImage(id: string, url: string): Promise<boolean
     return res.ok;
 }
 import type { Motorcycle, PromoImage } from './types';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-console.log('🔗 API_URL configurada:', API_URL);
+import { API_URL } from './config';
 
 function handle401(res: Response) {
     if (res.status === 401) {
@@ -84,7 +82,7 @@ function getAuthHeaders() {
 }
 
 export async function getMotorcycles(): Promise<Motorcycle[]> {
-    console.log('🌐 Haciendo petición a:', `${API_URL}/motos`);
+    console.log('📡 Iniciando petición a:', `${API_URL}/motos`);
     const res = await fetch(`${API_URL}/motos`, {
         cache: 'no-store',
         headers: getAuthHeaders(),
