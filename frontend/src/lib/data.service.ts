@@ -65,6 +65,7 @@ export async function updatePromoImage(id: string, url: string): Promise<boolean
 import type { Motorcycle, PromoImage } from './types';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+console.log('🔗 API_URL configurada:', API_URL);
 
 function handle401(res: Response) {
     if (res.status === 401) {
@@ -83,13 +84,16 @@ function getAuthHeaders() {
 }
 
 export async function getMotorcycles(): Promise<Motorcycle[]> {
+    console.log('🌐 Haciendo petición a:', `${API_URL}/motos`);
     const res = await fetch(`${API_URL}/motos`, {
         cache: 'no-store',
         headers: getAuthHeaders(),
     });
+    console.log('📡 Respuesta recibida. Status:', res.status, 'OK:', res.ok);
     handle401(res);
     if (!res.ok) throw new Error('Error al obtener motos');
     const motorcycles = await res.json();
+    console.log('🔢 Motos parseadas del JSON:', motorcycles?.length || 0);
     
     // Mapear image_url a imageUrl y construir URL completa
     return motorcycles.map((moto: any) => {
