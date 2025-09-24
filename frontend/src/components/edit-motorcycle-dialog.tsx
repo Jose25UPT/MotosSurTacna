@@ -24,6 +24,7 @@ import { useToast } from "@/hooks/use-toast";
 import { updateMotorcycle } from "@/lib/data.service";
 import { Upload, X } from "lucide-react";
 import Image from "next/image";
+import { API_URL } from "@/lib/config";
 
 const technicalFields = [
   { key: 'suspension', label: 'Suspensión' },
@@ -111,7 +112,7 @@ export default function EditMotorcycleDialog({ open, onOpenChange, initialData, 
     formDataUpload.append('file', file);
 
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      console.log('🔄 [EDIT] Subiendo imagen a:', `${API_URL}/upload`);
       const response = await fetch(`${API_URL}/upload`, {
         method: 'POST',
         body: formDataUpload,
@@ -136,7 +137,7 @@ export default function EditMotorcycleDialog({ open, onOpenChange, initialData, 
 
   // Función para subir múltiples imágenes a la galería
   const handleGalleryUpload = async (files: FileList) => {
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+    console.log('🖼️ [EDIT] Subiendo galería de imágenes a:', `${API_URL}/upload`);
     
     const uploadPromises = Array.from(files).map(async (file) => {
       const formDataUpload = new FormData();
