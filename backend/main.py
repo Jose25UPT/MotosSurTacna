@@ -15,16 +15,39 @@ import os
 import shutil
 import uuid
 from pathlib import Path
+import time
 
-# --- CONEXIÓN DB ---
+# --- CONEXIÓN DB CON REINTENTOS ---
 def get_db_connection():
-    return psycopg2.connect(
-        host=os.environ.get("POSTGRES_HOST", "db"),
-        database=os.environ.get("POSTGRES_DB", "tienda_motos"),
-        user=os.environ.get("POSTGRES_USER", "postgres"),
-        password=os.environ.get("POSTGRES_PASSWORD", "postgres"),
-        port=os.environ.get("POSTGRES_PORT", 5432)
-    )
+    max_retries = 3
+    retry_delay = 1
+    
+    for attempt in range(max_retries):
+        try:
+            conn = psycopg2.connect(
+                host=os.environ.get("POSTGRES_HOST", "db"),
+                database=os.environ.get("POSTGRES_DB", "tienda_motos"),
+                user=os.environ.get("POSTGRES_USER", "postgres"),
+                password=os.environ.get("POSTGRES_PASSWORD", "postgres"),
+                port=os.environ.get("POSTGRES_PORT", 5432),
+                connect_timeout=10,
+                application_name="motossur_backend"
+            )
+            # Verificar que la conexión funciona
+            with conn.cursor() as cursor:
+                cursor.execute("SELECT 1")
+                cursor.fetchone()
+            return conn
+        except psycopg2.OperationalError as e:
+            print(f"[DEBUG] Error de conexión BD (intento {attempt + 1}/{max_retries}): {e}")
+            if attempt < max_retries - 1:
+                time.sleep(retry_delay)
+                retry_delay *= 2  # Backoff exponencial
+            else:
+                raise e
+        except Exception as e:
+            print(f"[DEBUG] Error inesperado en conexión BD: {e}")
+            raise e
 
 # --- APP FASTAPI ---
 # --- APP FASTAPI ---
