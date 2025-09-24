@@ -25,6 +25,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { PlusCircle, Upload, X } from "lucide-react";
+import { API_URL } from "@/lib/config";
 import { getBrands, addMotorcycle } from "@/lib/data.service";
 import Image from "next/image";
 
@@ -105,8 +106,8 @@ export default function AddMotorcycleDialog({ isEdit = false, onMotorcycleAdded 
     formDataUpload.append('file', file);
 
     try {
-      // Usar el backend de FastAPI en lugar del endpoint de Next.js
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      // Usar la configuración dinámica de API_URL
+      console.log('🔄 Subiendo imagen a:', `${API_URL}/upload`);
       const response = await fetch(`${API_URL}/upload`, {
         method: 'POST',
         body: formDataUpload,
@@ -131,7 +132,7 @@ export default function AddMotorcycleDialog({ isEdit = false, onMotorcycleAdded 
 
   // Función para subir múltiples imágenes a la galería
   const handleGalleryUpload = async (files: FileList) => {
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+    console.log('🖼️ Subiendo galería de imágenes a:', `${API_URL}/upload`);
     
     const uploadPromises = Array.from(files).map(async (file) => {
       const formDataUpload = new FormData();
