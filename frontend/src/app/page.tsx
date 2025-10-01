@@ -132,47 +132,75 @@ export default function Home() {
     <>
       <FraudWarningDialog open={showWarning} onOpenChange={setShowWarning} />
 
-      <section className="relative h-[calc(100vh-80px)] w-full flex items-center justify-center">
+      <section className="relative h-[calc(100vh-80px)] w-full flex items-center justify-center overflow-hidden">
         {/* Imagen hero local */}
         <div className="absolute w-full h-full inset-0">
           <img
             src="/assets/portada.jpg"
             alt="Hero Motossur principal"
-            className="object-cover w-full h-full brightness-[0.4]"
+            className="object-cover w-full h-full brightness-[0.3] scale-105"
           />
+          {/* Overlay gradient mejorado */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/40"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/30"></div>
         </div>
-        <div className="relative z-20 text-center text-white p-4">
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-headline uppercase tracking-widest text-shadow-lg animate-fade-in-down">
-                POTENCIA SIN LÍMITES
+        
+        {/* Contenido principal */}
+        <div className="relative z-20 text-center text-white p-4 max-w-5xl mx-auto">
+            <div className="mb-6">
+              <span className="inline-block bg-primary/20 text-primary-foreground px-6 py-2 rounded-full text-sm font-medium border border-primary/30 backdrop-blur-sm">
+                MOTOS SUR TACNA
+              </span>
+            </div>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-headline uppercase tracking-widest text-shadow-2xl animate-fade-in-down leading-tight">
+                <span className="block text-yellow-400 drop-shadow-2xl">POTENCIA</span>
+                <span className="block text-white drop-shadow-2xl">SIN LÍMITES</span>
             </h1>
-            <p className="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-neutral-200 animate-fade-in-up">
-                Descubre los modelos que dominarán la calle
+            <p className="mt-6 text-lg md:text-xl lg:text-2xl max-w-3xl mx-auto text-neutral-100 animate-fade-in-up font-light leading-relaxed">
+                Descubre los modelos que dominarán la calle con la mejor tecnología y diseño
             </p>
-            <Button asChild size="lg" className="mt-8 text-lg animate-fade-in-up">
-                <Link href="/catalog">
-                    Ver Catálogo
-                </Link>
-            </Button>
+            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Button asChild size="lg" className="text-lg px-8 py-4 animate-fade-in-up bg-primary hover:bg-primary/90 shadow-2xl">
+                  <Link href="/catalog">
+                      Ver Catálogo Completo
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="text-lg px-8 py-4 animate-fade-in-up border-white/30 text-white hover:bg-white/10 backdrop-blur-sm">
+                  <Link href="/tiendas">
+                      Nuestras Tiendas
+                  </Link>
+              </Button>
+            </div>
+        </div>
+        
+        {/* Elementos decorativos */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
+            <div className="w-1 h-3 bg-white/70 rounded-full mt-2 animate-pulse"></div>
+          </div>
         </div>
       </section>
 
-  <section className="bg-background pb-8 md:pb-10 pt-16 md:pt-20">
+  <section className="bg-gradient-to-b from-background to-secondary/30 pb-12 md:pb-16 pt-20 md:pt-24">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Explora por Estilo</h2>
-            <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-              Encuentra la moto que se adapta a tu forma de vida.
+          <div className="text-center mb-16">
+            <div className="inline-block mb-4">
+              <Mountain className="mx-auto h-12 w-12 text-primary mb-4" />
+            </div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight bg-gradient-to-r from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Explora por Estilo
+            </h2>
+            <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              Encuentra la moto que se adapta perfectamente a tu forma de vida y aventuras.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-5 md:grid-cols-5 lg:grid-cols-2 gap-x-12 gap-y-1 w-full px-14">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 max-w-7xl mx-auto px-4">
             {categoryStyles.map((category, idx) => (
               <CategoryCard key={category.name} category={category} />
             ))}
           </div>
-
-
-
         </div>
       </section>
       
@@ -280,20 +308,45 @@ function CategoryCard({ category }: { category: { name: string, href: string, im
     }, 10000);
     return () => clearInterval(interval);
   }, [category.images.length]);
+  
   return (
     <Link href={category.href} className="group block">
-  <div className="relative overflow-hidden rounded-2xl aspect-[4/3] shadow-2xl h-full min-h-[220px] md:min-h-[300px] lg:min-h-[360px] xl:min-h-[400px] 2xl:min-h-[440px] transition-transform duration-300 group-hover:scale-105">
+      <div className="relative overflow-hidden rounded-2xl aspect-[4/3] shadow-2xl h-full min-h-[220px] md:min-h-[300px] lg:min-h-[360px] xl:min-h-[400px] 2xl:min-h-[440px] transition-all duration-500 group-hover:scale-105 group-hover:shadow-3xl border border-gray-200/20">
+        {/* Fondo de respaldo para evitar franjas blancas */}
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-black"></div>
+        
         <Image
           src={category.images[current]}
           alt={`Moto de estilo ${category.name}`}
           fill
-          className="object-cover brightness-75"
+          className="object-cover brightness-75 transition-all duration-700 group-hover:brightness-90 group-hover:scale-110"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          onError={(e) => {
+            // Si la imagen falla, usar un color de fondo
+            const target = e.target as HTMLImageElement;
+            target.style.display = 'none';
+          }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col items-center justify-end p-10 text-center">
-          <h3 className="font-headline text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wider text-white drop-shadow-xl">
-            {category.name}
-          </h3>
+        
+        {/* Overlay con gradiente mejorado */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-70 transition-opacity duration-500"></div>
+        
+        {/* Contenido del texto */}
+        <div className="absolute inset-0 flex flex-col items-center justify-end p-6 md:p-8 lg:p-10 text-center">
+          <div className="transform transition-all duration-500 group-hover:translate-y-[-10px]">
+            <h3 className="font-headline text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold uppercase tracking-wider text-white drop-shadow-2xl leading-tight">
+              {category.name}
+            </h3>
+            <div className="mt-4 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
+              <span className="inline-block bg-primary/90 text-white px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm border border-primary/30">
+                Explorar modelos
+              </span>
+            </div>
+          </div>
         </div>
+        
+        {/* Efecto de brillo en hover */}
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
       </div>
     </Link>
   );
