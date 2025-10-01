@@ -2,10 +2,15 @@
 -- ESTRUCTURA FINAL CON APARTADO SOBRE LA MARCA Y AJUSTES
 -- =============================
 
+CREATE DATABASE tienda_motos;
+\c tienda_motos;
+
 -- Elimina tablas previas si existen
 DROP TABLE IF EXISTS motorcycle_specs CASCADE;
 DROP TABLE IF EXISTS motorcycles CASCADE;
 DROP TABLE IF EXISTS brand_info CASCADE;
+
+
 
 -- Tabla de información sobre la marca (sección "Sobre la marca")
 CREATE TABLE IF NOT EXISTS brand_info (
