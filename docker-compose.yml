@@ -28,6 +28,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      db_bootstrap:
+        condition: service_completed_successfully
     environment:
       - POSTGRES_HOST=db
       - POSTGRES_PORT=5432
@@ -56,6 +58,19 @@ services:
       - NEXT_PUBLIC_API_URL=http://138.197.218.131:8000
     ports:
       - "3000:3000"
+
+  db_bootstrap:
+    image: postgres:15
+    container_name: db_bootstrap_runner
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./bd:/bd:ro
+    environment:
+      - PGPASSWORD=postgres
+    entrypoint: ["bash", "-c", "echo '== Bootstrapping catálogo ==' && psql -h db -U postgres -d tienda_motos -f /bd/full/bootstrap_all.sql || (echo 'Bootstrap falló'; exit 1)"]
+    restart: "no"
 
 volumes:
   db_data:
