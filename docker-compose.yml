@@ -13,7 +13,7 @@ services:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
-      - ./bd/tienda_motos.sql:/docker-entrypoint-initdb.d/tienda_motos.sql
+      
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d tienda_motos"]
       interval: 10s

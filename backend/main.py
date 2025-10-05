@@ -190,11 +190,23 @@ def create_moto(moto: MotoCreate):
     conn = get_db_connection()
     try:
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cursor:
-            # Insertar en motorcycle_specs
+            # 1. Insertar primero la moto principal (sin specs)
+            cursor.execute(
+                """
+                INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                RETURNING id
+                """,
+                (
+                    moto.brand, moto.model, moto.year, moto.engine, moto.displacement, moto.power,
+                    moto.price_soles, moto.style, moto.transmission, moto.image_url, moto.color,
+                    moto.description, moto.is_active
+                )
+            )
+            moto_id = cursor.fetchone()["id"]
+
+            # 2. Preparar specs y galería
             specs = moto.specs or {}
-            # Normalizar gallery: asegurar que sea lista de strings y adaptarla a array de Postgres
-            from psycopg2.extras import Json, register_default_jsonb, register_default_json
-            from psycopg2.extensions import adapt, AsIs
             gallery = moto.gallery
             if isinstance(gallery, str):
                 import json
@@ -205,45 +217,27 @@ def create_moto(moto: MotoCreate):
             if not isinstance(gallery, list):
                 gallery = [str(gallery)]
             gallery = [str(x) for x in gallery if x]
-            
-            # Si se está creando con imagen, agregarla automáticamente a la galería
-            if hasattr(moto, 'image_url') and moto.image_url and moto.image_url.strip():
-                if moto.image_url not in gallery:
-                    gallery.insert(0, moto.image_url)
-            elif hasattr(moto, 'imageUrl') and moto.imageUrl and moto.imageUrl.strip():
-                if moto.imageUrl not in gallery:
-                    gallery.insert(0, moto.imageUrl)
-            
-            # Pasar la lista directamente, psycopg2 la convierte a TEXT[]
-            gallery_pg = gallery
-            cursor.execute(
-                """
-                INSERT INTO motorcycle_specs (
-                    motorcycle_id, suspension, telescopic_forks, length, width, height, max_speed, max_torque, brakes, fuel_capacity, tires, start_type, tank, dashboard, ohc, digital_dashboard, alarm, ignition, usb, led_lights, gearbox, gallery
-                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                """,
-                (
-                    moto_id,
-                    specs.get("suspension"), specs.get("telescopic_forks"), specs.get("length"), specs.get("width"), specs.get("height"),
-                    specs.get("max_speed"), specs.get("max_torque"), specs.get("brakes"), specs.get("fuel_capacity"), specs.get("tires"),
-                    specs.get("start_type"), specs.get("tank"), specs.get("dashboard"), specs.get("ohc"), specs.get("digital_dashboard"), specs.get("alarm"), specs.get("ignition"), specs.get("usb"), specs.get("led_lights"), specs.get("gearbox"), gallery_pg
+            if moto.image_url and moto.image_url not in gallery:
+                gallery.insert(0, moto.image_url)
+
+            # 3. Insertar specs (solo si hay algún dato o galería)
+            if specs or gallery:
+                cursor.execute(
+                    """
+                    INSERT INTO motorcycle_specs (
+                        motorcycle_id, suspension, telescopic_forks, length, width, height, max_speed, max_torque, brakes, fuel_capacity, tires, start_type, tank, dashboard, ohc, digital_dashboard, alarm, ignition, usb, led_lights, gearbox, gallery
+                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    """,
+                    (
+                        moto_id,
+                        specs.get("suspension"), specs.get("telescopic_forks"), specs.get("length"), specs.get("width"), specs.get("height"),
+                        specs.get("max_speed"), specs.get("max_torque"), specs.get("brakes"), specs.get("fuel_capacity"), specs.get("tires"),
+                        specs.get("start_type"), specs.get("tank"), specs.get("dashboard"), specs.get("ohc"), specs.get("digital_dashboard"),
+                        specs.get("alarm"), specs.get("ignition"), specs.get("usb"), specs.get("led_lights"), specs.get("gearbox"), gallery
+                    )
                 )
-            )
-            cursor.execute(
-                """
-                INSERT INTO motorcycle_specs (
-                    motorcycle_id, suspension, telescopic_forks, length, width, height, max_speed, max_torque, brakes, fuel_capacity, tires, start_type, tank, dashboard, ohc, digital_dashboard, alarm, ignition, usb, led_lights, gearbox, gallery
-                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                """,
-                (
-                    moto_id,
-                    specs.get("suspension"), specs.get("telescopic_forks"), specs.get("length"), specs.get("width"), specs.get("height"),
-                    specs.get("max_speed"), specs.get("max_torque"), specs.get("brakes"), specs.get("fuel_capacity"), specs.get("tires"),
-                    specs.get("start_type"), specs.get("tank"), specs.get("dashboard"), specs.get("ohc"), specs.get("digital_dashboard"),
-                    specs.get("alarm"), specs.get("ignition"), specs.get("usb"), specs.get("led_lights"), specs.get("gearbox"), moto.gallery
-                )
-            )
-            # Normalizar nombre de marca (trim y capitalizar primera letra)
+
+            # 4. Normalizar brand_info
             normalized_brand = moto.brand.strip().capitalize()
             about = moto.brand_info if moto.brand_info else "N/A"
             cursor.execute(
@@ -253,15 +247,11 @@ def create_moto(moto: MotoCreate):
                 """,
                 (normalized_brand, about)
             )
-            # Actualizar la marca normalizada en la moto
-            cursor.execute(
-                """
-                UPDATE motorcycles SET brand = %s WHERE id = %s
-                """,
-                (normalized_brand, moto_id)
-            )
+            if normalized_brand != moto.brand:
+                cursor.execute("UPDATE motorcycles SET brand=%s WHERE id=%s", (normalized_brand, moto_id))
+
             conn.commit()
-            return {"id": moto_id, **moto.dict()}
+            return {"id": moto_id, **moto.dict(), "gallery": gallery}
     finally:
         conn.close()
 # El siguiente bloque estaba fuera de cualquier función y con indentación incorrecta.
