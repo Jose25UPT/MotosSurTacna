@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS motorcycle_specs (
     ignition VARCHAR(50) DEFAULT 'N/A',
     usb VARCHAR(50) DEFAULT 'N/A',
     led_lights VARCHAR(50) DEFAULT 'N/A',
+	accessories TEXT DEFAULT 'N/A',
     gearbox VARCHAR(50) DEFAULT 'N/A',
     gallery TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[],
     created_at TIMESTAMP DEFAULT NOW(),
