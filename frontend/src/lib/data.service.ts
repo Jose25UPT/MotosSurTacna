@@ -81,45 +81,55 @@ function getAuthHeaders() {
     return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
-export async function getMotorcycles(): Promise<Motorcycle[]> {
-    console.log('📡 Iniciando petición a:', `${API_URL}/motos`);
-    const res = await fetch(`${API_URL}/motos`, {
+export interface PaginatedMotorcycles {
+    items: Motorcycle[];
+    total: number;
+    page: number;
+    limit: number;
+    has_more: boolean;
+}
+
+export async function getMotorcycles(page: number = 1, limit: number = 20): Promise<PaginatedMotorcycles> {
+    console.log('📡 Iniciando petición a:', `${API_URL}/motos?page=${page}&limit=${limit}`);
+    const res = await fetch(`${API_URL}/motos?page=${page}&limit=${limit}`, {
         cache: 'no-store',
         headers: getAuthHeaders(),
     });
     console.log('📡 Respuesta recibida. Status:', res.status, 'OK:', res.ok);
     handle401(res);
     if (!res.ok) throw new Error('Error al obtener motos');
-    const motorcycles = await res.json();
-    console.log('🔢 Motos parseadas del JSON:', motorcycles?.length || 0);
-    
-    // Mapear image_url a imageUrl y construir URL completa
-    return motorcycles.map((moto: any) => {
+    const payload = await res.json();
+
+    // payload esperado: { items, total, page, limit, has_more }
+    const rawItems: any[] = Array.isArray(payload) ? payload : (payload.items || []);
+
+    const mapped = rawItems.map((moto: any) => {
         let imageUrl = '';
-        
         if (moto.image_url && moto.image_url.trim()) {
-            // Si ya es una URL completa (http/https), usarla tal como está
             if (moto.image_url.startsWith('http://') || moto.image_url.startsWith('https://')) {
-                // Verificar si la URL externa es válida
-                try {
-                    new URL(moto.image_url);
-                    imageUrl = moto.image_url;
-                } catch {
-                    console.warn(`URL externa inválida para moto ${moto.id}: ${moto.image_url}`);
-                    imageUrl = '';
-                }
+                try { new URL(moto.image_url); imageUrl = moto.image_url; } catch { imageUrl = ''; }
             } else if (moto.image_url.startsWith('/uploads/')) {
-                // Si es una ruta relativa local, construir URL completa
                 imageUrl = `${API_URL}${moto.image_url}`;
             }
         }
-        
-        return {
-            ...moto,
-            imageUrl,
-            price_soles: moto.price_soles || 0
-        };
+        return { ...moto, imageUrl, price_soles: moto.price_soles || 0 } as Motorcycle;
     });
+
+    return {
+        items: mapped,
+        total: payload.total ?? mapped.length,
+        page: payload.page ?? page,
+        limit: payload.limit ?? limit,
+        has_more: payload.has_more ?? (payload.total ? (payload.page * (payload.limit ?? limit)) < payload.total : false)
+    };
+}
+
+export async function getAllMotorcyclesAccum(current: Motorcycle[], nextPage: number, limit: number): Promise<{ merged: Motorcycle[]; page: number; has_more: boolean; total: number; }> {
+    const { items, page, has_more, total } = await getMotorcycles(nextPage, limit);
+    // evitar duplicados por id
+    const existingIds = new Set(current.map(m => m.id));
+    const merged = [...current, ...items.filter(i => !existingIds.has(i.id))];
+    return { merged, page, has_more, total };
 }
 
 export async function getMotorcycleById(id: string | number): Promise<Motorcycle> {

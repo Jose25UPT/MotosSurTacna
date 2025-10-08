@@ -6,11 +6,11 @@ import { Bike } from 'lucide-react';
 
 interface MotorcycleGridProps {
   motorcycles: Motorcycle[];
+  limitFirst?: number; // opcional si se quiere limitar en algún contexto
 }
 
-export default function MotorcycleGrid({ motorcycles }: MotorcycleGridProps) {
-  // Mostrar máximo 12 motos (3 columnas x 4 filas)
-  const motos = motorcycles.slice(0, 12);
+export default function MotorcycleGrid({ motorcycles, limitFirst }: MotorcycleGridProps) {
+  const motos = limitFirst ? motorcycles.slice(0, limitFirst) : motorcycles;
   return (
     <div className="w-full px-2 sm:px-3 md:px-4 lg:px-6">
       {motos.length > 0 ? (

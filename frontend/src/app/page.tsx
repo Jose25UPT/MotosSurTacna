@@ -98,24 +98,34 @@ export default function Home() {
   
   useEffect(() => {
     const fetchData = async () => {
-      const [allMotorcycles, brandData] = await Promise.all([
-        getMotorcycles(),
-        getBrands()
-      ]);
-
-      // Seleccionar 4 motos completamente aleatorias
-      function getRandomItems(arr: Motorcycle[], n: number): Motorcycle[] {
-        const result = [...arr];
-        for (let i = result.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [result[i], result[j]] = [result[j], result[i]];
+      try {
+        // Obtener primera página (20) para selección aleatoria
+        const [{ items, has_more, total }, brandData] = await Promise.all([
+          getMotorcycles(1, 20),
+          getBrands()
+        ]);
+        let pool = items;
+        // Si hubiera menos de 4 en primera página (edge case), traer segunda
+        if (pool.length < 4 && has_more) {
+          const page2 = await getMotorcycles(2, 20);
+            // evitar duplicados
+          const ids = new Set(pool.map(m => m.id));
+          pool = [...pool, ...page2.items.filter(m => !ids.has(m.id))];
         }
-        return result.slice(0, n);
+        function getRandomItems(arr: Motorcycle[], n: number): Motorcycle[] {
+          const result = [...arr];
+          for (let i = result.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [result[i], result[j]] = [result[j], result[i]];
+          }
+          return result.slice(0, n);
+        }
+        const randomMotorcycles = getRandomItems(pool, 4);
+        setFeaturedMotorcycles(randomMotorcycles);
+        setBrands(brandData);
+      } catch (e) {
+        console.error('Error cargando destacados:', e);
       }
-      const randomMotorcycles: Motorcycle[] = getRandomItems(allMotorcycles, 4);
-
-      setFeaturedMotorcycles(randomMotorcycles); 
-      setBrands(brandData);
     };
     fetchData();
 
