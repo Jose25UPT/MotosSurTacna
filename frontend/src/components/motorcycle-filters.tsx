@@ -152,4 +152,6 @@ export default function MotorcycleFilters({
             </div>
         );
     }
+    // Fallback (no horizontal) - se puede extender a modo lateral luego
+    return null;
 }

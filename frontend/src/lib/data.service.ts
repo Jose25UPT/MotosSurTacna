@@ -99,9 +99,17 @@ export async function getMotorcycles(page: number = 1, limit: number = 20): Prom
     handle401(res);
     if (!res.ok) throw new Error('Error al obtener motos');
     const payload = await res.json();
-
-    // payload esperado: { items, total, page, limit, has_more }
-    const rawItems: any[] = Array.isArray(payload) ? payload : (payload.items || []);
+    // Normalizar distintas posibles formas: {items:[]}, {data:[]}, []
+    let rawItems: any[] = [];
+    if (Array.isArray(payload)) {
+        rawItems = payload;
+    } else if (Array.isArray(payload.items)) {
+        rawItems = payload.items;
+    } else if (Array.isArray(payload.data)) {
+        rawItems = payload.data; // backend está usando "data" en lugar de "items"
+    } else {
+        console.warn('⚠️ Formato de payload inesperado en /motos:', payload);
+    }
 
     const mapped = rawItems.map((moto: any) => {
         let imageUrl = '';
@@ -115,12 +123,19 @@ export async function getMotorcycles(page: number = 1, limit: number = 20): Prom
         return { ...moto, imageUrl, price_soles: moto.price_soles || 0 } as Motorcycle;
     });
 
+    const effectiveTotal = payload.total ?? payload.count ?? mapped.length;
+    const effectivePage = payload.page ?? page;
+    const effectiveLimit = payload.limit ?? limit;
+    const hasMore = payload.has_more ?? (effectiveTotal ? (effectivePage * effectiveLimit) < effectiveTotal : false);
+
+    console.log(`🔎 Normalizado -> items:${mapped.length} total:${effectiveTotal} page:${effectivePage} has_more:${hasMore}`);
+
     return {
         items: mapped,
-        total: payload.total ?? mapped.length,
-        page: payload.page ?? page,
-        limit: payload.limit ?? limit,
-        has_more: payload.has_more ?? (payload.total ? (payload.page * (payload.limit ?? limit)) < payload.total : false)
+        total: effectiveTotal,
+        page: effectivePage,
+        limit: effectiveLimit,
+        has_more: hasMore
     };
 }
 

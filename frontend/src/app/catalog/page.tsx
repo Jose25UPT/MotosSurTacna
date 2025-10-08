@@ -21,6 +21,38 @@ export default function CatalogPage() {
   const [hasMore, setHasMore] = useState(false);
   const [total, setTotal] = useState(0);
 
+  // Estados para rangos dinámicos
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 0]);
+  const [yearRange, setYearRange] = useState<[number, number]>([0, 0]);
+  const [maxPrice, setMaxPrice] = useState(0);
+  const [minYear, setMinYear] = useState(0);
+  const [maxYear, setMaxYear] = useState(0);
+
+  const recomputeMetrics = useCallback((all: Motorcycle[]) => {
+    if (!all.length) return;
+    const prices: number[] = [];
+    const years: number[] = [];
+    for (const m of all) {
+      // price_soles puede venir como string o number; limpiar separadores/eventuales prefijos
+      let p = 0;
+      if (m.price_soles !== undefined && m.price_soles !== null) {
+        const raw = String(m.price_soles).replace(/[^0-9.]/g, '');
+        p = parseFloat(raw) || 0;
+      }
+      prices.push(p);
+      if (m.year) years.push(Number(m.year));
+    }
+    const newMaxPrice = Math.max(...prices);
+    const newMinYear = Math.min(...years);
+    const newMaxYear = Math.max(...years);
+    setMaxPrice(prev => newMaxPrice > prev ? newMaxPrice : prev || newMaxPrice);
+    setMinYear(prev => prev === 0 ? newMinYear : Math.min(prev, newMinYear));
+    setMaxYear(prev => prev === 0 ? newMaxYear : Math.max(prev, newMaxYear));
+    // Inicializar rangos sólo si aún están en cero
+    setPriceRange(pr => (pr[0] === 0 && pr[1] === 0) ? [0, newMaxPrice] : [pr[0], Math.max(pr[1], newMaxPrice)]);
+    setYearRange(yr => (yr[0] === 0 && yr[1] === 0) ? [newMinYear, newMaxYear] : [Math.min(yr[0], newMinYear), Math.max(yr[1], newMaxYear)]);
+  }, []);
+
   const fetchFirstPage = useCallback(async () => {
     setLoading(true);
     try {
@@ -32,10 +64,12 @@ export default function CatalogPage() {
       setHasMore(has_more);
       setTotal(t);
       setPage(1);
+      recomputeMetrics(items);
       const brandNames = Array.isArray(brandData)
         ? brandData.map(b => typeof b === "string" ? b : (b as any).brand)
         : [];
       setBrands(brandNames);
+      console.log(`🟢 Primera página motos=${items.length} total=${t}`, items[0]);
     } catch (e) {
       console.error('❌ Error cargando catálogo:', e);
     } finally {
@@ -55,6 +89,8 @@ export default function CatalogPage() {
       setPage(returnedPage);
       setHasMore(has_more);
       setTotal(t);
+      recomputeMetrics(merged);
+      console.log(`📦 loadMore -> acumuladas=${merged.length} page=${returnedPage} has_more=${has_more}`);
     } catch (e) {
       console.error('❌ Error cargando más motos:', e);
     } finally {
@@ -68,20 +104,33 @@ export default function CatalogPage() {
     return motorcycles.filter(m => {
       const brandOk = selectedBrand === 'all' || normalize(m.brand) === normalize(selectedBrand);
       const searchOk = !searchQuery.trim() || m.model.toLowerCase().includes(searchQuery.toLowerCase()) || (selectedBrand === 'all' && m.brand.toLowerCase().includes(searchQuery.toLowerCase()));
-      return brandOk && searchOk;
+      // precio
+      let priceNum = 0;
+      if (m.price_soles !== undefined && m.price_soles !== null) {
+        priceNum = parseFloat(String(m.price_soles).replace(/[^0-9.]/g, '')) || 0;
+      }
+      const priceOk = priceNum >= priceRange[0] && priceNum <= priceRange[1];
+      // año
+      const yearOk = !yearRange[0] || !yearRange[1] || (m.year >= yearRange[0] && m.year <= yearRange[1]);
+      return brandOk && searchOk && priceOk && yearOk;
     });
-  }, [motorcycles, selectedBrand, searchQuery]);
+  }, [motorcycles, selectedBrand, searchQuery, priceRange, yearRange]);
+
+  useEffect(() => {
+    if (!loading) {
+      console.log(`🔍 Filtrado -> visibles=${filteredMotorcycles.length} / cargadas=${motorcycles.length}`);
+    }
+  }, [filteredMotorcycles, motorcycles, loading]);
 
   const filterProps = {
     searchQuery, setSearchQuery,
     selectedBrand, setSelectedBrand,
-    // placeholders para sliders removidos temporalmente
-    priceRange: [0, 0], setPriceRange: () => {},
-    yearRange: [0, 0], setYearRange: () => {},
+    priceRange, setPriceRange,
+    yearRange, setYearRange,
     brands,
-    maxPrice: 0,
-    minYear: 0,
-    maxYear: 0,
+    maxPrice,
+    minYear,
+    maxYear,
     resultCount: filteredMotorcycles.length,
     closeSheet: () => {},
   } as any;
