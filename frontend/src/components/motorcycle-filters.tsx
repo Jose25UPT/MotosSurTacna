@@ -3,9 +3,10 @@
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
-import { Search } from 'lucide-react';
-import { Separator } from './ui/separator';
+import { Search, ChevronDown, RefreshCcw } from 'lucide-react';
 import { Button } from './ui/button';
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
+import { Badge } from './ui/badge';
 
 interface MotorcycleFiltersProps {
     searchQuery: string;
@@ -22,6 +23,13 @@ interface MotorcycleFiltersProps {
     maxYear: number;
     resultCount: number;
     closeSheet: () => void;
+    stylesOptions?: string[];
+    displacementOptions?: string[];
+    selectedStyles?: string[];
+    setSelectedStyles?: (v: string[]) => void;
+    selectedDisplacements?: string[];
+    setSelectedDisplacements?: (v: string[]) => void;
+    onReset?: () => void;
 }
 
 export default function MotorcycleFilters({
@@ -32,11 +40,17 @@ export default function MotorcycleFilters({
     brands, maxPrice, minYear, maxYear,
     resultCount,
     closeSheet,
-    horizontal
+    horizontal,
+    stylesOptions = [],
+    displacementOptions = [],
+    selectedStyles = [],
+    setSelectedStyles = () => {},
+    selectedDisplacements = [],
+    setSelectedDisplacements = () => {},
+    onReset = () => {}
 }: MotorcycleFiltersProps & { horizontal?: boolean }) {
-    if (horizontal) {
-        // Filtros en barra horizontal, con precio y espacio para capacidad de combustible
-        return (
+    if (!horizontal) return null;
+    return (
             <div className="flex flex-wrap gap-4 items-end w-full">
                 {/* Buscar */}
                 <div className="flex flex-col">
@@ -68,42 +82,30 @@ export default function MotorcycleFilters({
                         </SelectContent>
                     </Select>
                 </div>
-                {/* Cilindrada */}
-                <div className="flex flex-col min-w-[120px]">
-                    <label className="text-sm font-medium mb-1">Cilindrada</label>
-                    <Select>
-                        <SelectTrigger className="min-w-[120px]">
-                            <SelectValue placeholder="Todas" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all">Todas</SelectItem>
-                            <SelectItem value="125">125cc</SelectItem>
-                            <SelectItem value="150">150cc</SelectItem>
-                            <SelectItem value="200">200cc</SelectItem>
-                            <SelectItem value="250">250cc</SelectItem>
-                            <SelectItem value="300">300cc+</SelectItem>
-                        </SelectContent>
-                    </Select>
+                {/* Estilos */}
+                <div className="flex flex-col min-w-[160px]">
+                    <label className="text-sm font-medium mb-1">Estilos</label>
+                    <MultiCheckboxPopover
+                        options={stylesOptions}
+                        selected={selectedStyles}
+                        setSelected={setSelectedStyles}
+                        placeholder="Todos"
+                        emptyLabel="Sin estilos"
+                    />
                 </div>
-                {/* Estilo */}
-                <div className="flex flex-col min-w-[120px]">
-                    <label className="text-sm font-medium mb-1">Estilo</label>
-                    <Select>
-                        <SelectTrigger className="min-w-[120px]">
-                            <SelectValue placeholder="Todos" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all">Todos</SelectItem>
-                            <SelectItem value="urbana">Urbana</SelectItem>
-                            <SelectItem value="deportiva">Deportiva</SelectItem>
-                            <SelectItem value="enduro">Enduro</SelectItem>
-                            <SelectItem value="crossover">Crossover</SelectItem>
-                            <SelectItem value="scooter">Scooter</SelectItem>
-                        </SelectContent>
-                    </Select>
+                {/* Cilindrada */}
+                <div className="flex flex-col min-w-[160px]">
+                    <label className="text-sm font-medium mb-1">Cilindrada</label>
+                    <MultiCheckboxPopover
+                        options={displacementOptions}
+                        selected={selectedDisplacements}
+                        setSelected={setSelectedDisplacements}
+                        placeholder="Todas"
+                        emptyLabel="Sin datos"
+                    />
                 </div>
                 {/* Precio */}
-                <div className="flex flex-col min-w-[200px]">
+                <div className="flex flex-col min-w-[240px]">
                     <label className="text-sm font-medium mb-1">
                         Precio: S/{priceRange[0].toLocaleString()} - S/{priceRange[1].toLocaleString()}
                     </label>
@@ -116,42 +118,94 @@ export default function MotorcycleFilters({
                         className="w-full"
                     />
                 </div>
-                {/* Capacidad de combustible (si existe) */}
-                {/*
-                <div className="flex flex-col min-w-[160px]">
-                    <label className="text-sm font-medium mb-1">Capacidad de combustible (L)</label>
-                    <Select>
-                        <SelectTrigger className="min-w-[120px]">
-                            <SelectValue placeholder="Todas" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all">Todas</SelectItem>
-                            <SelectItem value="5">5L</SelectItem>
-                            <SelectItem value="10">10L</SelectItem>
-                            <SelectItem value="15">15L+</SelectItem>
-                        </SelectContent>
-                    </Select>
-                </div>
-                */}
-                {/* Otros posibles filtros útiles:
-                    - Transmisión (manual/automática)
-                    - Estado (nuevo/usado)
-                    - Color
-                    - Año (slider)
-                    - Potencia
-                    - Frenos
-                    - Suspensión
-                */}
-                {/* Botón */}
+                {/* Año */}
+                {minYear !== 0 && maxYear !== 0 && (
+                    <div className="flex flex-col min-w-[220px]">
+                        <label className="text-sm font-medium mb-1">Año: {yearRange[0]} - {yearRange[1]}</label>
+                        <Slider
+                            min={minYear}
+                            max={maxYear}
+                            step={1}
+                            value={yearRange}
+                            onValueChange={setYearRange}
+                            className="w-full"
+                        />
+                    </div>
+                )}
+                {/* Acciones */}
                 <div className="flex flex-col">
-                    <label className="invisible">Ver motos</label>
-                    <Button onClick={closeSheet} className="w-full">
-                        Ver {resultCount} Motos
-                    </Button>
+                    <label className="invisible">Acciones</label>
+                    <div className="flex flex-col gap-2">
+                        <Button variant="default" onClick={closeSheet} className="w-full">
+                            Ver {resultCount} Motos
+                        </Button>
+                        <Button variant="outline" onClick={onReset} className="w-full text-xs flex items-center gap-1">
+                            <RefreshCcw className="h-3 w-3" /> Reset
+                        </Button>
+                    </div>
                 </div>
             </div>
-        );
-    }
-    // Fallback (no horizontal) - se puede extender a modo lateral luego
-    return null;
+    );
+}
+
+function MultiCheckboxPopover({
+    options,
+    selected,
+    setSelected,
+    placeholder,
+    emptyLabel
+}: {
+    options: string[];
+    selected: string[];
+    setSelected: (v: string[]) => void;
+    placeholder: string;
+    emptyLabel: string;
+}) {
+    const toggle = (opt: string) => {
+        setSelected(selected.includes(opt) ? selected.filter(o => o !== opt) : [...selected, opt]);
+    };
+    return (
+        <Popover>
+            <PopoverTrigger asChild>
+                <Button variant="outline" className="justify-between min-w-[150px]">
+                    <span className="truncate text-left">
+                        {selected.length === 0 ? placeholder : `${selected.length} seleccionados`}
+                    </span>
+                    <ChevronDown className="h-4 w-4 opacity-60" />
+                </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-56 p-2 flex flex-col gap-2">
+                {options.length === 0 && (
+                    <span className="text-xs text-muted-foreground px-1 py-2">{emptyLabel}</span>
+                )}
+                {options.map(opt => {
+                    const active = selected.includes(opt);
+                    return (
+                        <button
+                            type="button"
+                            key={opt}
+                            onClick={() => toggle(opt)}
+                            className={`flex items-center justify-between text-xs px-2 py-1.5 rounded-md border transition-colors ${active ? 'bg-yellow-200 border-yellow-400 font-medium' : 'hover:bg-muted'}`}
+                        >
+                            <span>{opt}</span>
+                            {active && <span className="text-[10px]">✔</span>}
+                        </button>
+                    );
+                })}
+                {selected.length > 0 && (
+                    <div className="flex flex-wrap gap-1 pt-1">
+                        {selected.map(s => (
+                            <Badge key={s} variant="secondary" className="text-[10px] px-1 py-0.5 flex gap-1 items-center">
+                                {s}
+                                <span
+                                    onClick={() => toggle(s)}
+                                    className="cursor-pointer hover:text-destructive"
+                                >✕</span>
+                            </Badge>
+                        ))}
+                    </div>
+                )}
+            </PopoverContent>
+        </Popover>
+    );
 }

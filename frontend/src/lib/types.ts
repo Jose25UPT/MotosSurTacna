@@ -34,7 +34,8 @@ export interface Motorcycle {
   color?: string;
   stock?: number;
   transmission?: string;
-  // Si se requiere "style" agregar aquí, pero no está en backend ni SQL
+  style?: string; // estilo comercial (urbana, deportiva, etc.)
+  displacement?: string | number; // cilindrada cruda para clasificar buckets
 }
 
 export interface PromoImage {
