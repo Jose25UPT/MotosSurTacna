@@ -40,7 +40,7 @@ services:
     volumes:
       - ./backend:/app
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://127.0.0.1:8000/docs"]
+      test: ["CMD", "curl", "-f", "http://138.197.218.131:8000/docs"]
       interval: 30s
       timeout: 10s
       retries: 3
