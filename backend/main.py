@@ -270,43 +270,83 @@ def create_moto(moto: MotoCreate):
 #     conn.close()
 
 @app.get("/motos")
-def get_motos():
+def get_motos(page: int = 1, limit: int = 20):
+    """Listado paginado de motos.
+    - No carga toda la tabla en memoria.
+    - Evita SELECT * completo sin límites.
+    - Retorna metadata para paginado incremental.
+    """
+    if page < 1:
+        page = 1
+    # Limitar tamaño máximo por página para proteger memoria
+    if limit < 1:
+        limit = 1
+    if limit > 100:
+        limit = 100
+    offset = (page - 1) * limit
+
     conn = get_db_connection()
     try:
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cursor:
-            cursor.execute("SELECT * FROM motorcycles")
-            motos = cursor.fetchall()
-            motos_mapeadas = []
-            for m in motos:
-                mapeada = dict(m)
-                # Especificaciones técnicas completas
-                cursor.execute("SELECT * FROM motorcycle_specs WHERE motorcycle_id = %s", (m["id"],))
-                detalles = cursor.fetchone()
-                if detalles:
-                    gal = detalles.get("gallery", [])
-                    # Forzar siempre array de strings
-                    if isinstance(gal, list):
-                        mapeada["gallery"] = [str(x) for x in gal if x]
-                    elif isinstance(gal, str):
-                        try:
-                            import json
-                            arr = json.loads(gal)
-                            if isinstance(arr, list):
-                                mapeada["gallery"] = [str(x) for x in arr if x]
-                            else:
-                                mapeada["gallery"] = [str(arr)]
-                        except Exception:
-                            mapeada["gallery"] = [gal]
-                    else:
-                        mapeada["gallery"] = []
-                    specs = {k: v for k, v in detalles.items() if k not in ["id", "motorcycle_id", "gallery", "created_at", "updated_at"]}
-                else:
-                    mapeada["gallery"] = []
-                    specs = {}
+            # Total primero (podríamos cachear en el futuro)
+            cursor.execute("SELECT COUNT(*) AS total FROM motorcycles")
+            total = cursor.fetchone()["total"]
+            has_more = total > offset + limit
 
-                # Diccionario de mapeo: campo SQL -> nombre en español
+            # Obtener subset de motos
+            cursor.execute(
+                "SELECT id, brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active FROM motorcycles ORDER BY id ASC LIMIT %s OFFSET %s",
+                (limit, offset)
+            )
+            motos = cursor.fetchall()
+            if not motos:
+                return {
+                    "data": [],
+                    "page": page,
+                    "limit": limit,
+                    "total": total,
+                    "has_more": False
+                }
+
+            ids = [m["id"] for m in motos]
+            # Cargar specs en bloque
+            cursor.execute(
+                "SELECT * FROM motorcycle_specs WHERE motorcycle_id = ANY(%s)",
+                (ids,)
+            )
+            specs_rows = cursor.fetchall()
+            specs_map = {r["motorcycle_id"]: r for r in specs_rows}
+
+            # Cargar brand_info en bloque (solo marcas presentes en la página)
+            brands = list({m["brand"] for m in motos})
+            cursor.execute(
+                "SELECT brand, about FROM brand_info WHERE brand = ANY(%s)",
+                (brands,)
+            )
+            brand_rows = cursor.fetchall()
+            brand_map = {b["brand"]: b["about"] for b in brand_rows}
+
+            resultado = []
+            for m in motos:
+                detalles = specs_map.get(m["id"]) or {}
+                gal = detalles.get("gallery") if detalles else []
+                gallery_norm = []
+                if isinstance(gal, list):
+                    gallery_norm = [str(x) for x in gal if x]
+                elif isinstance(gal, str):
+                    try:
+                        import json
+                        arr = json.loads(gal)
+                        if isinstance(arr, list):
+                            gallery_norm = [str(x) for x in arr if x]
+                        else:
+                            gallery_norm = [str(arr)]
+                    except Exception:
+                        gallery_norm = [gal]
+
+                specs = {k: v for k, v in detalles.items() if k not in ["id", "motorcycle_id", "gallery", "created_at", "updated_at"]}
+
                 spec_map = {
-                    # motor y sistema eléctrico
                     "engine": "Tipo de motor",
                     "suspension": "Suspensión",
                     "displacement": "Cilindrada",
@@ -314,12 +354,10 @@ def get_motos():
                     "max_torque": "Torque",
                     "ignition": "Encendido",
                     "start_type": "Arranque",
-                    # dimensiones
                     "length": "Largo",
                     "width": "Ancho",
                     "height": "Alto",
                     "fuel_capacity": "Capacidad de combustible",
-                    # otros
                     "brakes": "Frenos",
                     "tires": "Llantas",
                     "gearbox": "Caja",
@@ -331,7 +369,6 @@ def get_motos():
                     "digital_dashboard": "Tablero digital",
                 }
 
-                # Agrupar por categoría
                 motor_electrico = {
                     spec_map["engine"]: m.get("engine"),
                     spec_map["suspension"]: specs.get("suspension"),
@@ -358,17 +395,25 @@ def get_motos():
                     spec_map["ohc"]: specs.get("ohc"),
                     spec_map["digital_dashboard"]: specs.get("digital_dashboard"),
                 }
-                mapeada["specifications"] = {
-                    "motor y sistema eléctrico": motor_electrico,
-                    "dimensiones": dimensiones,
-                    "otros": otros
-                }
-                # Info de la marca
-                cursor.execute("SELECT about FROM brand_info WHERE brand = %s", (m["brand"],))
-                marca = cursor.fetchone()
-                mapeada["brand_info"] = marca["about"] if marca else None
-                motos_mapeadas.append(mapeada)
-        return motos_mapeadas
+
+                resultado.append({
+                    **m,
+                    "gallery": gallery_norm,
+                    "brand_info": brand_map.get(m["brand"]),
+                    "specifications": {
+                        "motor y sistema eléctrico": motor_electrico,
+                        "dimensiones": dimensiones,
+                        "otros": otros
+                    }
+                })
+
+            return {
+                "data": resultado,
+                "page": page,
+                "limit": limit,
+                "total": total,
+                "has_more": has_more
+            }
     finally:
         conn.close()
 
