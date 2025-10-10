@@ -46,6 +46,18 @@ const nextConfig: NextConfig = {
             { protocol: 'https', hostname: 'drive.google.com', port: '', pathname: '/uc*' }
         ],
     },
+    async rewrites() {
+        return [
+            {
+                source: '/api/:path*',
+                destination: `${process.env.BACKEND_ORIGIN || 'http://localhost:8000'}/:path*`,
+            },
+            {
+                source: '/uploads/:path*',
+                destination: `${process.env.BACKEND_ORIGIN || 'http://localhost:8000'}/uploads/:path*`,
+            },
+        ];
+    },
     output: 'standalone',
 };
 

@@ -8,8 +8,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
-    ports:
-      - "5432:5432"
+    # No exponer el puerto públicamente; sólo accesible vía red interna
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./bd/postgres/postgresql.conf:/etc/postgresql/postgresql.conf:ro
@@ -40,24 +39,20 @@ services:
     volumes:
       - ./backend:/app
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://138.197.218.131:8000/docs"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/docs', timeout=5)"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
-  frontend:
-    build: ./frontend
-    container_name: frontend_motos
-    restart: unless-stopped
-    depends_on:
-      backend:
-        condition: service_healthy
-    environment:
-      - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=http://138.197.218.131:8000
-    ports:
-      - "3000:3000"
-
+    networks:
+      - internal_network
+      - web
 volumes:
   db_data:
+
+networks:
+  internal_network:
+    internal: true
+  web:
+    driver: bridge
 

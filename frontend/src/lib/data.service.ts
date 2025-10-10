@@ -114,10 +114,14 @@ export async function getMotorcycles(page: number = 1, limit: number = 20): Prom
     const mapped = rawItems.map((moto: any) => {
         let imageUrl = '';
         if (moto.image_url && moto.image_url.trim()) {
+            // Mantener URLs absolutas válidas temporales
             if (moto.image_url.startsWith('http://') || moto.image_url.startsWith('https://')) {
                 try { new URL(moto.image_url); imageUrl = moto.image_url; } catch { imageUrl = ''; }
             } else if (moto.image_url.startsWith('/uploads/')) {
-                imageUrl = `${API_URL}${moto.image_url}`;
+                // Ya que usamos proxy /api, NO concatenamos API_URL para evitar romper paths.
+                imageUrl = moto.image_url; // ejemplo: /uploads/moto.jpg
+            } else if (moto.image_url.startsWith('/')) {
+                imageUrl = moto.image_url;
             }
         }
         return { ...moto, imageUrl, price_soles: moto.price_soles || 0 } as Motorcycle;
@@ -170,9 +174,9 @@ export async function getMotorcycleById(id: string | number): Promise<Motorcycle
                 console.warn(`URL externa inválida para moto ${moto.id}: ${moto.image_url}`);
                 imageUrl = '';
             }
-        } else if (moto.image_url.startsWith('/uploads/')) {
-            // Si es una ruta relativa local, construir URL completa
-            imageUrl = `${API_URL}${moto.image_url}`;
+        } else if (moto.image_url.startsWith('/uploads/') || moto.image_url.startsWith('/')) {
+            // Mantener rutas relativas (servidas por backend bajo el mismo dominio del proxy)
+            imageUrl = moto.image_url;
         }
     }
     
