@@ -21,6 +21,8 @@ services:
       retries: 5
       start_period: 30s
     shm_size: 256mb
+    networks:
+      - internal_network
   backend:
     build: ./backend
     container_name: backend_motos
