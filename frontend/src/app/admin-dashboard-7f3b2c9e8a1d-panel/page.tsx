@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { getMotorcycles, updatePromoImage, getPromoImages, getMotorcycleById } from "@/lib/data.service";
+import { getMotorcycles, updatePromoImage, getPromoImages, getMotorcycleById, getAllMotorcyclesAccum } from "@/lib/data.service";
 import { DollarSign, List, Users, Loader2, Image as ImageIcon, Upload, Link2, Download, DatabaseBackup, Save } from "lucide-react";
 import BulkPriceEditor from "@/components/bulk-price-editor";
 import AddMotorcycleDialog from "@/components/add-motorcycle-dialog";
@@ -212,33 +212,47 @@ export default function AdminDashboard() {
 	const { toast } = useToast();
 
 	useEffect(() => {
-				async function loadData() {
-					setLoading(true);
-					try {
-						const motorcycleData = await getMotorcycles();
-						const safeMotorcycles = motorcycleData.map((m: any) => ({
-							...m,
-							id: m.id?.toString?.() ?? '',
-							gallery: m.gallery || [],
-							specifications: m.specifications || {},
-						}));
-						setMotorcycles(safeMotorcycles);
-						try {
-							const promoImageData = await getPromoImages();
-							setPromoImages(promoImageData);
-						} catch (imgErr) {
-							setPromoImages([]); // No bloquea el dashboard
-							toast({ title: "Aviso", description: "No se pudieron cargar las imágenes promocionales.", variant: "default" });
-						}
-					} catch (error) {
-						console.error("Failed to fetch data", error);
-						toast({ title: "Error", description: "No se pudieron cargar las motos.", variant: "destructive" });
-					} finally {
-						setLoading(false);
-					}
+		async function loadData() {
+			setLoading(true);
+			try {
+				// Traer motos con paginación (acumular varias páginas si hay muchas)
+				const first = await getMotorcycles(1, 100);
+				let list = first.items;
+				let page = first.page;
+				let hasMore = first.has_more;
+				// Límite de seguridad: 50 páginas máx (5,000 items si limit=100)
+				let guard = 0;
+				while (hasMore && guard < 50) {
+					const acc = await getAllMotorcyclesAccum(list, page + 1, 100);
+					list = acc.merged;
+					page = acc.page;
+					hasMore = acc.has_more;
+					guard++;
 				}
-				loadData();
-			}, [toast]);
+				const safeMotorcycles = list.map((m: any) => ({
+					...m,
+					id: m.id?.toString?.() ?? '',
+					gallery: m.gallery || [],
+					specifications: m.specifications || {},
+				}));
+				setMotorcycles(safeMotorcycles);
+
+				try {
+					const promoImageData = await getPromoImages();
+					setPromoImages(promoImageData);
+				} catch (imgErr) {
+					setPromoImages([]); // No bloquea el dashboard
+					toast({ title: "Aviso", description: "No se pudieron cargar las imágenes promocionales.", variant: "default" });
+				}
+			} catch (error) {
+				console.error("Failed to fetch data", error);
+				toast({ title: "Error", description: "No se pudieron cargar las motos.", variant: "destructive" });
+			} finally {
+				setLoading(false);
+			}
+		}
+		loadData();
+	}, [toast]);
 
 	const [mounted, setMounted] = useState(false);
 	useEffect(() => { setMounted(true); }, []);
@@ -273,12 +287,11 @@ export default function AdminDashboard() {
 			setEditOpen(true);
 		};
 			const handleEditSave = async (updatedMoto) => {
-				// Refrescar la lista completa desde el backend para asegurar galería actualizada
+				// Refrescar desde el backend (primera página) y actualizar estado; si falla, actualizar solo la moto editada
 				try {
-					const motos = await getMotorcycles();
-					setMotorcycles(motos);
+					const refreshed = await getMotorcycles(1, 100);
+					setMotorcycles(refreshed.items);
 				} catch {
-					// fallback: actualizar solo la moto editada
 					setMotorcycles((prev) => prev.map((m) => m.id === updatedMoto.id ? updatedMoto : m));
 				}
 				setEditOpen(false);
