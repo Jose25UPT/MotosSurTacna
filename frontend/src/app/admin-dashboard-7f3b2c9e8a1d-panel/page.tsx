@@ -411,13 +411,8 @@ export default function AdminDashboard() {
 						className="text-lg px-8 py-4"
 						onClick={async () => {
 							try {
-								let apiUrl = '';
-								if (typeof window !== 'undefined') {
-									apiUrl = window.location.origin.replace(/(:3000)?$/, ':8000');
-								} else {
-									apiUrl = 'http://localhost:8000';
-								}
-								const res = await fetch(`${apiUrl}/backup`, {
+								// Usar proxy interno de Next para evitar CORS y no depender de localhost
+								const res = await fetch(`/api/backup`, {
 									method: 'GET',
 								});
 								if (!res.ok) throw new Error('Error al generar backup');
