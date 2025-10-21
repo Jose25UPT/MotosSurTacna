@@ -204,15 +204,9 @@ export default function Home() {
   <section className="bg-gradient-to-b from-background to-secondary/30 pb-12 md:pb-16 pt-20 md:pt-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <div className="inline-block mb-4">
-              <Mountain className="mx-auto h-12 w-12 text-primary mb-4" />
-            </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight bg-gradient-to-r from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Explora por Estilo
+            <h2 className="font-headline uppercase tracking-[0.2em] text-4xl md:text-6xl lg:text-7xl font-extrabold bg-gradient-to-r from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent drop-shadow-2xl">
+              Explora tu Estilo
             </h2>
-            <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Encuentra la moto que se adapta perfectamente a tu forma de vida y aventuras.
-            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 max-w-7xl mx-auto px-4">
