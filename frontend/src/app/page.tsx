@@ -231,7 +231,7 @@ export default function Home() {
               Las mejores marcas del mercado en un solo lugar.
             </p>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6 place-items-center">
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3 md:gap-4 place-items-center">
             {brandLogos.map((brand) => (
               <BrandLogoCard key={brand.slug} brand={brand} />
             ))}
@@ -378,21 +378,6 @@ function CategoryCard({ category }: { category: CategoryStyle }) {
 }
 
 function BrandLogoCard({ brand }: { brand: BrandItem }) {
-  const accentToGradient = (acc: BrandItem['accent']) => {
-    switch (acc) {
-      case 'blue':
-        return 'from-blue-500 via-blue-400 to-blue-300';
-      case 'violet':
-        return 'from-fuchsia-500 via-violet-500 to-indigo-500';
-      case 'orange':
-        return 'from-orange-500 via-amber-500 to-yellow-400';
-      case 'emerald':
-        return 'from-emerald-500 via-green-400 to-lime-300';
-      default:
-        return 'from-primary via-primary/70 to-primary/40';
-    }
-  };
-
   const initials = brand.name
     .split(' ')
     .map((w) => w[0])
@@ -401,35 +386,32 @@ function BrandLogoCard({ brand }: { brand: BrandItem }) {
     .toUpperCase();
 
   return (
-    <Link href={`/catalog?brand=${encodeURIComponent(brand.name)}`} className="group w-full max-w-[180px]">
-      <div className={`rounded-2xl p-[2px] bg-gradient-to-r ${accentToGradient(brand.accent)} transition-transform duration-300 group-hover:scale-[1.03] shadow-[0_10px_35px_-20px_rgba(0,0,0,0.6)]`}>
-        <div className="rounded-[calc(1rem-2px)] bg-card/60 border border-white/10 backdrop-blur-sm px-4 py-5 h-28 flex flex-col items-center justify-center">
-          <div className="relative w-full h-14">
-            {/* Intento de logo en /public/assets/brands/<slug>.svg */}
-            <Image
-              src={`/assets/brands/${brand.slug}.svg`}
-              alt={`${brand.name} logo`}
-              fill
-              className="object-contain"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                // Si no existe el logo aún, ocultamos la imagen y dejamos el placeholder
-                target.style.display = 'none';
-              }}
-            />
-            {/* Placeholder visual con iniciales si no hay logo */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-white/20 to-white/5 border border-white/20 flex items-center justify-center">
-                <span className="text-sm font-bold tracking-wide text-white/90">
-                  {initials}
-                </span>
-              </div>
+    <Link href={`/catalog?brand=${encodeURIComponent(brand.name)}`} className="group w-full max-w-[150px]">
+      <div className="h-20 w-full rounded-xl border border-border bg-card/80 hover:bg-card transition-colors shadow-sm hover:shadow-md flex flex-col items-center justify-center px-3">
+        <div className="relative w-full h-10">
+          {/* Logo opcional en /public/assets/brands/<slug>.svg */}
+          <Image
+            src={`/assets/brands/${brand.slug}.svg`}
+            alt={`${brand.name} logo`}
+            fill
+            className="object-contain"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.style.display = 'none';
+            }}
+          />
+          {/* Placeholder simple con iniciales */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center border border-border">
+              <span className="text-xs font-bold tracking-wide text-foreground/80">
+                {initials}
+              </span>
             </div>
           </div>
-          <p className="mt-3 text-sm font-semibold text-foreground/90 group-hover:text-foreground tracking-wide">
-            {brand.name}
-          </p>
         </div>
+        <p className="mt-1 text-[12px] font-medium text-muted-foreground group-hover:text-foreground leading-none text-center truncate w-full">
+          {brand.name}
+        </p>
       </div>
     </Link>
   );
