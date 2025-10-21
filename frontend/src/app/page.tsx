@@ -40,15 +40,14 @@ const categoryStyles = [
     name: "Clásicas",
     href: "/catalog?estilo=clasicas",
     images: [
-      "https://flux.somosmoto.pe/r/https://somosmoto.pe/images/models/gallery/jch-indian-250-2024-gallery-411fd5.jpg?height=522",
-      "https://static.wixstatic.com/media/8bdcd6_41ffbe9998ea41948f92d03a4c285c16~mv2.jpg/v1/fill/w_938,h_601,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/8bdcd6_41ffbe9998ea41948f92d03a4c285c16~mv2.jpg"
+      "/assets/scrampler200radvance.png"
     ]
   },
   {
     name: "Pisteras",
     href: "/catalog?estilo=pisteras",
     images: [
-      "https://bm3motos.com/ArchivosBm3/imagenes/productos/3128/7b321e70ba84462c8bb208b2346d793e.png"
+      "/assets/aventus.png"
     ]
   },
 ];
