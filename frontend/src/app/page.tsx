@@ -188,7 +188,12 @@ export default function Home() {
                       <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="text-lg px-8 py-4 animate-fade-in-up border-white/30 text-white hover:bg-white/10 backdrop-blur-sm">
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="text-lg px-8 py-4 animate-fade-in-up bg-black/40 hover:bg-black/60 text-white hover:text-white border-white/40 backdrop-blur-sm shadow-lg"
+              >
                   <Link href="/tiendas">
                       Nuestras Tiendas
                   </Link>
