@@ -231,7 +231,7 @@ export default function Home() {
               Las mejores marcas del mercado en un solo lugar.
             </p>
           </div>
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3 md:gap-4 place-items-center">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4 md:gap-6 place-items-center">
             {brandLogos.map((brand) => (
               <BrandLogoCard key={brand.slug} brand={brand} />
             ))}
@@ -386,15 +386,15 @@ function BrandLogoCard({ brand }: { brand: BrandItem }) {
     .toUpperCase();
 
   return (
-    <Link href={`/catalog?brand=${encodeURIComponent(brand.name)}`} className="group w-full max-w-[150px]">
-      <div className="h-20 w-full rounded-xl border border-border bg-card/80 hover:bg-card transition-colors shadow-sm hover:shadow-md flex flex-col items-center justify-center px-3">
-        <div className="relative w-full h-10">
+    <Link href={`/catalog?brand=${encodeURIComponent(brand.name)}`} className="group w-full max-w-[220px]">
+      <div className="h-28 w-full rounded-xl border border-border/60 bg-card hover:bg-card/95 transition-colors shadow-sm hover:shadow-md flex flex-col items-center justify-center px-4">
+        <div className="relative w-full h-16">
           {/* Logo opcional en /public/assets/brands/<slug>.svg */}
           <Image
             src={brand.logo}
             alt={`${brand.name} logo`}
             fill
-            className="object-contain"
+            className="object-contain mix-blend-multiply"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
               target.style.display = 'none';
@@ -402,14 +402,14 @@ function BrandLogoCard({ brand }: { brand: BrandItem }) {
           />
           {/* Placeholder simple con iniciales */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center border border-border">
-              <span className="text-xs font-bold tracking-wide text-foreground/80">
+            <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center border border-border">
+              <span className="text-sm font-bold tracking-wide text-foreground/80">
                 {initials}
               </span>
             </div>
           </div>
         </div>
-        <p className="mt-1 text-[12px] font-medium text-muted-foreground group-hover:text-foreground leading-none text-center truncate w-full">
+        <p className="mt-2 text-sm font-semibold text-muted-foreground group-hover:text-foreground leading-none text-center truncate w-full">
           {brand.name}
         </p>
       </div>
