@@ -89,14 +89,17 @@ const services = [
   }
 ];
 
-const brandLogos = [
-    { name: "Hero", logo: "https://w7.pngwing.com/pngs/75/368/png-transparent-hero-motocorp-honda-logo-motorcycle-business-motorcycle-angle-text-logo-thumbnail.png" },
-    { name: "Lifan", logo: "https://1000marcas.net/wp-content/uploads/2020/10/Lifan-logo.png" },
-    { name: "Ronco", logo: "https://flux.somosmoto.pe/r/https://somosmoto.pe/images/makes/logos/387fd44331d3a68a13c140375eb44227.png?width=294" },
-    { name: "Sonlink", logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjedk18pfeIGYubnQzoLKSH6P3ehPHd8PwVg&s" },
-    { name: "Ssenda", logo: "https://cdn.store.link/products/peruteammotors/fvawy7-ssenda.webp?versionId=ekexYYXbbM6X2cc.WXj_4nJEbMxFBDI3" },
-    { name: "TVS", logo: "https://e7.pngegg.com/pngimages/13/541/png-clipart-car-tvs-motor-company-scooter-motorcycle-bajaj-auto-car-company-text-thumbnail.png" },
-    { name: "Wanxin", logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9tr9RLlGruckJZBAayUFECxQsrZsHqsmMqw&s" }
+type BrandItem = { name: string; slug: string; accent: 'primary' | 'blue' | 'violet' | 'orange' | 'emerald' };
+
+const brandLogos: BrandItem[] = [
+  { name: 'Advance', slug: 'advance', accent: 'primary' },
+  { name: 'B52', slug: 'b52', accent: 'violet' },
+  { name: 'Ultravip', slug: 'ultravip', accent: 'blue' },
+  { name: 'Duconda', slug: 'duconda', accent: 'orange' },
+  { name: 'JCH', slug: 'jch', accent: 'emerald' },
+  { name: 'Rezzio', slug: 'rezzio', accent: 'violet' },
+  { name: 'Sonlink', slug: 'sonlink', accent: 'primary' },
+  { name: 'Wanxin', slug: 'wanxin', accent: 'blue' },
 ];
 
 
@@ -228,22 +231,9 @@ export default function Home() {
               Las mejores marcas del mercado en un solo lugar.
             </p>
           </div>
-          <div className="flex flex-wrap justify-center items-center gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6 place-items-center">
             {brandLogos.map((brand) => (
-              <Link key={brand.name} href={`/catalog?brand=${brand.name}`} className="group">
-                <Card className="h-28 w-40 flex flex-col items-center justify-center p-2 transition-all duration-300 hover:border-primary hover:shadow-lg hover:-translate-y-1">
-                   <div className="relative flex-grow w-full h-16">
-                      <Image 
-                        src={brand.logo}
-                        alt={`${brand.name} logo`}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-contain"
-                      />
-                   </div>
-                   <p className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors mt-2">{brand.name}</p>
-                </Card>
-              </Link>
+              <BrandLogoCard key={brand.slug} brand={brand} />
             ))}
           </div>
         </div>
@@ -381,6 +371,64 @@ function CategoryCard({ category }: { category: CategoryStyle }) {
           <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500">
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-[1200ms]" />
           </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+function BrandLogoCard({ brand }: { brand: BrandItem }) {
+  const accentToGradient = (acc: BrandItem['accent']) => {
+    switch (acc) {
+      case 'blue':
+        return 'from-blue-500 via-blue-400 to-blue-300';
+      case 'violet':
+        return 'from-fuchsia-500 via-violet-500 to-indigo-500';
+      case 'orange':
+        return 'from-orange-500 via-amber-500 to-yellow-400';
+      case 'emerald':
+        return 'from-emerald-500 via-green-400 to-lime-300';
+      default:
+        return 'from-primary via-primary/70 to-primary/40';
+    }
+  };
+
+  const initials = brand.name
+    .split(' ')
+    .map((w) => w[0])
+    .join('')
+    .slice(0, 3)
+    .toUpperCase();
+
+  return (
+    <Link href={`/catalog?brand=${encodeURIComponent(brand.name)}`} className="group w-full max-w-[180px]">
+      <div className={`rounded-2xl p-[2px] bg-gradient-to-r ${accentToGradient(brand.accent)} transition-transform duration-300 group-hover:scale-[1.03] shadow-[0_10px_35px_-20px_rgba(0,0,0,0.6)]`}>
+        <div className="rounded-[calc(1rem-2px)] bg-card/60 border border-white/10 backdrop-blur-sm px-4 py-5 h-28 flex flex-col items-center justify-center">
+          <div className="relative w-full h-14">
+            {/* Intento de logo en /public/assets/brands/<slug>.svg */}
+            <Image
+              src={`/assets/brands/${brand.slug}.svg`}
+              alt={`${brand.name} logo`}
+              fill
+              className="object-contain"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                // Si no existe el logo aún, ocultamos la imagen y dejamos el placeholder
+                target.style.display = 'none';
+              }}
+            />
+            {/* Placeholder visual con iniciales si no hay logo */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-white/20 to-white/5 border border-white/20 flex items-center justify-center">
+                <span className="text-sm font-bold tracking-wide text-white/90">
+                  {initials}
+                </span>
+              </div>
+            </div>
+          </div>
+          <p className="mt-3 text-sm font-semibold text-foreground/90 group-hover:text-foreground tracking-wide">
+            {brand.name}
+          </p>
         </div>
       </div>
     </Link>
