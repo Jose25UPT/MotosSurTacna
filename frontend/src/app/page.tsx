@@ -89,17 +89,17 @@ const services = [
   }
 ];
 
-type BrandItem = { name: string; slug: string; accent: 'primary' | 'blue' | 'violet' | 'orange' | 'emerald' };
+type BrandItem = { name: string; slug: string; logo: string; accent: 'primary' | 'blue' | 'violet' | 'orange' | 'emerald' };
 
 const brandLogos: BrandItem[] = [
-  { name: 'Advance', slug: 'advance', accent: 'primary' },
-  { name: 'B52', slug: 'b52', accent: 'violet' },
-  { name: 'Ultravip', slug: 'ultravip', accent: 'blue' },
-  { name: 'Duconda', slug: 'duconda', accent: 'orange' },
-  { name: 'JCH', slug: 'jch', accent: 'emerald' },
-  { name: 'Rezzio', slug: 'rezzio', accent: 'violet' },
-  { name: 'Sonlink', slug: 'sonlink', accent: 'primary' },
-  { name: 'Wanxin', slug: 'wanxin', accent: 'blue' },
+  { name: 'Advance', slug: 'advance', logo: '/assets/advance.png', accent: 'primary' },
+  { name: 'B52', slug: 'b52', logo: '/assets/b52.png', accent: 'violet' },
+  { name: 'Ultravip', slug: 'ultravip', logo: '/assets/ultravip.jpg', accent: 'blue' },
+  { name: 'Duconda', slug: 'duconda', logo: '/assets/duconda.webp', accent: 'orange' },
+  { name: 'JCH', slug: 'jch', logo: '/assets/jch.png', accent: 'emerald' },
+  { name: 'Rezzio', slug: 'rezzio', logo: '/assets/rezzio.png', accent: 'violet' },
+  { name: 'Sonlink', slug: 'sonlink', logo: '/assets/sonlink.webp', accent: 'primary' },
+  { name: 'Wanxin', slug: 'wanxin', logo: '/assets/wanxin.jpg', accent: 'blue' },
 ];
 
 
@@ -391,7 +391,7 @@ function BrandLogoCard({ brand }: { brand: BrandItem }) {
         <div className="relative w-full h-10">
           {/* Logo opcional en /public/assets/brands/<slug>.svg */}
           <Image
-            src={`/assets/brands/${brand.slug}.svg`}
+            src={brand.logo}
             alt={`${brand.name} logo`}
             fill
             className="object-contain"
