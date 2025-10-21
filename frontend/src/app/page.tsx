@@ -76,7 +76,7 @@ const services = [
     description: "El catálogo más completo de motos nuevas y seminuevas, con la mejor garantía.",
     icon: Tag,
     href: "/catalog",
-    imageSrc: "https://www.amv.es/blog/wp-content/uploads/2024/11/perdida-llaves-moto.jpeg",
+    imageSrc: "/assets/primex.webp",
     imageHint: "motorcycle keys sale"
   },
   {
