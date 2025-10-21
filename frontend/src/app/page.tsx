@@ -20,13 +20,17 @@ import {
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
 
-const categoryStyles = [
+type CategoryStyle = { name: string; href: string; images: string[]; desc: string; accent: 'primary' | 'blue' | 'violet' | 'orange' };
+
+const categoryStyles: CategoryStyle[] = [
   {
     name: "Deportivas",
     href: "/catalog?estilo=deportivas",
     images: [
       "https://www.rezziomotocicletas.com.pe/assets/motos/galeria/6750c934c3a60-LITHIUM%20200%20ROJA%20ALTA%20CALIDAD.jpeg"
-    ]
+    ],
+    desc: "Velocidad, aerodinámica y adrenalina pura en cada curva.",
+    accent: 'violet',
   },
   {
     name: "Todoterreno",
@@ -34,21 +38,27 @@ const categoryStyles = [
     images: [
       "https://www.rezziomotocicletas.com.pe/assets/motos/galeria/675b38e3df0c7-PRIMEX%20250%20NARANJA%20ALTA%20CALIDAD.jpeg",
       "https://www.rezziomotocicletas.com.pe/assets/motos/especificaciones/primex-ALTA.png"
-    ]
+    ],
+    desc: "Listas para la aventura: tierra, barro y cualquier terreno.",
+    accent: 'orange',
   },
   {
     name: "Clásicas",
     href: "/catalog?estilo=clasicas",
     images: [
       "/assets/scrampler200radvance.png"
-    ]
+    ],
+    desc: "Estética retro con el carácter atemporal del motociclismo.",
+    accent: 'primary',
   },
   {
     name: "Pisteras",
     href: "/catalog?estilo=pisteras",
     images: [
       "/assets/aventus.png"
-    ]
+    ],
+    desc: "Agilidad urbana y estilo para dominar el asfalto.",
+    accent: 'blue',
   },
 ];
 
@@ -206,7 +216,7 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 max-w-7xl mx-auto px-4">
-            {categoryStyles.map((category, idx) => (
+            {categoryStyles.map((category) => (
               <CategoryCard key={category.name} category={category} />
             ))}
           </div>
@@ -308,7 +318,7 @@ export default function Home() {
   );
 }
 
-function CategoryCard({ category }: { category: { name: string, href: string, images: string[] } }) {
+function CategoryCard({ category }: { category: CategoryStyle }) {
   const [current, setCurrent] = React.useState(0);
   React.useEffect(() => {
     if (category.images.length < 2) return;
@@ -317,45 +327,67 @@ function CategoryCard({ category }: { category: { name: string, href: string, im
     }, 10000);
     return () => clearInterval(interval);
   }, [category.images.length]);
+  // Acentos de borde según categoría
+  const borderClass = category.accent === 'primary'
+    ? 'from-primary via-primary/70 to-primary/40'
+    : category.accent === 'blue'
+      ? 'from-blue-500 via-blue-400 to-blue-300'
+      : category.accent === 'violet'
+        ? 'from-fuchsia-500 via-violet-500 to-indigo-500'
+        : 'from-orange-500 via-amber-500 to-yellow-400';
   
   return (
     <Link href={category.href} className="group block">
-      <div className="relative overflow-hidden rounded-2xl aspect-[4/3] shadow-2xl h-full min-h-[220px] md:min-h-[300px] lg:min-h-[360px] xl:min-h-[400px] 2xl:min-h-[440px] transition-all duration-500 group-hover:scale-105 group-hover:shadow-3xl border border-gray-200/20">
-        {/* Fondo de respaldo para evitar franjas blancas */}
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-black"></div>
-        
-        <Image
-          src={category.images[current]}
-          alt={`Moto de estilo ${category.name}`}
-          fill
-          className="object-cover brightness-75 transition-all duration-700 group-hover:brightness-90 group-hover:scale-110"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          onError={(e) => {
-            // Si la imagen falla, usar un color de fondo
-            const target = e.target as HTMLImageElement;
-            target.style.display = 'none';
-          }}
-        />
-        
-        {/* Overlay con gradiente mejorado */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-70 transition-opacity duration-500"></div>
-        
-        {/* Contenido del texto */}
-        <div className="absolute inset-0 flex flex-col items-center justify-end p-6 md:p-8 lg:p-10 text-center">
-          <div className="transform transition-all duration-500 group-hover:translate-y-[-10px]">
-            <h3 className="font-headline text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold uppercase tracking-wider text-white drop-shadow-2xl leading-tight">
-              {category.name}
-            </h3>
-            <div className="mt-4 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
-              <span className="inline-block bg-primary/90 text-white px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm border border-primary/30">
-                Explorar modelos
-              </span>
+      {/* Borde con gradiente y brillo sutil */}
+      <div className={`relative rounded-3xl p-[2px] bg-gradient-to-r ${borderClass} shadow-[0_10px_40px_-20px_rgba(0,0,0,0.6)] transition-transform duration-500 group-hover:scale-[1.02]`}>
+        <div className="relative overflow-hidden rounded-[calc(1.5rem-2px)] aspect-[4/3] h-full min-h-[240px] md:min-h-[320px] lg:min-h-[380px] xl:min-h-[420px] 2xl:min-h-[460px] bg-black/70">
+          {/* Fondo sólido de respaldo */}
+          <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-black" />
+
+          {/* Imagen */}
+          <Image
+            src={category.images[current]}
+            alt={`Moto de estilo ${category.name}`}
+            fill
+            className="object-cover brightness-[0.75] transition-all duration-700 group-hover:brightness-[0.9] group-hover:scale-110"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.style.display = 'none';
+            }}
+          />
+
+          {/* Veladura y gradiente para texto */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+
+          {/* Chip superior izquierdo */}
+          <div className="absolute top-4 left-4 z-10">
+            <span className="text-[11px] uppercase tracking-widest px-3 py-1 rounded-full bg-white/10 text-white/90 border border-white/15 backdrop-blur-md">Estilo</span>
+          </div>
+
+          {/* Contenido inferior */}
+          <div className="absolute inset-0 flex flex-col items-center justify-end p-6 md:p-8 lg:p-10 text-center">
+            <div className="transition-all duration-500 group-hover:translate-y-[-6px]">
+              <h3 className="font-headline text-3xl md:text-4xl lg:text-5xl font-bold uppercase tracking-wider text-white drop-shadow-2xl leading-tight">
+                {category.name}
+              </h3>
+              <p className="mt-3 text-white/80 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
+                {category.desc}
+              </p>
+              <div className="mt-5">
+                <span className="inline-flex items-center gap-2 bg-white/90 text-gray-900 px-4 py-2 rounded-full text-sm font-semibold shadow-md hover:shadow-lg transition-shadow border border-white">
+                  Explorar modelos
+                  <ArrowRight className="w-4 h-4" />
+                </span>
+              </div>
             </div>
           </div>
+
+          {/* Brillo animado en hover */}
+          <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500">
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-[1200ms]" />
+          </div>
         </div>
-        
-        {/* Efecto de brillo en hover */}
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
       </div>
     </Link>
   );
