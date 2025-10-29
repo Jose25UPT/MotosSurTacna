@@ -24,7 +24,12 @@ export default function MotorcycleCard({ motorcycle, large, largeWidth }: Motorc
 
   return (
     <Card
-      className={`flex flex-col overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-card/50
+      className={`relative group flex flex-col overflow-hidden rounded-xl
+        bg-gradient-to-b from-stone-50 to-stone-100 dark:from-neutral-900 dark:to-neutral-900 backdrop-blur-[2px]
+        ring-1 ring-neutral-200/80 dark:ring-neutral-800 shadow-[0_6px_20px_rgba(0,0,0,0.06)] transition-all duration-300
+        hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,0,0,0.14)] hover:ring-primary/30
+        after:content-[''] after:absolute after:inset-x-0 after:top-0 after:h-[3px]
+        after:bg-gradient-to-r after:from-neutral-300 after:via-neutral-100 after:to-transparent dark:after:from-neutral-700 dark:after:via-neutral-600 after:opacity-90
         w-full max-w-full min-h-[420px] text-base
         ${large ? 'md:min-h-[420px] mx-auto' : ''}
       `}
@@ -36,7 +41,7 @@ export default function MotorcycleCard({ motorcycle, large, largeWidth }: Motorc
               src={motorcycle.imageUrl}
               alt={`${motorcycle.brand} ${motorcycle.model}`}
               fill
-              className="object-cover"
+              className="object-cover transition-transform duration-500 group-hover:scale-[1.03] saturate-110 contrast-105"
               data-ai-hint={`${motorcycle.brand} ${motorcycle.model}`}
               unoptimized
               onError={(e) => {
@@ -47,13 +52,13 @@ export default function MotorcycleCard({ motorcycle, large, largeWidth }: Motorc
               }}
             />
           ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center bg-gray-200 text-gray-500 text-sm font-semibold gap-2">
+            <div className="w-full h-full flex flex-col items-center justify-center bg-stone-200 text-gray-600 text-sm font-semibold gap-2">
               <ImageOff className="w-10 h-10 mb-1 text-gray-400" />
               Sin imagen
             </div>
           )}
           {/* Marca en la esquina superior izquierda sobre la imagen */}
-          <Badge variant="secondary" className="absolute top-2 left-2 z-10 text-xs px-3 py-1 shadow-md bg-black/80 text-white rounded-md">
+          <Badge variant="secondary" className="absolute top-2 left-2 z-10 text-xs px-3 py-1 shadow-md bg-black/75 text-white rounded-md ring-1 ring-white/10">
             {motorcycle.brand}
           </Badge>
         </div>
@@ -82,7 +87,7 @@ export default function MotorcycleCard({ motorcycle, large, largeWidth }: Motorc
           </div>
         </div>
       </CardContent>
-      <CardFooter className="p-4 bg-secondary/30 mt-auto flex gap-2">
+      <CardFooter className="p-4 bg-stone-100/80 dark:bg-neutral-800/50 mt-auto flex gap-2">
         <Button asChild className="w-full text-white bg-primary hover:bg-primary/80" size="sm" variant="outline">
           <Link href={`/catalog/${motorcycle.id}`}>
             <Eye className="mr-2 h-4 w-4"/>

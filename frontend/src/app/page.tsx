@@ -293,12 +293,30 @@ export default function Home() {
               ))}
             </div>
             <div className="text-center mt-12">
-                <Button asChild size="lg" variant="outline">
-                    <Link href="/catalog">
-                        Ver todo el Catálogo
-                        <ArrowRight className="ml-2"/>
-                    </Link>
+                <Button
+                  asChild
+                  size="lg"
+                  className="relative overflow-hidden rounded-full px-8 py-4 text-base font-semibold text-black border-0 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-500 hover:to-amber-600 shadow-[0_8px_30px_rgba(251,191,36,0.35)] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-yellow-500 focus-visible:ring-offset-secondary/50 transition-all duration-300"
+                >
+                  <Link href="/catalog" className="relative z-10 inline-flex items-center">
+                    Ver todo el Catálogo
+                    <ArrowRight className="ml-2"/>
+                  </Link>
                 </Button>
+                {/* Efecto shine */}
+                <style jsx>{`
+                  .relative.overflow-hidden.rounded-full::before {
+                    content: "";
+                    position: absolute;
+                    inset: -20%;
+                    background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.6) 40%, transparent 80%);
+                    transform: translateX(-120%) skewX(-20deg);
+                    transition: transform 0.7s ease;
+                  }
+                  .relative.overflow-hidden.rounded-full:hover::before {
+                    transform: translateX(120%) skewX(-20deg);
+                  }
+                `}</style>
             </div>
           </div>
         </section>

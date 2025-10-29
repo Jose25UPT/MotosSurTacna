@@ -1,13 +1,11 @@
-
 import Link from 'next/link';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import type { SVGProps } from "react";
-import { LogoSvg } from './logo-svg';
 
 const FacebookIcon = (props: SVGProps<SVGSVGElement>) => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="#1877F2" viewBox="0 0 24 24" {...props}>
-        <path d="M12 2.04C6.5 2.04 2 6.53 2 12.06c0 5.52 4.5 10.02 10 10.02s10-4.5 10-10.02C22 6.53 17.5 2.04 12 2.04zM16 12.36h-2.3v6.93h-3.28v-6.93H8.72V9.6h1.7V7.8c0-1.7 1.02-2.7 2.6-2.7h1.9v2.76h-1.2c-.72 0-.88.34-.88.86v1.2h2.08l-.28 2.76z"/>
-    </svg>
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="#1877F2" viewBox="0 0 24 24" {...props}>
+    <path d="M12 2.04C6.5 2.04 2 6.53 2 12.06c0 5.52 4.5 10.02 10 10.02s10-4.5 10-10.02C22 6.53 17.5 2.04 12 2.04zM16 12.36h-2.3v6.93h-3.28v-6.93H8.72V9.6h1.7V7.8c0-1.7 1.02-2.7 2.6-2.7h1.9v2.76h-1.2c-.72 0-.88.34-.88.86v1.2h2.08l-.28 2.76z"/>
+  </svg>
 );
 
 const InstagramIcon = (props: SVGProps<SVGSVGElement>) => (
@@ -34,9 +32,9 @@ const TikTok = (props: SVGProps<SVGSVGElement>) => (
 );
 
 const YouTubeIcon = (props: SVGProps<SVGSVGElement>) => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="#FF0000" viewBox="0 0 24 24" {...props}>
-        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-    </svg>
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="#FF0000" viewBox="0 0 24 24" {...props}>
+    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+  </svg>
 );
 
 const WhatsApp = (props: SVGProps<SVGSVGElement>) => (
@@ -48,40 +46,40 @@ const Gmail = (props: SVGProps<SVGSVGElement>) => (
 );
 
 const socialLinks = [
-    { name: "Facebook", href: "https://www.facebook.com/profile.php?id=100078232245166", icon: FacebookIcon },
-    { name: "Instagram", href: "https://www.instagram.com/motossurtacna/?igsh=NjhjNGhjZjlpbWs%3D#", icon: InstagramIcon },
-    { name: "TikTok", href: "https://www.tiktok.com/@motossurtacna?_t=ZS-8yVNjktIUFE&_r=1", icon: TikTok },
-    { name: "YouTube", href: "#", icon: YouTubeIcon }
+  { name: "Facebook", href: "https://www.facebook.com/profile.php?id=100078232245166", icon: FacebookIcon },
+  { name: "Instagram", href: "https://www.instagram.com/motossurtacna/?igsh=NjhjNGhjZjlpbWs%3D#", icon: InstagramIcon },
+  { name: "TikTok", href: "https://www.tiktok.com/@motossurtacna?_t=ZS-8yVNjktIUFE&_r=1", icon: TikTok },
+  { name: "YouTube", href: "#", icon: YouTubeIcon }
 ];
 
 const usefulLinks = [
-    { href: "/", label: "Inicio" },
-    { href: "/catalog", label: "Catálogo de Motos" },
-    { href: "/accesorios", label: "Accesorios" },
-    { href: "/tiendas", label: "Tiendas" },
-    { href: "/fraud-report", label: "Reportar Fraude" }
+  { href: "/", label: "Inicio" },
+  { href: "/catalog", label: "Catálogo de Motos" },
+  { href: "/accesorios", label: "Accesorios" },
+  { href: "/tiendas", label: "Tiendas" },
+  { href: "/fraud-report", label: "Reportar Fraude" }
 ];
 
 const servicesLinks = [
-    { href: "#", label: "Mantenimiento" },
-    { href: "/accesorios", label: "Accesorios" },
-    { href: "/catalog", label: "Venta de Motos" }
+  { href: "#", label: "Mantenimiento" },
+  { href: "/accesorios", label: "Accesorios" },
+  { href: "/catalog", label: "Venta de Motos" }
 ];
 
 const contactInfo = [
-    { href: "https://maps.app.goo.gl/9VQXypNvU9Eud4oU7", text: "Av. la Cultura 23004, Tacna 23004", icon: MapPin, color: "text-red-500" },
-    { href: "tel:+51983504654", text: "+51 983 504 654", icon: Phone, color: "text-blue-500" },
-    { href: "https://wa.me/c/51983504654", text: "WhatsApp Directo", icon: WhatsApp, color: "text-green-500" },
-    { href: "mailto:alex.tello995@gmail.com", text: "alex.tello995@gmail.com", icon: Gmail, color: "text-gray-400" }
+  { href: "https://maps.app.goo.gl/9VQXypNvU9Eud4oU7", text: "Av. la Cultura 23004, Tacna 23004", icon: MapPin, color: "text-red-500" },
+  { href: "tel:+51983504654", text: "+51 983 504 654", icon: Phone, color: "text-blue-500" },
+  { href: "https://wa.me/c/51983504654", text: "WhatsApp Directo", icon: WhatsApp, color: "text-green-500" },
+  { href: "mailto:alex.tello995@gmail.com", text: "alex.tello995@gmail.com", icon: Gmail, color: "text-gray-400" }
 ];
 
 export default function Footer() {
   return (
-    <footer className="bg-primary text-foreground font-body">
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+    <footer className="bg-primary text-foreground font-body font-semibold">
+      <div className="container mx-auto max-w-[1280px] px-6 md:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-y-[32px] md:gap-y-[40px] md:gap-x-[64px] items-start">
           
-          <div className="col-span-2 md:col-span-1 space-y-4">
+          <div className="col-span-12 md:col-span-4 xl:col-span-4 space-y-5">
             <Link href="/" className="flex items-center gap-3">
               <img src="/assets/2.svg" alt="Logo Motossur" className="h-16 w-auto" />
               <div className="flex flex-col leading-tight ml-2 select-none">
@@ -91,7 +89,7 @@ export default function Footer() {
                 </span>
                 <span className="flex items-center justify-center gap-2 mt-[-2px]">
                   <span className="block w-6 h-1 bg-[#E53935] rounded-full md:w-10 md:h-1"></span>
-                  <span className="font-headline text-xs md:text-sm text-foreground tracking-widest font-bold">TACNA</span>
+                  <span className="font-headline text-xs md:text-sm text-foreground tracking-widest font-extrabold">TACNA</span>
                   <span className="block w-6 h-1 bg-[#E53935] rounded-full md:w-10 md:h-1"></span>
                 </span>
               </div>
@@ -107,32 +105,37 @@ export default function Footer() {
       </div>
           </div>
           
-          <div className="space-y-4">
-            <h4 className="font-headline text-lg text-foreground tracking-wider">Enlaces Útiles</h4>
+          <div className="col-span-12 md:col-span-3 xl:col-span-3 space-y-5 md:border-l md:border-foreground/20 md:pl-[64px]">
+            <h4 className="font-headline text-lg text-foreground tracking-wider font-extrabold">Enlaces Útiles</h4>
             <ul className="space-y-2">
               {usefulLinks.map(link => (
                 <li key={link.label}>
-                  <Link href={link.href} className="text-sm text-foreground hover:text-primary transition-colors duration-300">
-                      {link.label}
+                  <Link
+                    href={link.href}
+                    className="relative inline-block text-sm text-foreground transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/50 rounded-sm after:absolute after:left-0 after:-bottom-0.5 after:h-[2px] after:w-0 after:bg-foreground/70 after:transition-all after:duration-300 hover:after:w-full"
+                  >
+                    {link.label}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="space-y-4">
-            <h4 className="font-headline text-lg text-foreground tracking-wider">Contacto</h4>
-            <ul className="space-y-3">
+          <div className="col-span-12 md:col-span-3 xl:col-span-3 space-y-5 md:border-l md:border-foreground/20 md:pl-[64px]">
+            <h4 className="font-headline text-lg text-foreground tracking-wider font-extrabold">Contacto</h4>
+            <ul className="space-y-3.5">
               {contactInfo.map(item => (
                 <li key={item.text}>
                   <a 
                     href={item.href} 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="flex items-start gap-3 group"
+                    className="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/50 rounded-sm"
                   >
-                    <item.icon className={`h-5 w-5 mt-0.5 flex-shrink-0 ${item.color} group-hover:scale-110 transition-transform duration-300`} />
-                    <span className="text-sm text-foreground group-hover:text-primary transition-colors duration-300">
+                    <span className="inline-flex h-7 w-7 items-center justify-center">
+                      <item.icon className={`h-5 w-5 ${item.color}`} />
+                    </span>
+                    <span className="relative inline-block text-sm text-foreground transition-colors duration-300 after:absolute after:left-0 after:-bottom-0.5 after:h-[2px] after:w-0 after:bg-foreground/70 after:transition-all after:duration-300 group-hover:after:w-full">
                       {item.text}
                     </span>
                   </a>
@@ -141,9 +144,9 @@ export default function Footer() {
             </ul>
           </div>
           
-          <div className="space-y-4">
-            <h4 className="font-headline text-lg text-foreground tracking-wider">Síguenos</h4>
-            <div className="flex items-center space-x-4">
+          <div className="col-span-12 md:col-span-2 xl:col-span-2 space-y-5 md:border-l md:border-foreground/20 md:pl-[64px]">
+            <h4 className="font-headline text-lg text-foreground tracking-wider font-extrabold">Síguenos</h4>
+            <div className="flex items-center space-x-6">
               {socialLinks.map(link => (
                 <a 
                   key={link.name} 
@@ -157,13 +160,16 @@ export default function Footer() {
                 </a>
               ))}
             </div>
-             <div className="pt-4 space-y-2">
-                 <h4 className="font-headline text-lg text-white tracking-wider">Servicios</h4>
+             <div className="pt-4 space-y-3">
+                 <h4 className="font-headline text-lg text-white tracking-wider font-extrabold">Servicios</h4>
                  <ul className="space-y-2">
                   {servicesLinks.map(link => (
                     <li key={link.label}>
-                      <Link href={link.href} className="text-sm text-foreground hover:text-primary transition-colors duration-300">
-                          {link.label}
+                      <Link
+                        href={link.href}
+                        className="relative inline-block text-sm text-foreground transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/50 rounded-sm after:absolute after:left-0 after:-bottom-0.5 after:h-[2px] after:w-0 after:bg-foreground/70 after:transition-all after:duration-300 hover:after:w-full"
+                      >
+                        {link.label}
                       </Link>
                     </li>
                   ))}
