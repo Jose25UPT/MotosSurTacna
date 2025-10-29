@@ -82,166 +82,168 @@ SELECT setval('motorcycle_specs_id_seq', COALESCE((SELECT MAX(id) FROM motorcycl
 -- Ejecutar después de seeds mínimos.
 -- =============================================================
 
--- TEKKEN 125CC SEMIAUTOMÁTICO
+-- CATÁLOGO ULTRAVIP AGOSTO 2025 - ORDEN CORRECTO CON NOMBRES REALES
+
+-- 1. YIGO 125 PRO
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ULTRAVIP','TEKKEN 125CC SEMIAUTOMÁTICO',2025,'125cc, 4T','125cc','7.4 HP/8000 RPM',0,'Scooter','4 velocidades','/uploads/motos/tekken-125cc.jpg','Varios colores disponibles','Tu compañera ideal para moverte con rapidez y seguridad',TRUE)
+VALUES ('ULTRAVIP','YIGO 125 PRO',2025,'125cc, 4T','125cc','7.4 HP/8000 RPM',0,'Scooter','4 velocidades','/uploads/motos/yigo-125-pro.jpg','Varios colores disponibles','Tu compañera ideal para moverte con rapidez y seguridad',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
 INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
 SELECT id,'Horquillas telescópicas','13.5 LT','Disco / Tambor','Analógico','Sí', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='ULTRAVIP' AND m.model='TEKKEN 125CC SEMIAUTOMÁTICO'
+WHERE m.brand='ULTRAVIP' AND m.model='YIGO 125 PRO'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- TEKKEN 250 PRO
+-- 2. TEKKEN 250 PRO
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ULTRAVIP','TEKKEN 250 PRO',2025,'250cc balanceado, 4 válvulas, euro 4','250cc','19.5 HP/8300 RPM',0,'Enduro','6 velocidades','/uploads/motos/tekken-250-pro.jpg','Varios colores disponibles','Toma el control, siente el poder en cada aceleración',TRUE)
+VALUES ('ULTRAVIP','TEKKEN 250 PRO',2025,'250cc balanceado, 4 válvulas, Euro 4','250cc','19.5 HP/8300 RPM',0,'Deportiva','6 velocidades','/uploads/motos/tekken-250-pro.jpg','Varios colores disponibles','Toma el control, siente el poder en cada aceleración',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, dashboard, led_lights, gallery)
-SELECT id,'Barras invertidas','Disco / Disco','12.5 LT','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas / Monoshock','12.5 LT','Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
 WHERE m.brand='ULTRAVIP' AND m.model='TEKKEN 250 PRO'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- ENDURO 250CC
+-- 3. DEFENDER 250
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ULTRAVIP','ENDURO 250CC',2025,'250cc balanceado, 4T, euro 4, OHC','250cc','18 HP/8200 RPM',0,'Enduro','6 velocidades','/uploads/motos/enduro-250cc.jpg','Varios colores disponibles','La potencia que desafía cualquier terreno',TRUE)
+VALUES ('ULTRAVIP','DEFENDER 250',2025,'250cc balanceado, 4T, Euro 4, OHC','250cc','18 HP/8200 RPM',0,'Deportiva','6 velocidades','/uploads/motos/defender-250.jpg','Varios colores disponibles','La potencia que desafía cualquier terreno',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, dashboard, led_lights, accessories, gallery)
-SELECT id,'Barras invertidas','Disco / Disco','12 LT','Digital','Sí','Slider con luces neblineras, luces exploradoras', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='ULTRAVIP' AND m.model='ENDURO 250CC'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas / Monoshock','12 LT','Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ULTRAVIP' AND m.model='DEFENDER 250'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- SPORT 400CC
+-- 4. A12 400
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ULTRAVIP','SPORT 400CC',2025,'400cc bicilíndrico, inyectada, 4T, euro 4, OHC','400cc','33 HP/8300 RPM',0,'Deportiva','6 velocidades balanceado','/uploads/motos/sport-400cc.jpg','Varios colores disponibles','Eficiencia, precisión y agresividad sobre dos ruedas',TRUE)
+VALUES ('ULTRAVIP','A12 400',2025,'400cc bicilíndrico, inyectada, 4T, Euro 4, OHC','400cc','33 HP/8300 RPM',0,'Deportiva','6 velocidades balanceado','/uploads/motos/a12-400.jpg','Varios colores disponibles','Eficiencia, precisión y agresividad sobre dos ruedas',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, dashboard, led_lights, accessories, gallery)
-SELECT id,'Barras invertidas regulables','Doble disco / Disco','16.5 LT','Digital TFT','Sí','Slider con luces neblineras, puerto USB y alarma', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='ULTRAVIP' AND m.model='SPORT 400CC'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas regulables / Monoshock','16.5 LT','Doble disco','Digital TFT','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ULTRAVIP' AND m.model='A12 400'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- SPORT 300CC
+-- 5. A12 300
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ULTRAVIP','SPORT 300CC',2025,'300cc inyectada, 4T, euro 4, OHC','300cc','27 HP/8600 RPM',0,'Deportiva','6 velocidades balanceado','/uploads/motos/sport-300cc.jpg','Varios colores disponibles','Eficiencia, precisión y agresividad sobre dos ruedas',TRUE)
+VALUES ('ULTRAVIP','A12 300',2025,'300cc, inyectada, 4T, Euro 4, OHC','300cc','27 HP/8600 RPM',0,'Deportiva','6 velocidades balanceado','/uploads/motos/a12-300.jpg','Varios colores disponibles','Eficiencia, precisión y agresividad sobre dos ruedas',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, dashboard, led_lights, accessories, gallery)
-SELECT id,'Barras invertidas regulables','Doble disco / Disco','13 LT','Digital TFT','Sí','Slider con luces neblineras, puerto USB y alarma', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='ULTRAVIP' AND m.model='SPORT 300CC'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas regulables / Monoshock','13 LT','Doble disco','Digital TFT','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ULTRAVIP' AND m.model='A12 300'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- SPORT 250CC
+-- 6. A12 250
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ULTRAVIP','SPORT 250CC',2025,'250cc inyectada, 4T, euro 4, OHC','250cc','23 HP/7400 RPM',0,'Deportiva','6 velocidades balanceado','/uploads/motos/sport-250cc.jpg','Varios colores disponibles','Eficiencia, precisión y agresividad sobre dos ruedas',TRUE)
+VALUES ('ULTRAVIP','A12 250',2025,'250cc, inyectada, 4T, Euro 4, OHC','250cc','23 HP/7400 RPM',0,'Deportiva','6 velocidades balanceado','/uploads/motos/a12-250.jpg','Varios colores disponibles','Eficiencia, precisión y agresividad sobre dos ruedas',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, dashboard, led_lights, accessories, gallery)
-SELECT id,'Barras invertidas regulables','Doble disco / Disco','13 LT','Digital TFT','Sí','Slider con luces neblineras, puerto USB y alarma', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='ULTRAVIP' AND m.model='SPORT 250CC'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas regulables / Monoshock','13 LT','Doble disco','Digital TFT','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ULTRAVIP' AND m.model='A12 250'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- SCOOTER 125CC
+-- 7. LEVIN 125 PRO
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ULTRAVIP','SCOOTER 125CC',2025,'125cc, 4T','125cc','7.4 HP/8000 RPM',0,'Scooter','4 velocidades','/uploads/motos/scooter-125cc.jpg','Varios colores disponibles','Máximo rendimiento con el mínimo esfuerzo',TRUE)
+VALUES ('ULTRAVIP','LEVIN 125 PRO',2025,'125cc, 4T','125cc','7.4 HP/8000 RPM',0,'Scooter','4 velocidades semiautomático','/uploads/motos/levin-125-pro.jpg','Varios colores disponibles','Máximo rendimiento con el mínimo esfuerzo',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, dashboard, led_lights, accessories, gallery)
-SELECT id,'Horquillas telescópicas','Disco / Tambor','13.5 LT','Digital','Sí','Luz exploradora, parlantes, puerto USB y alarma', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='ULTRAVIP' AND m.model='SCOOTER 125CC'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquillas telescópicas','13.5 LT','Disco / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ULTRAVIP' AND m.model='LEVIN 125 PRO'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- NAKED 250CC
+-- 8. CYCLON 250
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ULTRAVIP','NAKED 250CC',2025,'250cc balanceado, 4T, euro 4, OHC','250cc','23 HP/7400 RPM',0,'Naked','6 velocidades','/uploads/motos/naked-250cc.jpg','1 color disponible','Enciende el motor y crea tu propio camino',TRUE)
+VALUES ('ULTRAVIP','CYCLON 250',2025,'250cc balanceado, 4T, Euro 4, OHC','250cc','23 HP/7400 RPM',0,'Naked','6 velocidades','/uploads/motos/cyclon-250.jpg','Negro','Enciende el motor y crea tu propio camino',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, dashboard, led_lights, accessories, gallery)
-SELECT id,'Barras invertidas','Disco / Disco','14 LT','Digital','Sí','Slider con luces neblineras, puerto USB y alarma', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='ULTRAVIP' AND m.model='NAKED 250CC'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas / Monoshock','14 LT','Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ULTRAVIP' AND m.model='CYCLON 250'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- ADVENTURE 400CC
+-- 9. FORMULA 400
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ULTRAVIP','ADVENTURE 400CC',2025,'400cc bicilíndrica, inyectada, balanceado, 4T, euro 4, OHC','400cc','33 HP/8300 RPM',0,'Adventure','6 velocidades','/uploads/motos/adventure-400cc.jpg','Varios colores disponibles','Menos consumo, más rendimiento, máxima emoción',TRUE)
+VALUES ('ULTRAVIP','FORMULA 400',2025,'400cc bicilíndrica, inyectada, balanceado, 4T, Euro 4, OHC','400cc','33 HP/8300 RPM',0,'Naked','6 velocidades','/uploads/motos/formula-400.jpg','Varios colores disponibles','Menos consumo, más rendimiento, máxima emoción',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, dashboard, led_lights, accessories, gallery)
-SELECT id,'Barras invertidas','Doble disco / Disco','16.5 LT','Digital TFT','Sí','Slider con luces neblineras, puerto USB y alarma', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='ULTRAVIP' AND m.model='ADVENTURE 400CC'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas / Monoshock','16.5 LT','Disco','Digital TFT','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ULTRAVIP' AND m.model='FORMULA 400'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- ADVENTURE 300CC
+-- 10. FORMULA 300
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ULTRAVIP','ADVENTURE 300CC',2025,'300cc inyectada, balanceado, 4T, euro 4, OHC','300cc','27 HP/8600 RPM',0,'Adventure','6 velocidades','/uploads/motos/adventure-300cc.jpg','Varios colores disponibles','Diseñadas para quienes exigen el máximo rendimiento',TRUE)
+VALUES ('ULTRAVIP','FORMULA 300',2025,'300cc, inyectada, balanceado, 4T, Euro 4, OHC','300cc','27 HP/8600 RPM',0,'Naked','6 velocidades','/uploads/motos/formula-300.jpg','Varios colores disponibles','Diseñadas para quienes exigen el máximo rendimiento',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, dashboard, led_lights, accessories, gallery)
-SELECT id,'Barras invertidas','Doble disco / Disco','13 LT','Digital TFT','Sí','Slider con luces neblineras, puerto USB y alarma', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='ULTRAVIP' AND m.model='ADVENTURE 300CC'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas / Monoshock','13 LT','Doble disco','Digital TFT','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ULTRAVIP' AND m.model='FORMULA 300'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- ADVENTURE 250CC
+-- 11. FORMULA 250
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ULTRAVIP','ADVENTURE 250CC',2025,'250cc inyectada, balanceado, 4T, euro 4, OHC','250cc','23 HP/7400 RPM',0,'Adventure','6 velocidades','/uploads/motos/adventure-250cc.jpg','Varios colores disponibles','Eficiencia, precisión y agresividad sobre dos ruedas',TRUE)
+VALUES ('ULTRAVIP','FORMULA 250',2025,'250cc, inyectada, balanceado, 4T, Euro 4, OHC','250cc','23 HP/7400 RPM',0,'Naked','6 velocidades','/uploads/motos/formula-250.jpg','Varios colores disponibles','Eficiencia, precisión y agresividad sobre dos ruedas',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, dashboard, led_lights, accessories, gallery)
-SELECT id,'Barras invertidas','Doble disco / Disco','13 LT','Digital TFT','Sí','Slider con luces neblineras, puerto USB y alarma', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='ULTRAVIP' AND m.model='ADVENTURE 250CC'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas / Monoshock','13 LT','Doble disco','Digital TFT','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ULTRAVIP' AND m.model='FORMULA 250'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- STREET 200CC
+-- 12. EURO 200 (AGOTADO)
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ULTRAVIP','STREET 200CC',2025,'200cc balanceado, 4T, euro 4','200cc','16 HP/8000 RPM',0,'Street','6 velocidades','/uploads/motos/street-200cc.jpg','Varios colores disponibles','Arranca, acelera y disfruta sin distracciones',FALSE)
+VALUES ('ULTRAVIP','EURO 200',2025,'200cc balanceado, 4T, Euro 4','200cc','16 HP/8000 RPM',0,'Enduro','6 velocidades','/uploads/motos/euro-200.jpg','Varios colores disponibles','Arranca, acelera y disfruta sin distracciones',FALSE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, dashboard, led_lights, accessories, gallery)
-SELECT id,'Horquillas telescópicas','Disco / Tambor','12 LT','Mixto','Sí','Slider con luces neblineras', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='ULTRAVIP' AND m.model='STREET 200CC'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquillas telescópicas','12 LT','Disco individual','Mixto','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ULTRAVIP' AND m.model='EURO 200'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- TRAIL 200CC
+-- 13. DRIFF 200
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ULTRAVIP','TRAIL 200CC',2025,'200cc balanceado, 4T','200cc','11 HP/8000 RPM',0,'Trail','6 velocidades','/uploads/motos/trail-200cc.jpg','Varios colores disponibles','Arranca el motor, deja el miedo atrás y conquista el camino',TRUE)
+VALUES ('ULTRAVIP','DRIFF 200',2025,'200cc balanceado, 4T','200cc','11 HP/8000 RPM',0,'Trail','6 velocidades','/uploads/motos/driff-200.jpg','Varios colores disponibles','Arranca el motor, deja el miedo atrás y conquista el camino',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, dashboard, led_lights, accessories, gallery)
-SELECT id,'Horquillas telescópicas','Disco / Tambor','12 LT','Digital','No','Protector para motor y faro', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='ULTRAVIP' AND m.model='TRAIL 200CC'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquillas telescópicas','12 LT','Disco / Tambor','Digital','No', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ULTRAVIP' AND m.model='DRIFF 200'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- TRAIL 150CC
+-- 14. DRIFF 150
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ULTRAVIP','TRAIL 150CC',2025,'150cc, 4T','150cc','8.5 HP/7500 RPM',0,'Trail','5 velocidades','/uploads/motos/trail-150cc.jpg','Varios colores disponibles','La mejor opción para recorrer la ciudad sin límite',TRUE)
+VALUES ('ULTRAVIP','DRIFF 150',2025,'150cc, 4T','150cc','8.5 HP/7500 RPM',0,'Trail','5 velocidades','/uploads/motos/driff-150.jpg','Varios colores disponibles','La mejor opción para recorrer la ciudad sin límite',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, dashboard, led_lights, accessories, gallery)
-SELECT id,'Horquillas telescópicas','Disco / Tambor','12 LT','Digital','Sí','Protector para motor y faro', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='ULTRAVIP' AND m.model='TRAIL 150CC'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquillas telescópicas','12 LT','Disco / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ULTRAVIP' AND m.model='DRIFF 150'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- STREET TOURING 250CC
+-- 15. DEYKER 250
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ULTRAVIP','STREET TOURING 250CC',2025,'250cc balanceado, 4T, euro 4, OHC','250cc','18 HP/8500 RPM',0,'Touring','6 velocidades','/uploads/motos/street-touring-250cc.jpg','Varios colores disponibles','Conduce a tu manera, con estilo y precisión',TRUE)
+VALUES ('ULTRAVIP','DEYKER 250',2025,'250cc balanceado, 4T, Euro 4, OHC','250cc','18 HP/8500 RPM',0,'Street','6 velocidades','/uploads/motos/deyker-250.jpg','Varios colores disponibles','Conduce a tu manera, con estilo y precisión',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, dashboard, led_lights, accessories, gallery)
-SELECT id,'Horquillas telescópicas','Disco / Disco','15 LT','Digital','Sí','Slider con luces neblineras', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='ULTRAVIP' AND m.model='STREET TOURING 250CC'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquillas telescópicas','15 LT','Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ULTRAVIP' AND m.model='DEYKER 250'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- STREET TOURING 200CC
+-- 16. LAZER 200 (AGOTADO)
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ULTRAVIP','STREET TOURING 200CC',2025,'200cc balanceado, 4T, euro 4, OHC','200cc','16 HP/8000 RPM',0,'Touring','6 velocidades','/uploads/motos/street-touring-200cc.jpg','Varios colores disponibles','Pisando fuerte, acelerando con determinación',FALSE)
+VALUES ('ULTRAVIP','LAZER 200',2025,'200cc balanceado, 4T, Euro 4, OHC','200cc','16 HP/8000 RPM',0,'Street','6 velocidades','/uploads/motos/lazer-200.jpg','Varios colores disponibles','Pisando fuerte, acelerando con determinación',FALSE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, dashboard, led_lights, accessories, gallery)
-SELECT id,'Horquillas telescópicas','Disco / Disco','13.5 LT','Digital','Sí','Slider con luces neblineras', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='ULTRAVIP' AND m.model='STREET TOURING 200CC'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquillas telescópicas','13.5 LT','Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ULTRAVIP' AND m.model='LAZER 200'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- RACING 200CC
+-- 17. GTR 200 (AGOTADO)
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ULTRAVIP','RACING 200CC',2025,'200cc balanceado, 4T, euro 4, OHC','200cc','16.5 HP/8300 RPM',0,'Racing','6 velocidades','/uploads/motos/racing-200cc.jpg','Varios colores disponibles','Para los que viven con el acelerador a fondo',FALSE)
+VALUES ('ULTRAVIP','GTR 200',2025,'200cc balanceado, 4T, Euro 4, OHC','200cc','16.5 HP/8300 RPM',0,'Racing','6 velocidades','/uploads/motos/gtr-200.jpg','Varios colores disponibles','Para los que viven con el acelerador a fondo',FALSE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, dashboard, led_lights, accessories, gallery)
-SELECT id,'Barras invertidas','Disco / Disco','15 LT','Digital','Sí','Slider con luces neblineras, parlantes y alarma', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='ULTRAVIP' AND m.model='RACING 200CC'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas','15 LT','Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ULTRAVIP' AND m.model='GTR 200'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- RACING 250CC
+-- 18. GTR 250 (AGOTADO)
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ULTRAVIP','RACING 250CC',2025,'250cc balanceado, 4T, euro 4, OHC','250cc','18 HP/8500 RPM',0,'Racing','6 velocidades','/uploads/motos/racing-250cc.jpg','Varios colores disponibles','La pista es tuya, exprime cada kilómetro',FALSE)
+VALUES ('ULTRAVIP','GTR 250',2025,'250cc balanceado, 4T, Euro 4, OHC','250cc','18 HP/8500 RPM',0,'Racing','6 velocidades','/uploads/motos/gtr-250.jpg','Varios colores disponibles','La pista es tuya, exprime cada kilómetro',FALSE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, dashboard, led_lights, accessories, gallery)
-SELECT id,'Barras invertidas','Disco / Disco','15 LT','Digital','Sí','Slider con luces neblineras, parlantes y alarma', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='ULTRAVIP' AND m.model='RACING 250CC'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas','15 LT','Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ULTRAVIP' AND m.model='GTR 250'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- Ajuste secuencias (opcional)
@@ -1700,101 +1702,118 @@ SELECT setval('motorcycle_specs_id_seq', (SELECT COALESCE(MAX(id),1) FROM motorc
 -- * max_speed: se almacena como texto igual que en legacy
 -- =============================================================
 
--- B52-107CC (PREVENTA)
-INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('B52','B52-107CC',2025,'4T OHC','106.7cc','6.5 HP / 8000 RPM',0,'N/A','4 velocidades','/uploads/motos/b52-b52-107cc.jpg','N/A','PREVENTA',TRUE)
-ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, max_speed, tires, dashboard, gallery)
-SELECT id,'Horquillas telescópicas / Doble amortiguador','Tambor / Tambor','3.5 litros','85 KM/H','2.50-17 / 2.75-17','Analógico',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='B52' AND m.model='B52-107CC' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+CATÁLOGO B52 - 2025   :  Split rr 110 , porto 125 ,Apolonia 180 , augusta 200 , augusta 250 , motox 200 , montesa 200 , campera 150 , campera 250 , bombardier 200 , Texas 250 , 
+nitrox t3 250 , 
 
--- SCOOTER 125CC (VERSIÓN 2025)
-INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('B52','SCOOTER 125CC',2025,'4T OHC','125cc','8.04 HP / 7000 RPM',0,'Scooter','Automática','/uploads/motos/b52-scooter-125cc.jpg','N/A','N/A',TRUE)
-ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, max_speed, tires, dashboard, gallery)
-SELECT id,'Hidráulica / Hidráulica','Disco / Tambor','2.6 litros','80 KM/H','3.50-10 / 3.50-10','N/A',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='B52' AND m.model='SCOOTER 125CC' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+-- CATÁLOGO B52 - 2025
 
--- DEPORTIVO 180CC (VERSIÓN 2025)
+-- 1. SPLIT RR 110
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('B52','DEPORTIVO 180CC',2025,'4T OHC a cadenilla','180cc','14.48 HP',0,'Deportiva','5 velocidades','/uploads/motos/b52-deportivo-180cc.jpg','N/A','N/A',TRUE)
+VALUES ('B52','SPLIT RR 110',2025,'106.7cc, 4T OHC','106.7cc','6.5 HP/8000 RPM',0,'Urbana','4 velocidades con protección de alta velocidad','/uploads/motos/split-rr-110.jpg','Varios colores disponibles','Moto urbana eficiente y económica',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, max_speed, tires, dashboard, gallery)
-SELECT id,'Horquillas telescópicas / Doble amortiguador','Disco ventilado doble pistón / Tambor mecánico','2.83 galones','115 KM/H','90-90-17 / 110-80-17','Digital',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='B52' AND m.model='DEPORTIVO 180CC' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquillas telescópicas / Doble amortiguador','3.5 litros','Tambor / Tambor','Analógico','No', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='B52' AND m.model='SPLIT RR 110'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- DEPORTIVO 200CC (PREVENTA)
+-- 2. PORTO 125
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('B52','DEPORTIVO 200CC',2025,'4T OHC a cadenilla','200cc','16 HP',0,'Deportiva','6 velocidades','/uploads/motos/b52-deportivo-200cc.jpg','Negro brillante, negro mate','PREVENTA',TRUE)
+VALUES ('B52','PORTO 125',2025,'125cc, 4T OHC','125cc','8.04 HP/7000 RPM',0,'Scooter','Automática','/uploads/motos/porto-125.jpg','Varios colores disponibles','Scooter automático con alarma y puerto USB',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, max_speed, tires, dashboard, gallery)
-SELECT id,'Horquillas telescópicas / Monoshock','Disco ventilado doble pistón / Disco ventilado un pistón','3.3 galones','115 KM/H','100-90-17 / 130-80-17','Digital',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='B52' AND m.model='DEPORTIVO 200CC' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Hidráulica / Hidráulica','2.6 litros','Disco / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='B52' AND m.model='PORTO 125'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- DEPORTIVO 250CC (VERSIÓN 2025)
+-- 3. APOLONIA 180
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('B52','DEPORTIVO 250CC',2025,'4T OHC a cadenilla','250cc','17 HP',0,'Deportiva','6 velocidades','/uploads/motos/b52-deportivo-250cc.jpg','N/A','N/A',TRUE)
+VALUES ('B52','APOLONIA 180',2025,'180cc, 4T OHC a cadenilla','180cc','14.48 HP',0,'Street','Mecánica 5 velocidades','/uploads/motos/apolonia-180.jpg','Varios colores disponibles','Street con faro LED principal y cargador USB',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, max_speed, tires, dashboard, gallery)
-SELECT id,'Horquillas telescópicas invertidas / Monoshock','Disco ventilado doble pistón / Disco ventilado un pistón','3.69 galones','130 KM/H','110-90-17 / 130-80-17','Analógico-digital',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='B52' AND m.model='DEPORTIVO 250CC' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquillas telescópicas / Doble amortiguador','2.83 galones','Disco ventilado doble pistón / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='B52' AND m.model='APOLONIA 180'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- ENDURO/CROSS 200CC V1 (VERSIÓN 2025)
+-- 4. AUGUSTA 200
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('B52','ENDURO/CROSS 200CC V1',2025,'4T OHV con balanceador','200cc','16 HP',0,'Enduro/Cross','5 velocidades','/uploads/motos/b52-enduro-cross-200cc-v1.jpg','N/A','N/A',TRUE)
+VALUES ('B52','AUGUSTA 200',2025,'200cc, 4T OHC a cadenilla','200cc','16 HP',0,'Naked','Mecánica 6 velocidades','/uploads/motos/augusta-200.jpg','Negro brillante, Negro mate','Naked deportiva con slider y doble disco',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, max_speed, tires, dashboard, gallery)
-SELECT id,'Horquillas telescópicas / Monoshock','Disco ventilado un pistón / Tambor mecánico','3.17 galones','110 KM/H','19" / 17"','Digital',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='B52' AND m.model='ENDURO/CROSS 200CC V1' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquillas telescópicas / Monoshock','3.3 galones','Disco ventilado doble pistón / Disco ventilado','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='B52' AND m.model='AUGUSTA 200'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- ENDURO/CROSS 200CC V2 (VERSIÓN 2025)
+-- 5. AUGUSTA 250
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('B52','ENDURO/CROSS 200CC V2',2025,'4T OHV con balanceador','200cc','16 HP',0,'Enduro/Cross','5 velocidades','/uploads/motos/b52-enduro-cross-200cc-v2.jpg','N/A','N/A',TRUE)
+VALUES ('B52','AUGUSTA 250',2025,'250cc, 4T OHC a cadenilla','250cc','17 HP',0,'Naked','Mecánica 6 velocidades','/uploads/motos/augusta-250.jpg','Varios colores disponibles','Naked con radiador de aceite y barras invertidas',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, max_speed, tires, dashboard, gallery)
-SELECT id,'Horquillas telescópicas / Monoshock','Disco ventilado un pistón / Tambor mecánico','3.17 galones','110 KM/H','110-100-17 / 120-100-17','Digital',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='B52' AND m.model='ENDURO/CROSS 200CC V2' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquillas telescópicas invertidas / Monoshock','3.69 galones','Disco ventilado doble pistón / Disco ventilado','Analógico-Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='B52' AND m.model='AUGUSTA 250'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- ENDURO/CROSS 145CC (VERSIÓN 2025)
+-- 6. MOTOX 200
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('B52','ENDURO/CROSS 145CC',2025,'4T OHC','144.6cc','11.58 HP / 8500 RPM',0,'Enduro/Cross','5 velocidades','/uploads/motos/b52-enduro-cross-145cc.jpg','N/A','N/A',TRUE)
+VALUES ('B52','MOTOX 200',2025,'200cc, 4T OHV con balanceador','200cc','16 HP',0,'Enduro','Mecánica 5 velocidades','/uploads/motos/motox-200.jpg','Varios colores disponibles','Enduro con slider y protector de manubrio',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, max_speed, tires, dashboard, gallery)
-SELECT id,'Monotubo ajustable / Monocilíndrico hidráulico','Disco / Disco','9.10 litros','90 KM/H','80-100-21 / 100-100-18','Digital',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='B52' AND m.model='ENDURO/CROSS 145CC' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquillas telescópicas / Monoshock','3.17 galones','Disco ventilado / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='B52' AND m.model='MOTOX 200'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- ENDURO/CROSS 250CC (VERSIÓN 2025)
+-- 7. MONTESA 200
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('B52','ENDURO/CROSS 250CC',2025,'4T OHC','250cc','18.77 HP / 8000 RPM',0,'Enduro/Cross','5 velocidades','/uploads/motos/b52-enduro-cross-250cc.jpg','N/A','N/A',TRUE)
+VALUES ('B52','MONTESA 200',2025,'200cc, 4T OHV con balanceador','200cc','16 HP',0,'Enduro','Mecánica 5 velocidades','/uploads/motos/montesa-200.jpg','Varios colores disponibles','Enduro con slider y protector de barras telescópicas',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, max_speed, tires, dashboard, gallery)
-SELECT id,'Barras invertidas / Monoshock','Disco ventilado / Disco ventilado','7.8 litros','N/A','80-100-21 / 100-100-18','Digital',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='B52' AND m.model='ENDURO/CROSS 250CC' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquillas telescópicas / Monoshock','3.17 galones','Disco ventilado / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='B52' AND m.model='MONTESA 200'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- CRUISER 200CC (VERSIÓN 2025)
+-- 8. CAMPERA 150
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('B52','CRUISER 200CC',2025,'4T OHC a cadenilla','200cc','16 HP',0,'Cruiser','5 velocidades','/uploads/motos/b52-cruiser-200cc.jpg','N/A','N/A',TRUE)
+VALUES ('B52','CAMPERA 150',2025,'144.6cc, 4T OHC','144.6cc','11.58 HP/8500 RPM',0,'Enduro','Mecánica 5 velocidades','/uploads/motos/campera-150.jpg','Varios colores disponibles','Enduro con tablero digital y luz LED delantera IODO',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, max_speed, tires, dashboard, gallery)
-SELECT id,'Horquillas telescópicas / Doble amortiguador','Disco ventilado doble pistón / Tambor mecánico','4.5 galones','110 KM/H','110-90-16 / 130-90-15','Digital',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='B52' AND m.model='CRUISER 200CC' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Monotubo ajustable / Monocilindrico hidráulico','9.10 litros','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='B52' AND m.model='CAMPERA 150'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- SCOOTER 250CC (VERSIÓN 2025)
+-- 9. CAMPERA 250
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('B52','SCOOTER 250CC',2025,'4T SOHC Euro III','250cc','16.8 HP',0,'Scooter','6 velocidades','/uploads/motos/b52-scooter-250cc.jpg','N/A','N/A',TRUE)
+VALUES ('B52','CAMPERA 250',2025,'250cc, 4T OHC','250cc','18.77 HP/8000 RPM',0,'Enduro','Mecánica 5 velocidades','/uploads/motos/campera-250.jpg','Varios colores disponibles','Enduro con barras invertidas y sistema de escape Power Boom',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, max_speed, tires, dashboard, gallery)
-SELECT id,'Horquillas telescópicas / Doble amortiguador','Disco ventilado triple pistón / Disco ventilado CBS doble pistón','2.5 galones','120 KM/H','100-90-16 / 130-90-15','N/A',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='B52' AND m.model='SCOOTER 250CC' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas / Monoshock sistema Prolink','7.8 litros','Disco ventilado / Disco ventilado','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='B52' AND m.model='CAMPERA 250'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- NAKED/STREET 250CC (VERSIÓN 2024)
+-- 10. BOMBARDIER 200
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('B52','NAKED/STREET 250CC',2024,'4T OHV','250cc','18 HP',0,'Naked/Street','5 velocidades','/uploads/motos/b52-naked-street-250cc.jpg','N/A','N/A',TRUE)
+VALUES ('B52','BOMBARDIER 200',2025,'200cc, 4T OHC a cadenilla','200cc','16 HP',0,'Cruiser','Mecánica 5 velocidades','/uploads/motos/bombardier-200.jpg','Varios colores disponibles','Cruiser con radiador de aceite y posición de manejo ergonómico',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, brakes, fuel_capacity, max_speed, tires, dashboard, gallery)
-SELECT id,'Horquillas telescópicas / Monoshock','Disco ventilado doble pistón / Disco ventilado doble pistón','3.5 galones','130 KM/H','110-80-17 / 140-70-17','Digital',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='B52' AND m.model='NAKED/STREET 250CC' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquillas telescópicas / Doble amortiguador','4.5 galones','Disco ventilado doble pistón / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='B52' AND m.model='BOMBARDIER 200'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 11. TEXAS 250
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('B52','TEXAS 250',2025,'250cc, 4T SOHC Euro III','250cc','16.8 HP',0,'Cruiser','Mecánica 6 velocidades','/uploads/motos/texas-250.jpg','Varios colores disponibles','Cruiser con inyección electrónica y frenos CBS',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquillas telescópicas / Doble amortiguador','2.5 galones','Disco ventilado triple pistón / Disco ventilado CBS doble pistón','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='B52' AND m.model='TEXAS 250'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 12. NITROX T3 250
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('B52','NITROX T3 250',2025,'250cc, 4T OHV','250cc','18 HP',0,'Naked','Mecánica 5 velocidades','/uploads/motos/nitrox-t3-250.jpg','Varios colores disponibles','Naked con Bluetooth, alarma y soporte para teléfono',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquillas telescópicas / Monoshock','3.5 galones','Disco ventilado doble pistón / Disco ventilado doble pistón','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='B52' AND m.model='NITROX T3 250'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- =============================================================
 -- Ajuste de secuencias
