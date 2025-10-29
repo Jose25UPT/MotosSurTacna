@@ -223,7 +223,7 @@ export default function CatalogPage() {
       </header>
 
       <div className="w-full mb-6">
-        <div className="flex flex-col gap-4 bg-white/80 rounded-xl shadow p-4 border-2 border-yellow-400">
+        <div className="relative flex flex-col gap-4 rounded-xl border border-white/10 bg-neutral-900/60 supports-[backdrop-filter]:backdrop-blur-md shadow-[0_10px_40px_-20px_rgba(0,0,0,0.6)] p-4 md:p-5 before:content-[''] before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-yellow-400/70 before:via-amber-300/60 before:to-yellow-400/70">
           <MotorcycleFilters {...filterProps} horizontal />
           {/* Badges filtros activos */}
           <ActiveFiltersBar
