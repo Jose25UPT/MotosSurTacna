@@ -408,33 +408,108 @@ function BrandLogoCard({ brand }: { brand: BrandItem }) {
     .slice(0, 3)
     .toUpperCase();
 
+  const cardRef = useRef<HTMLDivElement | null>(null);
+  const glowRef = useRef<HTMLDivElement | null>(null);
+  const [imgOk, setImgOk] = useState(true);
+
+  const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = cardRef.current;
+    const glow = glowRef.current;
+    if (!el || !glow) return;
+    const rect = el.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const px = (x / rect.width) * 100;
+    const py = (y / rect.height) * 100;
+    // Tilt suave
+    const tiltX = ((py - 50) / 50) * -6; // -6deg a 6deg
+    const tiltY = ((px - 50) / 50) * 6;
+    el.style.transform = `perspective(700px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+    // Glow sigue al mouse
+    glow.style.setProperty('--mx', `${px}%`);
+    glow.style.setProperty('--my', `${py}%`);
+  };
+
+  const handleLeave = () => {
+    const el = cardRef.current;
+    if (el) el.style.transform = 'perspective(700px) rotateX(0deg) rotateY(0deg)';
+  };
+
+  // Estilo neutro y elegante (sin arcoíris) para el borde del card
+  const accentBorder = 'from-white/30 via-white/10 to-transparent dark:from-white/10 dark:via-white/5';
+
+  // Glow sutil y uniforme
+  const accentGlow = '255, 255, 255';
+
+  // Etiqueta (badge) neutra y elegante
+  const badgeClasses = 'bg-white/80 text-foreground/80 border-border backdrop-blur-sm dark:bg-white/10 dark:text-white/90 dark:border-white/15';
+
   return (
-    <Link href={`/catalog?brand=${encodeURIComponent(brand.name)}`} className="group w-full max-w-[220px]">
-      <div className="h-28 w-full rounded-xl border border-border/60 bg-card hover:bg-card/95 transition-colors shadow-sm hover:shadow-md flex flex-col items-center justify-center px-4">
-        <div className="relative w-full h-16">
-          {/* Logo opcional en /public/assets/brands/<slug>.svg */}
-          <Image
-            src={brand.logo}
-            alt={`${brand.name} logo`}
-            fill
-            className="object-contain mix-blend-multiply"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.style.display = 'none';
+    <Link
+      href={`/catalog?brand=${encodeURIComponent(brand.name)}`}
+      className="group w-full max-w-[260px] focus:outline-none flex flex-col items-center"
+      aria-label={`Ver modelos de ${brand.name}`}
+    >
+      <div
+        className={`relative rounded-2xl p-[1.5px] bg-gradient-to-br ${accentBorder} transition-transform duration-300 will-change-transform w-full`}
+        onMouseMove={handleMove}
+        onMouseLeave={handleLeave}
+        ref={cardRef}
+      >
+  <div className="relative h-36 w-full rounded-[calc(1rem-1.5px)] overflow-hidden bg-card text-card-foreground shadow-sm grid place-items-center">
+          {/* Glow dinámico controlado por variables CSS */}
+          <div
+            ref={glowRef}
+            className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
+            style={{
+              background:
+                'radial-gradient(380px circle at var(--mx,50%) var(--my,50%), rgba(' +
+                accentGlow +
+                ',0.10) 0%, rgba(' +
+                accentGlow +
+                ',0.0) 55%)',
             }}
           />
-          {/* Placeholder simple con iniciales */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center border border-border">
-              <span className="text-sm font-bold tracking-wide text-foreground/80">
-                {initials}
-              </span>
+
+          {/* Contenido (solo logo) */}
+          <div className="relative w-full h-full flex items-center justify-center px-4">
+            <div className="relative w-full h-24 transition-transform duration-300 group-hover:scale-[1.05]">
+              <Image
+                src={brand.logo}
+                alt={`${brand.name} logo`}
+                fill
+                priority={false}
+                className={`object-contain ${imgOk ? 'opacity-100' : 'opacity-0'} transition-opacity duration-200 saturate-110 contrast-105`}
+                onError={() => setImgOk(false)}
+                onLoad={() => setImgOk(true)}
+              />
+              {/* Placeholder con iniciales solo si no hay imagen */}
+              {!imgOk && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-full bg-muted/60 backdrop-blur-sm flex items-center justify-center border border-border">
+                    <span className="text-sm font-extrabold tracking-wide text-foreground/80">
+                      {initials}
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
+
+          {/* Shine en hover */}
+          <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[calc(1rem-1.5px)]">
+            <div className="absolute -inset-[40%] bg-[conic-gradient(from_180deg_at_50%_50%,rgba(255,255,255,0.0),rgba(255,255,255,0.3),rgba(255,255,255,0.0))] opacity-0 group-hover:opacity-30 transition-opacity duration-500 rotate-[-8deg]" />
+          </div>
         </div>
-        <p className="mt-2 text-sm font-semibold text-muted-foreground group-hover:text-foreground leading-none text-center truncate w-full">
+      </div>
+
+      {/* Etiqueta fuera del card */}
+      <div className="-mt-8 w-full flex justify-center">
+        <span
+          className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold shadow-md border ${badgeClasses} transition-transform duration-200 transform group-hover:-translate-y-1`}
+        >
           {brand.name}
-        </p>
+        </span>
       </div>
     </Link>
   );
