@@ -270,206 +270,106 @@ SELECT setval('motorcycle_specs_id_seq', (SELECT MAX(id) FROM motorcycle_specs))
 -- description: 'N/A' para completar más tarde
 -- price_soles: 0 por ausencia de precios
 
--- NEWDUX 150
-INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('DUCONDA','NEWDUX 150',2025,'4 tiempos CVT','150 cc','8.3 HP / 7500 r/min',0,'N/A','CVT','/uploads/motos/duconda-newdux-150.jpg','N/A','N/A',TRUE)
-ON CONFLICT (brand, model) DO NOTHING;
--- Insert base specs si no existen
-INSERT INTO motorcycle_specs (motorcycle_id)
-SELECT id FROM motorcycles m
-WHERE m.brand='DUCONDA' AND m.model='NEWDUX 150'
-AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
--- Enriquecimiento (idempotente usando UPDATE)
-UPDATE motorcycle_specs s SET
-	suspension='Barras telescópicas / Doble amortiguador',
-	telescopic_forks='Barras telescópicas',
-	length='190 cm',
-	width='68.5 cm',
-	height='108.5 cm',
-	max_speed='100 km/h',
-	gearbox='CVT'
-FROM motorcycles m
-WHERE s.motorcycle_id=m.id AND m.brand='DUCONDA' AND m.model='NEWDUX 150';
+-- CATÁLOGO DUCO
 
--- DUVI 150
+-- 1. NEWDUX 150
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('DUCONDA','DUVI 150',2025,'4 tiempos CVT','150 cc','26 HP / 8500 r/min',0,'N/A','CVT','/uploads/motos/duconda-duvi-150.jpg','N/A','N/A',TRUE)
+VALUES ('DUCO','NEWDUX 150',2025,'4 tiempos CVT','150cc','8.3 HP/7500 RPM',0,'Scooter','CVT Automática','/uploads/motos/newdux-150.jpg','Varios colores disponibles','Scooter automático con suspensión telescópica',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id)
-SELECT id FROM motorcycles m
-WHERE m.brand='DUCONDA' AND m.model='DUVI 150'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras telescópicas / Doble amortiguador','No especificado','Disco / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='DUCO' AND m.model='NEWDUX 150'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET
-	suspension='Barras invertidas / Monoshock',
-	telescopic_forks='Barras invertidas',
-	length='203 cm',
-	width='85.6 cm',
-	height='112.4 cm',
-	max_speed='100 km/h',
-	gearbox='CVT'
-FROM motorcycles m
-WHERE s.motorcycle_id=m.id AND m.brand='DUCONDA' AND m.model='DUVI 150';
 
--- SDUX 200
+-- 2. DUVI 150
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('DUCONDA','SDUX 200',2025,'4 tiempos OCH','200 cc','17 HP / 8000 r/min',0,'N/A','N/A','/uploads/motos/duconda-sdux-200.jpg','N/A','N/A',TRUE)
+VALUES ('DUCO','DUVI 150',2025,'4 tiempos CVT','150cc','26 HP/8500 RPM',0,'Deportiva','CVT Automática','/uploads/motos/duvi-150.jpg','Varios colores disponibles','Deportiva automática con barras invertidas',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id)
-SELECT id FROM motorcycles m
-WHERE m.brand='DUCONDA' AND m.model='SDUX 200'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas / Monoshock','No especificado','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='DUCO' AND m.model='DUVI 150'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET
-	suspension='Barras invertidas / Monoshock',
-	telescopic_forks='Barras invertidas',
-	length='185 cm',
-	width='85.6 cm',
-	height='112.4 cm',
-	max_speed='130 km/h'
-FROM motorcycles m
-WHERE s.motorcycle_id=m.id AND m.brand='DUCONDA' AND m.model='SDUX 200';
 
--- FORTE 150
+-- 3. SDUX 200
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('DUCONDA','FORTE 150',2025,'4 tiempos CVT','150 cc','8.4 HP / 7500 r/min',0,'N/A','CVT','/uploads/motos/duconda-forte-150.jpg','N/A','N/A',TRUE)
+VALUES ('DUCO','SDUX 200',2025,'4 tiempos OHC','200cc','17 HP/8000 RPM',0,'Naked','Manual','/uploads/motos/sdux-200.jpg','Varios colores disponibles','Naked deportiva con barras invertidas',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id)
-SELECT id FROM motorcycles m
-WHERE m.brand='DUCONDA' AND m.model='FORTE 150'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas / Monoshock','No especificado','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='DUCO' AND m.model='SDUX 200'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET
-	suspension='Barras telescópicas / Doble amortiguador',
-	telescopic_forks='Barras telescópicas',
-	max_torque='105 kg / 150 kg',
-	max_speed='100 km/h',
-	gearbox='CVT'
-FROM motorcycles m
-WHERE s.motorcycle_id=m.id AND m.brand='DUCONDA' AND m.model='FORTE 150';
 
--- HORSE/EMPIRE
+-- 4. FORTE 150
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('DUCONDA','HORSE/EMPIRE',2025,'4 tiempos OCH','150 cc','11 HP / 8000 r/min',0,'N/A','N/A','/uploads/motos/duconda-horse-empire-150.jpg','N/A','N/A',TRUE)
+VALUES ('DUCO','FORTE 150',2025,'4 tiempos CVT','150cc','8.4 HP/7500 RPM',0,'Scooter','CVT Automática','/uploads/motos/forte-150.jpg','Varios colores disponibles','Scooter automático resistente',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id)
-SELECT id FROM motorcycles m
-WHERE m.brand='DUCONDA' AND m.model='HORSE/EMPIRE'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras telescópicas / Doble amortiguador','No especificado','Disco / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='DUCO' AND m.model='FORTE 150'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET
-	suspension='Barras invertidas / Monoshock',
-	telescopic_forks='Barras invertidas',
-	length='207 cm',
-	width='78 cm',
-	height='108.5 cm',
-	max_speed='100 km/h'
-FROM motorcycles m
-WHERE s.motorcycle_id=m.id AND m.brand='DUCONDA' AND m.model='HORSE/EMPIRE';
 
--- DU-R200
+-- 5. HORSE/EMPIRE
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('DUCONDA','DU-R200',2025,'4 tiempos OCH / Balanceador','200 cc','17 HP / 8000 r/min',0,'N/A','N/A','/uploads/motos/duconda-du-r200.jpg','N/A','N/A',TRUE)
+VALUES ('DUCO','HORSE/EMPIRE',2025,'4 tiempos OHC','150cc','11 HP/8000 RPM',0,'Street','Manual','/uploads/motos/horse-empire.jpg','Varios colores disponibles','Street con barras invertidas',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id)
-SELECT id FROM motorcycles m
-WHERE m.brand='DUCONDA' AND m.model='DU-R200'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas / Monoshock','No especificado','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='DUCO' AND m.model='HORSE/EMPIRE'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET
-	suspension='Barras invertidas / Monoshock',
-	telescopic_forks='Barras invertidas',
-	length='203 cm',
-	width='85 cm',
-	height='112.4 cm',
-	max_speed='130 km/h'
-FROM motorcycles m
-WHERE s.motorcycle_id=m.id AND m.brand='DUCONDA' AND m.model='DU-R200';
 
--- DU-300
+-- 6. DU-R200
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('DUCONDA','DU-300',2025,'4 tiempos OCH / Balanceador','300 cc','21 HP / 8500 r/min',0,'N/A','N/A','/uploads/motos/duconda-du-300.jpg','N/A','N/A',TRUE)
+VALUES ('DUCO','DU-R200',2025,'4 tiempos OHC con balanceador','200cc','17 HP/8000 RPM',0,'Deportiva','Manual','/uploads/motos/du-r200.jpg','Varios colores disponibles','Deportiva con motor balanceado',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id)
-SELECT id FROM motorcycles m
-WHERE m.brand='DUCONDA' AND m.model='DU-300'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas / Monoshock','No especificado','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='DUCO' AND m.model='DU-R200'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET
-	suspension='Barras invertidas / Monoshock',
-	telescopic_forks='Barras invertidas',
-	length='203 cm',
-	width='85 cm',
-	height='112.4 cm',
-	max_speed='150 km/h'
-FROM motorcycles m
-WHERE s.motorcycle_id=m.id AND m.brand='DUCONDA' AND m.model='DU-300';
 
--- TEKK 300 PRO
+-- 7. DU-300
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('DUCONDA','TEKK 300 PRO',2025,'4 tiempos OCH / Balanceador','300 cc','27.3 HP / 8500 r/min',0,'N/A','N/A','/uploads/motos/duconda-tekk-300-pro.jpg','N/A','N/A',TRUE)
+VALUES ('DUCO','DU-300',2025,'4 tiempos OHC con balanceador','300cc','21 HP/8500 RPM',0,'Naked','Manual','/uploads/motos/du-300.jpg','Varios colores disponibles','Naked de 300cc con motor balanceado',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id)
-SELECT id FROM motorcycles m
-WHERE m.brand='DUCONDA' AND m.model='TEKK 300 PRO'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas / Monoshock','No especificado','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='DUCO' AND m.model='DU-300'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET
-	suspension='Barras invertidas / Monoshock',
-	telescopic_forks='Barras invertidas',
-	length='182 cm',
-	width='49 cm',
-	height='88 cm',
-	max_speed='130 km/h'
-FROM motorcycles m
-WHERE s.motorcycle_id=m.id AND m.brand='DUCONDA' AND m.model='TEKK 300 PRO';
 
--- DUCO 250 DT
+-- 8. TEKK 300 PRO
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('DUCONDA','DUCO 250 DT',2025,'4 tiempos OCH / Balanceador','250 cc','16 HP / 7500 r/min',0,'N/A','N/A','/uploads/motos/duconda-duco-250-dt.jpg','N/A','N/A',TRUE)
+VALUES ('DUCO','TEKK 300 PRO',2025,'4 tiempos OHC con balanceador','300cc','27.3 HP/8500 RPM',0,'Deportiva','Manual','/uploads/motos/tekk-300-pro.jpg','Varios colores disponibles','Deportiva Pro de alta potencia',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id)
-SELECT id FROM motorcycles m
-WHERE m.brand='DUCONDA' AND m.model='DUCO 250 DT'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas / Monoshock','No especificado','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='DUCO' AND m.model='TEKK 300 PRO'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET
-	suspension='Barras invertidas / Monoshock',
-	telescopic_forks='Barras invertidas',
-	length='200 cm',
-	width='77 cm',
-	height='117 cm',
-	max_speed='125 km/h'
-FROM motorcycles m
-WHERE s.motorcycle_id=m.id AND m.brand='DUCONDA' AND m.model='DUCO 250 DT';
 
--- R300
+-- 9. DUCO 250 DT
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('DUCONDA','R300',2025,'4 tiempos OCH / Balanceador','300 cc','26 HP / 8500 r/min',0,'N/A','N/A','/uploads/motos/duconda-r300.jpg','N/A','N/A',TRUE)
+VALUES ('DUCO','DUCO 250 DT',2025,'4 tiempos OHC con balanceador','250cc','16 HP/7500 RPM',0,'Enduro','Manual','/uploads/motos/duco-250-dt.jpg','Varios colores disponibles','Enduro DT con motor balanceado',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id)
-SELECT id FROM motorcycles m
-WHERE m.brand='DUCONDA' AND m.model='R300'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas / Monoshock','No especificado','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='DUCO' AND m.model='DUCO 250 DT'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET
-	suspension='Barras invertidas / Monoshock',
-	telescopic_forks='Barras invertidas',
-	length='203 cm',
-	width='85.6 cm',
-	height='112.4 cm',
-	max_speed='150 km/h'
-FROM motorcycles m
-WHERE s.motorcycle_id=m.id AND m.brand='DUCONDA' AND m.model='R300';
 
--- DUCO 200DT
+-- 10. R300
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('DUCONDA','DUCO 200DT',2025,'4 tiempos OCH / Balanceador','200 cc','17 HP / 8500 r/min',0,'N/A','N/A','/uploads/motos/duconda-duco-200dt.jpg','N/A','N/A',TRUE)
+VALUES ('DUCO','R300',2025,'4 tiempos OHC con balanceador','300cc','26 HP/8500 RPM',0,'Deportiva','Manual','/uploads/motos/r300.jpg','Varios colores disponibles','Deportiva R de 300cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id)
-SELECT id FROM motorcycles m
-WHERE m.brand='DUCONDA' AND m.model='DUCO 200DT'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas / Monoshock','No especificado','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='DUCO' AND m.model='R300'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET
-	suspension='Barras telescópicas / Monoshock',
-	telescopic_forks='Barras telescópicas',
-	length='213 cm',
-	width='82 cm',
-	height='120 cm',
-	max_speed='120 km/h'
-FROM motorcycles m
-WHERE s.motorcycle_id=m.id AND m.brand='DUCONDA' AND m.model='DUCO 200DT';
+
+-- 11. DUCO 200DT
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('DUCO','DUCO 200DT',2025,'4 tiempos OHC con balanceador','200cc','17 HP/8500 RPM',0,'Enduro','Manual','/uploads/motos/duco-200dt.jpg','Varios colores disponibles','Enduro DT de 200cc',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras telescópicas / Monoshock','No especificado','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='DUCO' AND m.model='DUCO 200DT'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- Ajuste de secuencias opcional
 SELECT setval('motorcycles_id_seq', (SELECT MAX(id) FROM motorcycles));
@@ -1099,130 +999,131 @@ SELECT setval('motorcycle_specs_id_seq', (SELECT COALESCE(MAX(id),1) FROM motorc
 
 -- =============== MODELOS ADVANCE ===============
 
--- ENDURO 200X
+-- CATÁLOGO DE MOTOS - IMAGEN 1
+
+-- 1. ENDURO 200X
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ADVANCE','ENDURO 200X',2025,'Monocilíndrico OHC 4T','200 cc','16 HP / 7500 rpm',0,'Enduro','Cadena','N/A','Rojo','N/A',TRUE)
+VALUES ('GENERIC','ENDURO 200X',2025,'Monocilíndrico OHC 4T','200cc','16 HP/7500 RPM',0,'Enduro','Cadena','/uploads/motos/enduro-200x.jpg','Rojo','Enduro con arranque eléctrico y pedal',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, brakes, fuel_capacity, start_type, dashboard, max_speed, gallery)
-SELECT id,'Disco (delantero) / Tambor (trasero)','14 L','Eléctrico y pedal','Analógico','115 km/h', ARRAY[]::text[]
-FROM motorcycles m WHERE m.brand='ADVANCE' AND m.model='ENDURO 200X'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','14 L','Disco / Tambor','Analógico','No', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='GENERIC' AND m.model='ENDURO 200X'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- TEKEN 250
+-- 2. TEKEN 250
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ADVANCE','TEKEN 250',2025,'Monocilíndrico OHC 4T','249 cc','20 HP / 7500 rpm',0,'Enduro','Cadena','N/A','Rojo, Verde, Negro','N/A',TRUE)
+VALUES ('GENERIC','TEKEN 250',2025,'Monocilíndrico OHC 4T','249cc','20 HP/7500 RPM',0,'Deportiva','Cadena','/uploads/motos/teken-250.jpg','Rojo, Verde, Negro','Deportiva de 250cc con doble disco',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, brakes, fuel_capacity, start_type, dashboard, max_speed, gallery)
-SELECT id,'Disco (delantero) / Disco (trasero)','14 L','Eléctrico','Digital','120 km/h', ARRAY[]::text[]
-FROM motorcycles m WHERE m.brand='ADVANCE' AND m.model='TEKEN 250'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','14 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='GENERIC' AND m.model='TEKEN 250'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- ADVENGER 200Z
+-- 3. ADVENGER 200Z
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ADVANCE','ADVENGER 200Z',2025,'Monocilíndrico OHC 4T','198 cc','14.3 HP / 7500 rpm',0,'Enduro','Cadena','N/A','Rojo, Negro','N/A',TRUE)
+VALUES ('GENERIC','ADVENGER 200Z',2025,'Monocilíndrico OHC 4T','198cc','14.3 HP/7500 RPM',0,'Adventure','Cadena','/uploads/motos/advenger-200z.jpg','Rojo, Negro','Adventure con arranque eléctrico',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, brakes, fuel_capacity, start_type, dashboard, max_speed, gallery)
-SELECT id,'Disco (delantero) / Tambor (trasero)','14 L','Eléctrico','Analógico','120 km/h', ARRAY[]::text[]
-FROM motorcycles m WHERE m.brand='ADVANCE' AND m.model='ADVENGER 200Z'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','14 L','Disco / Tambor','Analógico','No', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='GENERIC' AND m.model='ADVENGER 200Z'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- NINDIA 200S
+-- IMAGEN 2
+
+-- 4. NINDIA 200S
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ADVANCE','NINDIA 200S',2025,'Monocilíndrico OHC 4T','200 cc','17.20 HP / 7500 rpm',0,'Enduro','Cadena','N/A','Verde, Naranja, Blanco','N/A',TRUE)
+VALUES ('GENERIC','NINDIA 200S',2025,'Monocilíndrico OHC 4T','200cc','17.20 HP/7500 RPM',0,'Street','Cadena','/uploads/motos/nindia-200s.jpg','Verde, Naranja, Blanco','Street con tablero digital',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, brakes, fuel_capacity, start_type, dashboard, max_speed, gallery)
-SELECT id,'Disco (delantero) / Tambor (trasero)','14 L','Eléctrico y pedal','Digital','120 km/h', ARRAY[]::text[]
-FROM motorcycles m WHERE m.brand='ADVANCE' AND m.model='NINDIA 200S'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','14 L','Disco / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='GENERIC' AND m.model='NINDIA 200S'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- JAGUAR 200
+-- 5. JAGUAR 200
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ADVANCE','JAGUAR 200',2025,'Monocilíndrico OHC 4T','200 cc','15.7 HP / 7500 rpm',0,'Enduro','Cadena','N/A','Rojo, Verde, Negro','N/A',TRUE)
+VALUES ('GENERIC','JAGUAR 200',2025,'Monocilíndrico OHC 4T','200cc','15.7 HP/7500 RPM',0,'Street','Cadena','/uploads/motos/jaguar-200.jpg','Rojo, Verde, Negro','Street deportiva de 200cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, brakes, fuel_capacity, start_type, dashboard, max_speed, gallery)
-SELECT id,'Disco (delantero) / Tambor (trasero)','14 L','Eléctrico y pedal','Digital','115 km/h', ARRAY[]::text[]
-FROM motorcycles m WHERE m.brand='ADVANCE' AND m.model='JAGUAR 200'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','14 L','Disco / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='GENERIC' AND m.model='JAGUAR 200'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- ZEUS 200Z
+-- 6. ZEUS 200Z
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ADVANCE','ZEUS 200Z',2025,'Monocilíndrico OHC 4T','200 cc','17.20 HP / 7500 rpm',0,'Enduro','Cadena','N/A','Rojo, Negro','N/A',TRUE)
+VALUES ('GENERIC','ZEUS 200Z',2025,'Monocilíndrico OHC 4T','200cc','17.20 HP/7500 RPM',0,'Naked','Cadena','/uploads/motos/zeus-200z.jpg','Rojo, Negro','Naked con doble disco y tablero digital',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, brakes, fuel_capacity, start_type, dashboard, max_speed, gallery)
-SELECT id,'Disco (delantero) / Disco (trasero)','15 L','Eléctrico y pedal','Digital','120 km/h', ARRAY[]::text[]
-FROM motorcycles m WHERE m.brand='ADVANCE' AND m.model='ZEUS 200Z'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','15 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='GENERIC' AND m.model='ZEUS 200Z'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- NINDIA 250 R7
+-- IMAGEN 3
+
+-- 7. NINDIA 250 R7
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ADVANCE','NINDIA 250 R7',2025,'Monocilíndrico OHC 4T','250 cc','18 HP / 7500 rpm',0,'Enduro','Cadena','N/A','Marrón, Negro','N/A',TRUE)
+VALUES ('GENERIC','NINDIA 250 R7',2025,'Monocilíndrico OHC 4T','250cc','18 HP/7500 RPM',0,'Deportiva','Cadena','/uploads/motos/nindia-250-r7.jpg','Marrón, Negro','Deportiva R7 con doble disco',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, brakes, fuel_capacity, start_type, dashboard, max_speed, gallery)
-SELECT id,'Disco (delantero) / Disco (trasero)','14 L','Eléctrico','Digital','135 km/h', ARRAY[]::text[]
-FROM motorcycles m WHERE m.brand='ADVANCE' AND m.model='NINDIA 250 R7'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','14 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='GENERIC' AND m.model='NINDIA 250 R7'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- NINDIA 250
+-- 8. NINDIA 250
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ADVANCE','NINDIA 250',2025,'Monocilíndrico OHC 4T','249.6 cc','15.4 HP / 7500 rpm',0,'Enduro','Cadena','N/A','Verde, Azul, Rojo, Negro','N/A',TRUE)
+VALUES ('GENERIC','NINDIA 250',2025,'Monocilíndrico OHC 4T','249.6cc','15.4 HP/7500 RPM',0,'Naked','Cadena','/uploads/motos/nindia-250.jpg','Verde, Azul, Rojo, Negro','Naked versátil de 250cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, brakes, fuel_capacity, start_type, dashboard, max_speed, gallery)
-SELECT id,'Disco (delantero) / Disco (trasero)','14 L','Eléctrico','Digital','130 km/h', ARRAY[]::text[]
-FROM motorcycles m WHERE m.brand='ADVANCE' AND m.model='NINDIA 250'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','14 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='GENERIC' AND m.model='NINDIA 250'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- BULTACO 250
+-- IMAGEN 4
+
+-- 9. BULTACO 250
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ADVANCE','BULTACO 250',2025,'Monocilíndrico OHC 4T','250 cc','16.3 HP / 7500 rpm',0,'Enduro','Cadena','N/A','Negro','N/A',TRUE)
+VALUES ('GENERIC','BULTACO 250',2025,'Monocilíndrico OHC 4T','250cc','16.3 HP/7500 RPM',0,'Scrambler','Cadena','/uploads/motos/bultaco-250.jpg','Negro','Scrambler retro de 250cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, brakes, fuel_capacity, start_type, dashboard, max_speed, gallery)
-SELECT id,'Disco (delantero) / Disco (trasero)','14 L','Eléctrico','Digital','115 km/h', ARRAY[]::text[]
-FROM motorcycles m WHERE m.brand='ADVANCE' AND m.model='BULTACO 250'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','14 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='GENERIC' AND m.model='BULTACO 250'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- SCRAMPER 250
+-- 10. SCRAMPER 250
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ADVANCE','SCRAMPER 250',2025,'Monocilíndrico OHC 4T','250 cc','16 HP / 7500 rpm',0,'Enduro','Cadena','N/A','Blanco, Negro','N/A',TRUE)
+VALUES ('GENERIC','SCRAMPER 250',2025,'Monocilíndrico OHC 4T','250cc','16 HP/7500 RPM',0,'Scrambler','Cadena','/uploads/motos/scramper-250.jpg','Blanco, Negro','Scrambler moderna de 250cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, brakes, fuel_capacity, start_type, dashboard, max_speed, gallery)
-SELECT id,'Disco (delantero) / Disco (trasero)','14 L','Eléctrico','Digital','120 km/h', ARRAY[]::text[]
-FROM motorcycles m WHERE m.brand='ADVANCE' AND m.model='SCRAMPER 250'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','14 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='GENERIC' AND m.model='SCRAMPER 250'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- SCRAMPLER 200
+-- IMAGEN 5
+
+-- 11. AD150 T-6
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ADVANCE','SCRAMPLER 200',2025,'Monocilíndrico OHC 4T','200 cc','15 HP / 7500 rpm',0,'Enduro','Cadena','N/A','Blanco, Negro','N/A',TRUE)
+VALUES ('GENERIC','AD150 T-6',2025,'Monocilíndrico OHC 4T','150cc','9.3 HP/7500 RPM',0,'Scooter','Automática','/uploads/motos/ad150-t6.jpg','Rojo, Negro','Scooter automático de 150cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, brakes, fuel_capacity, start_type, dashboard, max_speed, gallery)
-SELECT id,'Disco (delantero) / Disco (trasero)','14 L','Eléctrico','Digital','120 km/h', ARRAY[]::text[]
-FROM motorcycles m WHERE m.brand='ADVANCE' AND m.model='SCRAMPLER 200'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','6 L','Disco / Tambor','Analógico','No', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='GENERIC' AND m.model='AD150 T-6'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- AD150 T-6
+-- 12. SUPER MEGAN 125
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ADVANCE','AD150 T-6',2025,'Monocilíndrico OHC 4T','150 cc','9.3 HP / 7500 rpm',0,'Scooter','Automática','N/A','Rojo, Negro','N/A',TRUE)
+VALUES ('GENERIC','SUPER MEGAN 125',2025,'Monocilíndrico OHC 4T','125cc','9.3 HP/7500 RPM',0,'Scooter','Semi automática','/uploads/motos/super-megan-125.jpg','Azul, Rojo, Negro','Scooter semiautomático de 125cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, brakes, fuel_capacity, start_type, dashboard, max_speed, gallery)
-SELECT id,'Disco (delantero) / Tambor (trasero)','6 L','Eléctrico y pedal','Analógico','115 km/h', ARRAY[]::text[]
-FROM motorcycles m WHERE m.brand='ADVANCE' AND m.model='AD150 T-6'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','6 L','Disco / Tambor','Analógico','No', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='GENERIC' AND m.model='SUPER MEGAN 125'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- SUPER MEGAN 125
+-- 13. ASHLEY 125
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ADVANCE','SUPER MEGAN 125',2025,'Monocilíndrico OHC 4T','125 cc','9.3 HP / 7500 rpm',0,'Scooter','Semi automática','N/A','Azul, Rojo, Negro','N/A',TRUE)
+VALUES ('GENERIC','ASHLEY 125',2025,'Monocilíndrico OHC 4T','125cc','9.3 HP/7500 RPM',0,'Scooter','Semi automática','/uploads/motos/ashley-125.jpg','Rojo, Negro','Scooter semiautomático compacto',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, brakes, fuel_capacity, start_type, dashboard, max_speed, gallery)
-SELECT id,'Disco (delantero) / Tambor (trasero)','6 L','Eléctrico y pedal','Analógico','85 km/h', ARRAY[]::text[]
-FROM motorcycles m WHERE m.brand='ADVANCE' AND m.model='SUPER MEGAN 125'
-AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-
--- ASHLEY 125
-INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('ADVANCE','ASHLEY 125',2025,'Monocilíndrico OHC 4T','125 cc','9.3 HP / 7500 rpm',0,'Scooter','Semi automática','N/A','Rojo, Negro','N/A',TRUE)
-ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, brakes, fuel_capacity, start_type, dashboard, max_speed, gallery)
-SELECT id,'Disco (delantero) / Tambor (trasero)','6 L','Eléctrico y pedal','Analógico','85 km/h', ARRAY[]::text[]
-FROM motorcycles m WHERE m.brand='ADVANCE' AND m.model='ASHLEY 125'
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','6 L','Disco / Tambor','Analógico','No', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='GENERIC' AND m.model='ASHLEY 125'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- Ajuste de secuencias
@@ -1242,168 +1143,177 @@ SELECT setval('motorcycle_specs_id_seq', (SELECT MAX(id) FROM motorcycle_specs))
 -- * gallery inicializado vacío (ARRAY[]::text[])
 -- * UPDATE asegura brakes no nulo si ya existía fila specs
 -- =============================================================
+-- CATÁLOGO SONLINK - MODELOS PISTERO
 
--- SL150/200-F1
+-- 1. SL150/200-F1
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('SONLINK','SL150/200-F1',2025,'TGF(OHV)','150/200 CC','13/8500 - 13.6/8000',0,'Pistero','5/6 velocidades','/uploads/motos/sonlink-sl150-200-f1.jpg','N/A','N/A',TRUE)
+VALUES ('SONLINK','SL150/200-F1',2025,'TGF (OHV)','150/200cc','13 HP/8500 RPM - 13.6 HP/8000 RPM',0,'Deportiva','5/6 velocidades','/uploads/motos/sl150-200-f1.jpg','Varios colores disponibles','Deportiva con barras invertidas y doble disco',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'Barras invertidas / Monoshock','11.5/7500 - 14.2/6000','Disco/Disco','14.5L','90/90-17 120/80-17','5/6 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='SONLINK' AND m.model='SL150/200-F1' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET brakes='Disco/Disco' WHERE s.motorcycle_id=(SELECT id FROM motorcycles WHERE brand='SONLINK' AND model='SL150/200-F1') AND (s.brakes IS NULL OR s.brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas / Monoshock','14.5 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='SONLINK' AND m.model='SL150/200-F1'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- SL200-GF/GFA
+-- 2. SL200-GF/GFA
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('SONLINK','SL200-GF/GFA',2025,'TGF(OHV) / CBF(OHC)','200 CC','15/8000',0,'Pistero','5/6 velocidades - 5 velocidades','/uploads/motos/sonlink-sl200-gf-gfa.jpg','N/A','N/A',TRUE)
+VALUES ('SONLINK','SL200-GF/GFA',2025,'TGF (OHV) / CBF (OHC)','200cc','15 HP/8000 RPM',0,'Deportiva','5/6 velocidades','/uploads/motos/sl200-gf-gfa.jpg','Varios colores disponibles','Deportiva con suspensión invertida',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'Barras invertidas/Monoshock','15/5000','Disco/Disco','15L','100/70-17 150/70-17','5/6 velocidades - 5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='SONLINK' AND m.model='SL200-GF/GFA' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET brakes='Disco/Disco' WHERE s.motorcycle_id=(SELECT id FROM motorcycles WHERE brand='SONLINK' AND model='SL200-GF/GFA') AND (s.brakes IS NULL OR s.brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas / Monoshock','15 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='SONLINK' AND m.model='SL200-GF/GFA'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- SL200-F7
+-- 3. SL200-F7
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('SONLINK','SL200-F7',2025,'TGF(OHV)','200 CC','16/8000',0,'Pistero','5/6 velocidades','/uploads/motos/sonlink-sl200-f7.jpg','N/A','N/A',TRUE)
+VALUES ('SONLINK','SL200-F7',2025,'TGF (OHV)','200cc','16 HP/8000 RPM',0,'Deportiva','5/6 velocidades','/uploads/motos/sl200-f7.jpg','Varios colores disponibles','Deportiva con tanque de 21L',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'Barras invertidas/Monoshock','15/5000','Disco/Disco','21L','100/80-17 130/70-17','5/6 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='SONLINK' AND m.model='SL200-F7' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET brakes='Disco/Disco' WHERE s.motorcycle_id=(SELECT id FROM motorcycles WHERE brand='SONLINK' AND model='SL200-F7') AND (s.brakes IS NULL OR s.brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas / Monoshock','21 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='SONLINK' AND m.model='SL200-F7'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- SL200-F8
+-- 4. SL200-F8
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('SONLINK','SL200-F8',2025,'TGF(OHV)','200 CC','15/8000',0,'Pistero','5/6 velocidades','/uploads/motos/sonlink-sl200-f8.jpg','N/A','N/A',TRUE)
+VALUES ('SONLINK','SL200-F8',2025,'TGF (OHV)','200cc','15 HP/8000 RPM',0,'Deportiva','5/6 velocidades','/uploads/motos/sl200-f8.jpg','Varios colores disponibles','Deportiva naked con doble disco',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'Barras invertidas/Monoshock','15/5000','Disco/Disco','15L','90/90-17 120/80-17','5/6 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='SONLINK' AND m.model='SL200-F8' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET brakes='Disco/Disco' WHERE s.motorcycle_id=(SELECT id FROM motorcycles WHERE brand='SONLINK' AND model='SL200-F8') AND (s.brakes IS NULL OR s.brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas / Monoshock','15 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='SONLINK' AND m.model='SL200-F8'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- SL200-F8A
+-- 5. SL200-F8A
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('SONLINK','SL200-F8A',2025,'TGF(OHV)','200 CC','15/8000',0,'Pistero','5/6 velocidades','/uploads/motos/sonlink-sl200-f8a.jpg','N/A','N/A',TRUE)
+VALUES ('SONLINK','SL200-F8A',2025,'TGF (OHV)','200cc','15 HP/8000 RPM',0,'Deportiva','5/6 velocidades','/uploads/motos/sl200-f8a.jpg','Varios colores disponibles','Deportiva versión A con barras invertidas',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'Barras invertidas/Monoshock','15/5000','Disco/Disco','15L','90/90-17 120/80-17','5/6 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='SONLINK' AND m.model='SL200-F8A' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET brakes='Disco/Disco' WHERE s.motorcycle_id=(SELECT id FROM motorcycles WHERE brand='SONLINK' AND model='SL200-F8A') AND (s.brakes IS NULL OR s.brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas / Monoshock','15 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='SONLINK' AND m.model='SL200-F8A'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- SL200-F9/F9A
+-- 6. SL200-F9/F9A
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('SONLINK','SL200-F9/F9A',2025,'TGF(OHV) / CBF(OHC)','200 CC','15/8000',0,'Pistero','5/6 velocidades - 5 velocidades','/uploads/motos/sonlink-sl200-f9-f9a.jpg','N/A','N/A',TRUE)
+VALUES ('SONLINK','SL200-F9/F9A',2025,'TGF (OHV) / CBF (OHC)','200cc','15 HP/8000 RPM',0,'Deportiva','5/6 velocidades','/uploads/motos/sl200-f9-f9a.jpg','Varios colores disponibles','Deportiva con suspensión telescópica',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'Telescópica/Monoshock','15/8000','Disco/Disco','14L','100/70-17 130/70-17','5/6 velocidades - 5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='SONLINK' AND m.model='SL200-F9/F9A' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET brakes='Disco/Disco' WHERE s.motorcycle_id=(SELECT id FROM motorcycles WHERE brand='SONLINK' AND model='SL200-F9/F9A') AND (s.brakes IS NULL OR s.brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Telescópica / Monoshock','14 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='SONLINK' AND m.model='SL200-F9/F9A'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- SL200-K11
-INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('SONLINK','SL200-K11',2025,'N/A','200 CC','13.5/8500',0,'Paseo','5 velocidades','/uploads/motos/sonlink-sl200-k11.jpg','N/A','N/A',TRUE)
-ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'Telescópica/Brazos Oscilantes','11.8/6500','Tambor/Tambor','15.5L','3.25-18 3.25-18','5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='SONLINK' AND m.model='SL200-K11' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET brakes='Tambor/Tambor' WHERE s.motorcycle_id=(SELECT id FROM motorcycles WHERE brand='SONLINK' AND model='SL200-K11') AND (s.brakes IS NULL OR s.brakes='');
+-- MODELOS PASEO
 
--- SL150-KG
+-- 7. SL200-K11
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('SONLINK','SL150-KG',2025,'N/A','150 CC','6.2/7500',0,'Paseo','CVT','/uploads/motos/sonlink-sl150-kg.jpg','N/A','N/A',TRUE)
+VALUES ('SONLINK','SL200-K11',2025,'4T OHC','200cc','13.5 HP/8500 RPM',0,'Paseo','5 velocidades','/uploads/motos/sl200-k11.jpg','Varios colores disponibles','Moto de paseo clásica económica',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'Telescópica/Brazos Oscilantes','8.5/6500','Disco/Tambor','5.5L','Disco/Tambor','CVT',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='SONLINK' AND m.model='SL150-KG' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET brakes='Disco/Tambor' WHERE s.motorcycle_id=(SELECT id FROM motorcycles WHERE brand='SONLINK' AND model='SL150-KG') AND (s.brakes IS NULL OR s.brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Telescópica / Brazos Oscilantes','15.5 L','Tambor / Tambor','Analógico','No', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='SONLINK' AND m.model='SL200-K11'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- SL105
+-- 8. SL150-KG
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('SONLINK','SL105',2025,'N/A','105 CC','7.5/8500',0,'Paseo','4 velocidades','/uploads/motos/sonlink-sl105.jpg','N/A','N/A',TRUE)
+VALUES ('SONLINK','SL150-KG',2025,'4T OHC','150cc','6.2 HP/7500 RPM',0,'Scooter','CVT Automática','/uploads/motos/sl150-kg.jpg','Varios colores disponibles','Scooter automático compacto',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'Telescópica/Brazos Oscilantes','6.5/6500','Disco/Disco','9.1L','2.50-17 2.75-17','4 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='SONLINK' AND m.model='SL105' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET brakes='Disco/Disco' WHERE s.motorcycle_id=(SELECT id FROM motorcycles WHERE brand='SONLINK' AND model='SL105') AND (s.brakes IS NULL OR s.brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Telescópica / Brazos Oscilantes','5.5 L','Disco / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='SONLINK' AND m.model='SL150-KG'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- SL125T-2A
+-- 9. SL105
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('SONLINK','SL125T-2A',2025,'N/A','125 CC','6.2/7500',0,'Paseo','CVT','/uploads/motos/sonlink-sl125t-2a.jpg','N/A','N/A',TRUE)
+VALUES ('SONLINK','SL105',2025,'4T OHC','105cc','7.5 HP/8500 RPM',0,'Urbana','4 velocidades','/uploads/motos/sl105.jpg','Varios colores disponibles','Urbana económica y eficiente',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'Telescópica/Brazos Oscilantes','8.5/6500','Disco/Tambor','5.5L','Disco/Tambor','CVT',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='SONLINK' AND m.model='SL125T-2A' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET brakes='Disco/Tambor' WHERE s.motorcycle_id=(SELECT id FROM motorcycles WHERE brand='SONLINK' AND model='SL125T-2A') AND (s.brakes IS NULL OR s.brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Telescópica / Brazos Oscilantes','9.1 L','Disco / Disco','Analógico','No', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='SONLINK' AND m.model='SL105'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- SL150T-5
+-- 10. SL125T-2A
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('SONLINK','SL150T-5',2025,'N/A','150 CC','8.5/6500',0,'Paseo','CVT','/uploads/motos/sonlink-sl150t-5.jpg','N/A','N/A',TRUE)
+VALUES ('SONLINK','SL125T-2A',2025,'4T OHC','125cc','6.2 HP/7500 RPM',0,'Scooter','CVT Automática','/uploads/motos/sl125t-2a.jpg','Varios colores disponibles','Scooter automático de 125cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'Telescópica/Brazos Oscilantes','8.5/6500','Disco/Tambor','5.5L','120/70-12 120/70-12','CVT',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='SONLINK' AND m.model='SL150T-5' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET brakes='Disco/Tambor' WHERE s.motorcycle_id=(SELECT id FROM motorcycles WHERE brand='SONLINK' AND model='SL150T-5') AND (s.brakes IS NULL OR s.brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Telescópica / Brazos Oscilantes','5.5 L','Disco / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='SONLINK' AND m.model='SL125T-2A'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- SL150T-6
+-- 11. SL150T-5
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('SONLINK','SL150T-6',2025,'N/A','150 CC','8.5/6500',0,'Paseo','CVT','/uploads/motos/sonlink-sl150t-6.jpg','N/A','N/A',TRUE)
+VALUES ('SONLINK','SL150T-5',2025,'4T OHC','150cc','8.5 HP/6500 RPM',0,'Scooter','CVT Automática','/uploads/motos/sl150t-5.jpg','Varios colores disponibles','Scooter automático con ruedas grandes',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'Telescópica/Brazos Oscilantes','8.5/6500','Disco/Tambor','5.5L','120/70-12 120/70-12','CVT',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='SONLINK' AND m.model='SL150T-6' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET brakes='Disco/Tambor' WHERE s.motorcycle_id=(SELECT id FROM motorcycles WHERE brand='SONLINK' AND model='SL150T-6') AND (s.brakes IS NULL OR s.brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Telescópica / Brazos Oscilantes','5.5 L','Disco / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='SONLINK' AND m.model='SL150T-5'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- SL200G-3
+-- 12. SL150T-6
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('SONLINK','SL200G-3',2025,'N/A','200 CC','15/8000',0,'Todo Terreno','5 velocidades','/uploads/motos/sonlink-sl200g-3.jpg','N/A','N/A',TRUE)
+VALUES ('SONLINK','SL150T-6',2025,'4T OHC','150cc','8.5 HP/6500 RPM',0,'Scooter','CVT Automática','/uploads/motos/sl150t-6.jpg','Varios colores disponibles','Scooter automático versión 6',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'Telescópica/Monoshock','15/8000','Disco/Disco','16L','2.50-17 4.60-17','5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='SONLINK' AND m.model='SL200G-3' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET brakes='Disco/Disco' WHERE s.motorcycle_id=(SELECT id FROM motorcycles WHERE brand='SONLINK' AND model='SL200G-3') AND (s.brakes IS NULL OR s.brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Telescópica / Brazos Oscilantes','5.5 L','Disco / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='SONLINK' AND m.model='SL150T-6'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- SL200G-LI
-INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('SONLINK','SL200G-LI',2025,'N/A','200 CC','15/8000',0,'Todo Terreno','5 velocidades','/uploads/motos/sonlink-sl200g-li.jpg','N/A','N/A',TRUE)
-ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'Telescópica/Monoshock','15/8000','Disco/Disco','15L','2.50-17 4.60-17','5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='SONLINK' AND m.model='SL200G-LI' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET brakes='Disco/Disco' WHERE s.motorcycle_id=(SELECT id FROM motorcycles WHERE brand='SONLINK' AND model='SL200G-LI') AND (s.brakes IS NULL OR s.brakes='');
+-- MODELOS TODO TERRENO
 
--- SL200-3F
+-- 13. SL200G-3
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('SONLINK','SL200-3F',2025,'N/A','200 CC','15/8000',0,'Ciudad','5 velocidades','/uploads/motos/sonlink-sl200-3f.jpg','N/A','N/A',TRUE)
+VALUES ('SONLINK','SL200G-3',2025,'4T OHC','200cc','15 HP/8000 RPM',0,'Enduro','5 velocidades','/uploads/motos/sl200g-3.jpg','Varios colores disponibles','Enduro con transmisión de cadena dentada',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'Telescópica/Brazos Oscilantes','14.5/5000','Disco/Tambor','14L','2.75-18 90/90-18','5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='SONLINK' AND m.model='SL200-3F' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET brakes='Disco/Tambor' WHERE s.motorcycle_id=(SELECT id FROM motorcycles WHERE brand='SONLINK' AND model='SL200-3F') AND (s.brakes IS NULL OR s.brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Telescópica / Monoshock','16 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='SONLINK' AND m.model='SL200G-3'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- SL150-HB
+-- 14. SL200G-LI
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('SONLINK','SL150-HB',2025,'N/A','150 CC','12.5/8500',0,'Ciudad','5 velocidades','/uploads/motos/sonlink-sl150-hb.jpg','N/A','N/A',TRUE)
+VALUES ('SONLINK','SL200G-LI',2025,'4T OHC','200cc','15 HP/8000 RPM',0,'Enduro','5 velocidades','/uploads/motos/sl200g-li.jpg','Varios colores disponibles','Enduro optimizada para bajo mantenimiento',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'Telescópica/Brazos Oscilantes','11.5/7000','Disco/Tambor','16L','2.75-18 3.00-18','5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='SONLINK' AND m.model='SL150-HB' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET brakes='Disco/Tambor' WHERE s.motorcycle_id=(SELECT id FROM motorcycles WHERE brand='SONLINK' AND model='SL150-HB') AND (s.brakes IS NULL OR s.brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Telescópica / Monoshock','15 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='SONLINK' AND m.model='SL200G-LI'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- SL150-17A
-INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('SONLINK','SL150-17A',2025,'N/A','150 CC','12/8500',0,'Ciudad','5 velocidades','/uploads/motos/sonlink-sl150-17a.jpg','N/A','N/A',TRUE)
-ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'Telescópica/Brazos Oscilantes','11/7000','Disco/Tambor','16.5L','2.75-18 3.00-18','5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='SONLINK' AND m.model='SL150-17A' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET brakes='Disco/Tambor' WHERE s.motorcycle_id=(SELECT id FROM motorcycles WHERE brand='SONLINK' AND model='SL150-17A') AND (s.brakes IS NULL OR s.brakes='');
+-- MODELOS CIUDAD
 
--- SL150/200-A
+-- 15. SL200-3F
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('SONLINK','SL150/200-A',2025,'N/A','150/200 CC','12.6/8500',0,'Moto Taxi','5 velocidades','/uploads/motos/sonlink-sl150-200-a.jpg','N/A','N/A',TRUE)
+VALUES ('SONLINK','SL200-3F',2025,'4T OHC','200cc','15 HP/8000 RPM',0,'Street','5 velocidades','/uploads/motos/sl200-3f.jpg','Varios colores disponibles','Street para ciudad con buen rendimiento',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'Telescópica/Brazos Oscilantes','15/8000','Tambor/Tambor','14L','2.75-18 3.25-17','5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='SONLINK' AND m.model='SL150/200-A' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs s SET brakes='Tambor/Tambor' WHERE s.motorcycle_id=(SELECT id FROM motorcycles WHERE brand='SONLINK' AND model='SL150/200-A') AND (s.brakes IS NULL OR s.brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Telescópica / Brazos Oscilantes','14 L','Disco / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='SONLINK' AND m.model='SL200-3F'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 16. SL150-HB
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('SONLINK','SL150-HB',2025,'4T OHC','150cc','12.5 HP/8500 RPM',0,'Street','5 velocidades','/uploads/motos/sl150-hb.jpg','Varios colores disponibles','Street urbana de 150cc',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Telescópica / Brazos Oscilantes','16 L','Disco / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='SONLINK' AND m.model='SL150-HB'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 17. SL150-17A
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('SONLINK','SL150-17A',2025,'4T OHC','150cc','12 HP/8500 RPM',0,'Street','5 velocidades','/uploads/motos/sl150-17a.jpg','Varios colores disponibles','Street clásica de 150cc',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Telescópica / Brazos Oscilantes','16.5 L','Disco / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='SONLINK' AND m.model='SL150-17A'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- MOTO TAXI
+
+-- 18. SL150/200-A
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('SONLINK','SL150/200-A',2025,'4T OHC','150/200cc','12.6 HP/8500 RPM - 15 HP/8000 RPM',0,'Mototaxi','5 velocidades','/uploads/motos/sl150-200-a.jpg','Varios colores disponibles','Mototaxi resistente y económica',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Telescópica / Brazos Oscilantes','14 L','Tambor / Tambor','Analógico','No', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='SONLINK' AND m.model='SL150/200-A'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- =============================================================
 -- Ajuste de secuencias
@@ -1424,261 +1334,283 @@ SELECT setval('motorcycle_specs_id_seq', (SELECT COALESCE(MAX(id),1) FROM motorc
 -- * Cuando brakes es 'N/A' se deja nulo inicialmente y se podrá enriquecer después
 -- * gallery vacío para futura carga de imágenes
 -- =============================================================
+-- CATÁLOGO WANXIN - MODELOS NUEVOS
 
--- PARLOUR 200
+-- 1. PARLOUR 200
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','PARLOUR 200',2025,'4T-OHC','200 CC','18.5/8500',0,'Sport','6 velocidades','/uploads/motos/wanxin-parlour-200.jpg','Azul','Modelo deportivo con motor 200cc',TRUE)
+VALUES ('WANXIN','PARLOUR 200',2025,'200cc, 4T-OHC','200cc','18.5 KW/8500 RPM',0,'Deportiva','6 velocidades','/uploads/motos/parlour-200.jpg','Azul, Gris, Rojo','Deportiva con doble disco y diseño aerodinámico',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','18.2/7500','Disco/Disco','16L','120/70-17 180/55-17','6 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='PARLOUR 200' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs SET brakes='Disco/Disco' WHERE motorcycle_id=(SELECT id FROM motorcycles WHERE brand='WANXIN' AND model='PARLOUR 200') AND (brakes IS NULL OR brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','16 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='PARLOUR 200'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- K01200
+-- 2. K01200
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','K01200',2025,'4T-OHC','200 CC','18.5/8500',0,'Adventure','6 velocidades','/uploads/motos/wanxin-k01200.jpg','Azul','Modelo Adventure/Enduro con motor 200cc',TRUE)
+VALUES ('WANXIN','K01200',2025,'200cc, 4T-OHC','200cc','18.5 KW/8500 RPM',0,'Adventure','6 velocidades','/uploads/motos/k01200.jpg','Azul, Negro, Rojo','Adventure/Enduro con neumáticos todo terreno',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','18.2/7500','Disco/Disco','16L','90/90-21 120/80-18','6 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='K01200' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs SET brakes='Disco/Disco' WHERE motorcycle_id=(SELECT id FROM motorcycles WHERE brand='WANXIN' AND model='K01200') AND (brakes IS NULL OR brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','16 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='K01200'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- MS200
+-- 3. MS200
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','MS200',2025,'4T-OHC','200 CC','18.5/8500',0,'Sport','6 velocidades','/uploads/motos/wanxin-ms200.jpg','Negro/Verde','Modelo deportivo con motor 200cc',TRUE)
+VALUES ('WANXIN','MS200',2025,'200cc, 4T-OHC','200cc','18.5 KW/8500 RPM',0,'Sport','6 velocidades','/uploads/motos/ms200.jpg','Negro/Verde, Negro/Amarillo','Sport con diseño agresivo y doble disco',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','18.2/7500','Disco/Disco','16L','110/70-17 150/60-17','6 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='MS200' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs SET brakes='Disco/Disco' WHERE motorcycle_id=(SELECT id FROM motorcycles WHERE brand='WANXIN' AND model='MS200') AND (brakes IS NULL OR brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','16 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='MS200'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- ROADBLOCK 250 II
-INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','ROADBLOCK 250 II',2025,'4T-OHC','250 CC','20/8000',0,'Sport','6 velocidades','/uploads/motos/wanxin-roadblock-250-ii.jpg','Azul','Modelo pistera 250cc',TRUE)
-ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','22/6500','Disco/Disco','15L','120/70-17 180/55-17','6 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='ROADBLOCK 250 II' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs SET brakes='Disco/Disco' WHERE motorcycle_id=(SELECT id FROM motorcycles WHERE brand='WANXIN' AND model='ROADBLOCK 250 II') AND (brakes IS NULL OR brakes='');
+-- MODELOS PISTERAS
 
--- TOK-125
+-- 4. ROADBLOCK 250 II
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','TOK-125',2025,'4T-OHC','125 CC','9.5/8000',0,'Sport','6 velocidades','/uploads/motos/wanxin-tok-125.jpg','Rojo','Modelo pistera 125cc',TRUE)
+VALUES ('WANXIN','ROADBLOCK 250 II',2025,'250cc, 4T-OHC','250cc','20 KW/8000 RPM',0,'Deportiva','6 velocidades','/uploads/motos/roadblock-250-ii.jpg','Azul, Negro, Blanco','Deportiva de alto rendimiento con 250cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','10.2/6500','Disco/Disco','12L','100/80-17 130/70-17','6 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='TOK-125' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs SET brakes='Disco/Disco' WHERE motorcycle_id=(SELECT id FROM motorcycles WHERE brand='WANXIN' AND model='TOK-125') AND (brakes IS NULL OR brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','15 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='ROADBLOCK 250 II'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- ENERGY 200
+-- 5. TOK-125
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','ENERGY 200',2025,'4T-OHC','200 CC','16/8500',0,'Sport','6 velocidades','/uploads/motos/wanxin-energy-200.jpg','Amarillo','Modelo pistera 200cc',TRUE)
+VALUES ('WANXIN','TOK-125',2025,'125cc, 4T-OHC','125cc','9.5 KW/8000 RPM',0,'Deportiva','6 velocidades','/uploads/motos/tok-125.jpg','Rojo, Negro, Blanco','Deportiva compacta de 125cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','16.5/7000','Disco/Disco','14L','110/70-17 150/60-17','6 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='ENERGY 200' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs SET brakes='Disco/Disco' WHERE motorcycle_id=(SELECT id FROM motorcycles WHERE brand='WANXIN' AND model='ENERGY 200') AND (brakes IS NULL OR brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','12 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='TOK-125'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- PS200N
+-- 6. ENERGY 200
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','PS200N',2025,'4T-OHC','200 CC','16/8500',0,'Sport','6 velocidades','/uploads/motos/wanxin-ps200n.jpg','Negro/Naranja','Modelo pistera 200cc',TRUE)
+VALUES ('WANXIN','ENERGY 200',2025,'200cc, 4T-OHC','200cc','16 KW/8500 RPM',0,'Deportiva','6 velocidades','/uploads/motos/energy-200.jpg','Amarillo, Negro, Gris','Deportiva de calle con excelente rendimiento',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','16.5/7000','Disco/Disco','14L','110/70-17 150/60-17','6 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='PS200N' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs SET brakes='Disco/Disco' WHERE motorcycle_id=(SELECT id FROM motorcycles WHERE brand='WANXIN' AND model='PS200N') AND (brakes IS NULL OR brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','14 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='ENERGY 200'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- AMARU 200
+-- 7. PS200N
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','AMARU 200',2025,'4T-OHC','200 CC','16/8000',0,'Todo Terreno','5 velocidades','/uploads/motos/wanxin-amaru-200.jpg','Negro/Verde','Modelo todo terreno 200cc',TRUE)
+VALUES ('WANXIN','PS200N',2025,'200cc, 4T-OHC','200cc','16 KW/8500 RPM',0,'Naked','6 velocidades','/uploads/motos/ps200n.jpg','Negro/Naranja, Negro','Naked deportiva con diseño moderno',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','17/6500','Disco/Disco','12L','3.00-21 4.60-18','5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='AMARU 200' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs SET brakes='Disco/Disco' WHERE motorcycle_id=(SELECT id FROM motorcycles WHERE brand='WANXIN' AND model='AMARU 200') AND (brakes IS NULL OR brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','14 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='PS200N'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- WX150G-P2
-INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','WX150G-P2',2025,'4T-OHC','150 CC','11/8000',0,'Todo Terreno','5 velocidades','/uploads/motos/wanxin-wx150g-p2.jpg','Negro','Modelo todo terreno 150cc',TRUE)
-ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','12/6500','Disco/Disco','10L','3.00-18 4.10-18','5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='WX150G-P2' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs SET brakes='Disco/Disco' WHERE motorcycle_id=(SELECT id FROM motorcycles WHERE brand='WANXIN' AND model='WX150G-P2') AND (brakes IS NULL OR brakes='');
+-- MODELOS TODO TERRENO
 
--- CROSS 200
+-- 8. AMARU 200
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','CROSS 200',2025,'4T-OHC','200 CC','15/7500',0,'Todo Terreno','5 velocidades','/uploads/motos/wanxin-cross-200.jpg','Gris','Modelo cross todo terreno 200cc',TRUE)
+VALUES ('WANXIN','AMARU 200',2025,'200cc, 4T-OHC','200cc','16 KW/8000 RPM',0,'Enduro','5 velocidades','/uploads/motos/amaru-200.jpg','Negro/Verde, Negro, Azul','Enduro versátil para todo terreno',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','16.8/6000','Disco/Disco','11L','80/100-21 110/90-18','5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='CROSS 200' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs SET brakes='Disco/Disco' WHERE motorcycle_id=(SELECT id FROM motorcycles WHERE brand='WANXIN' AND model='CROSS 200') AND (brakes IS NULL OR brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','12 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='AMARU 200'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- TT200
+-- 9. WX150G-P2
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','TT200',2025,'4T-OHC','200 CC','15/7500',0,'Todo Terreno','5 velocidades','/uploads/motos/wanxin-tt200.jpg','Rojo/Negro','Modelo todo terreno 200cc',TRUE)
+VALUES ('WANXIN','WX150G-P2',2025,'150cc, 4T-OHC','150cc','11 KW/8000 RPM',0,'Enduro','5 velocidades','/uploads/motos/wx150g-p2.jpg','Negro, Blanco, Rojo','Enduro 150cc económica y resistente',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','16.8/6000','Disco/Disco','11L','80/100-21 110/90-18','5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='TT200' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs SET brakes='Disco/Disco' WHERE motorcycle_id=(SELECT id FROM motorcycles WHERE brand='WANXIN' AND model='TT200') AND (brakes IS NULL OR brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','10 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='WX150G-P2'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- 100G-7
+-- 10. CROSS 200
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','100G-7',2025,'4T-OHC','100 CC','7.5/8000',0,'Todo Terreno','4 velocidades','/uploads/motos/wanxin-100g-7.jpg','Rojo','Modelo todo terreno 100cc',TRUE)
+VALUES ('WANXIN','CROSS 200',2025,'200cc, 4T-OHC','200cc','15 KW/7500 RPM',0,'Enduro','5 velocidades','/uploads/motos/cross-200.jpg','Gris, Negro, Rojo','Cross para aventuras extremas',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','8.2/6500','Tambor/Tambor','8L','2.75-21 4.10-18','4 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='100G-7' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs SET brakes='Tambor/Tambor' WHERE motorcycle_id=(SELECT id FROM motorcycles WHERE brand='WANXIN' AND model='100G-7') AND (brakes IS NULL OR brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','11 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='CROSS 200'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- WX200G-8S
+-- 11. TT200
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','WX200G-8S',2025,'4T-OHC','200 CC','15/7500',0,'Todo Terreno','5 velocidades','/uploads/motos/wanxin-wx200g-8s.jpg','Negro','Modelo todo terreno 200cc',TRUE)
+VALUES ('WANXIN','TT200',2025,'200cc, 4T-OHC','200cc','15 KW/7500 RPM',0,'Enduro','5 velocidades','/uploads/motos/tt200.jpg','Rojo/Negro, Negro','Trail 200cc para terreno mixto',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','16.8/6000','Disco/Disco','11L','80/100-21 110/90-18','5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='WX200G-8S' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs SET brakes='Disco/Disco' WHERE motorcycle_id=(SELECT id FROM motorcycles WHERE brand='WANXIN' AND model='WX200G-8S') AND (brakes IS NULL OR brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','11 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='TT200'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- WX200G-8E
+-- 12. 100G-7
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','WX200G-8E',2025,'4T-OHC','200 CC','15/7500',0,'Todo Terreno','5 velocidades','/uploads/motos/wanxin-wx200g-8e.jpg','Rojo','Modelo todo terreno 200cc',TRUE)
+VALUES ('WANXIN','100G-7',2025,'100cc, 4T-OHC','100cc','7.5 KW/8000 RPM',0,'Enduro','4 velocidades','/uploads/motos/100g-7.jpg','Rojo, Negro','Enduro compacta de 100cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','16.8/6000','Disco/Disco','11L','80/100-21 110/90-18','5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='WX200G-8E' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs SET brakes='Disco/Disco' WHERE motorcycle_id=(SELECT id FROM motorcycles WHERE brand='WANXIN' AND model='WX200G-8E') AND (brakes IS NULL OR brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','8 L','Tambor / Tambor','Analógico','No', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='100G-7'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- WX200G-4GE
+-- 13. WX200G-8S
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','WX200G-4GE',2025,'4T-OHC','200 CC','15/7500',0,'Todo Terreno','5 velocidades','/uploads/motos/wanxin-wx200g-4ge.jpg','Negro','Modelo todo terreno 200cc',TRUE)
+VALUES ('WANXIN','WX200G-8S',2025,'200cc, 4T-OHC','200cc','15 KW/7500 RPM',0,'Enduro','5 velocidades','/uploads/motos/wx200g-8s.jpg','Negro, Gris, Azul','Enduro robusta de 200cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','16.8/6000','Disco/Disco','11L','80/100-21 110/90-18','5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='WX200G-4GE' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
-UPDATE motorcycle_specs SET brakes='Disco/Disco' WHERE motorcycle_id=(SELECT id FROM motorcycles WHERE brand='WANXIN' AND model='WX200G-4GE') AND (brakes IS NULL OR brakes='');
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','11 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='WX200G-8S'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- WK125-17
+-- 14. WX200G-8E
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','WK125-17',2025,'4T OHC','125 CC','10.8/8000',0,'Standard','5 velocidades','/uploads/motos/wanxin-wk125-17.jpg','Red','Motocicleta 125cc con ignición CDI',TRUE)
+VALUES ('WANXIN','WX200G-8E',2025,'200cc, 4T-OHC','200cc','15 KW/7500 RPM',0,'Enduro','5 velocidades','/uploads/motos/wx200g-8e.jpg','Rojo, Blanco','Enduro de alto rendimiento',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','10.8/6000',NULLIF('N/A','N/A'),'14L','N/A','5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='WK125-17' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','11 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='WX200G-8E'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- SKYWALKER 250
+-- 15. WX200G-4GE
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','SKYWALKER 250',2025,'4T OHC','250 CC','17/8000',0,'Standard','5 velocidades','/uploads/motos/wanxin-skywalker-250.jpg','Blue','Motocicleta 250cc con ignición CDI',TRUE)
+VALUES ('WANXIN','WX200G-4GE',2025,'200cc, 4T-OHC','200cc','15 KW/7500 RPM',0,'Enduro','5 velocidades','/uploads/motos/wx200g-4ge.jpg','Negro, Blanco','Enduro versión especial',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','20/6000',NULLIF('N/A','N/A'),'18L','N/A','5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='SKYWALKER 250' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','11 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='WX200G-4GE'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- WK110-6A
-INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','WK110-6A',2025,'4T OHC','110 CC','7.5/8000',0,'Standard','4 velocidades','/uploads/motos/wanxin-wk110-6a.jpg','Red','Motocicleta 110cc con ignición CDI',TRUE)
-ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','7.8/6000',NULLIF('N/A','N/A'),'4.2L','N/A','4 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='WK110-6A' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+-- OTROS MODELOS WANXIN
 
--- WK150-CB
+-- 16. WK125-17
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','WK150-CB',2025,'4T OHC','150 CC','11/8000',0,'Standard','5 velocidades','/uploads/motos/wanxin-wk150-cb.jpg','Red','Motocicleta 150cc con ignición CDI',TRUE)
+VALUES ('WANXIN','WK125-17',2025,'125cc, 4T OHC','125cc','10.8 HP/8000 RPM',0,'Street','5 velocidades','/uploads/motos/wk125-17.jpg','Rojo, Blanco, Azul, Negro','Street económica de 125cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','12/6000',NULLIF('N/A','N/A'),'12L','N/A','5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='WK150-CB' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','14 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='WK125-17'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- COBRA 200 GT
+-- 17. SKYWALKER 250
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','COBRA 200 GT',2025,'4T OHC','200 CC','15.5/8000',0,'Standard','5 velocidades','/uploads/motos/wanxin-cobra-200-gt.jpg','Orange','Motocicleta 200cc con ignición CDI',TRUE)
+VALUES ('WANXIN','SKYWALKER 250',2025,'250cc, 4T OHC','250cc','17 HP/8000 RPM',0,'Cruiser','5 velocidades','/uploads/motos/skywalker-250.jpg','Azul, Negro, Blanco, Rojo','Cruiser de 250cc con gran autonomía',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','16.8/6000',NULLIF('N/A','N/A'),'16L','N/A','5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='COBRA 200 GT' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','18 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='SKYWALKER 250'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- WK200-8M
+-- 18. WK110-6A
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','WK200-8M',2025,'4T OHC','200 CC','15.5/8000',0,'Standard','5 velocidades','/uploads/motos/wanxin-wk200-8m.jpg','Black','Motocicleta 200cc con ignición CDI',TRUE)
+VALUES ('WANXIN','WK110-6A',2025,'110cc, 4T OHC','110cc','7.5 HP/8000 RPM',0,'Urbana','4 velocidades','/uploads/motos/wk110-6a.jpg','Rojo, Azul, Negro','Urbana compacta de 110cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','16.8/6000',NULLIF('N/A','N/A'),'16L','N/A','5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='WK200-8M' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','4.2 L','Disco / Tambor','Analógico','No', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='WK110-6A'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- REBEL 200
+-- 19. WK150-CB
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','REBEL 200',2025,'4T OHC','200 CC','15.5/8000',0,'Standard','5 velocidades','/uploads/motos/wanxin-rebel-200.jpg','Black','Motocicleta 200cc con ignición CDI',TRUE)
+VALUES ('WANXIN','WK150-CB',2025,'150cc, 4T OHC','150cc','11 HP/8000 RPM',0,'Street','5 velocidades','/uploads/motos/wk150-cb.jpg','Rojo, Blanco, Azul, Negro','Street versátil de 150cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','16.8/6000',NULLIF('N/A','N/A'),'16L','N/A','5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='REBEL 200' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','12 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='WK150-CB'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- ASH 150
+-- 20. COBRA 200 GT
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','ASH 150',2025,'4T OHC','150 CC','11/8000',0,'Standard','5 velocidades','/uploads/motos/wanxin-ash-150.jpg','Green','Motocicleta 150cc con ignición CDI',TRUE)
+VALUES ('WANXIN','COBRA 200 GT',2025,'200cc, 4T OHC','200cc','15.5 HP/8000 RPM',0,'Enduro','5 velocidades','/uploads/motos/cobra-200-gt.jpg','Naranja, Negro, Blanco','Enduro GT con gran capacidad de tanque',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','12/6000',NULLIF('N/A','N/A'),'12L','N/A','5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='ASH 150' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','16 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='COBRA 200 GT'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- WK125-LT
+-- 21. WK200-8M
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','WK125-LT',2025,'4T OHC','125 CC','10.8/8000',0,'Standard','5 velocidades','/uploads/motos/wanxin-wk125-lt.jpg','Red','Motocicleta 125cc con ignición CDI',TRUE)
+VALUES ('WANXIN','WK200-8M',2025,'200cc, 4T OHC','200cc','15.5 HP/8000 RPM',0,'Enduro','5 velocidades','/uploads/motos/wk200-8m.jpg','Negro, Rojo, Azul','Enduro todo terreno de 200cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','10.8/6000',NULLIF('N/A','N/A'),'14L','N/A','5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='WK125-LT' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','16 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='WK200-8M'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- WK110-18
+-- 22. REBEL 200
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','WK110-18',2025,'4T OHC','110 CC','7.5/8000',0,'Standard','4 velocidades','/uploads/motos/wanxin-wk110-18.jpg','Red','Motocicleta 110cc con ignición CDI',TRUE)
+VALUES ('WANXIN','REBEL 200',2025,'200cc, 4T OHC','200cc','15.5 HP/8000 RPM',0,'Naked','5 velocidades','/uploads/motos/rebel-200.jpg','Negro, Rojo, Azul','Naked con estilo rebelde',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','7.8/6000',NULLIF('N/A','N/A'),'4.2L','N/A','4 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='WK110-18' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','16 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='REBEL 200'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- WK125L-2
+-- 23. ASH 150
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','WK125L-2',2025,'4T OHC','125 CC','10.8/8000',0,'Standard','5 velocidades','/uploads/motos/wanxin-wk125l-2.jpg','Red','Motocicleta 125cc con ignición CDI',TRUE)
+VALUES ('WANXIN','ASH 150',2025,'150cc, 4T OHC','150cc','11 HP/8000 RPM',0,'Street','5 velocidades','/uploads/motos/ash-150.jpg','Verde, Negro, Rojo','Street ágil de 150cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','10.8/6000',NULLIF('N/A','N/A'),'14L','N/A','5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='WK125L-2' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','12 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='ASH 150'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- WK200-G5
+-- 24. WK125-LT
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','WK200-G5',2025,'4T OHC','200 CC','15.5/8000',0,'Standard','5 velocidades','/uploads/motos/wanxin-wk200-g5.jpg','Yellow','Motocicleta 200cc con ignición CDI',TRUE)
+VALUES ('WANXIN','WK125-LT',2025,'125cc, 4T OHC','125cc','10.8 HP/8000 RPM',0,'Street','5 velocidades','/uploads/motos/wk125-lt.jpg','Rojo, Negro','Street ligera de 125cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','16.8/6000',NULLIF('N/A','N/A'),'16L','N/A','5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='WK200-G5' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','14 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='WK125-LT'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- ATLW 150
+-- 25. WK110-18
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','ATLW 150',2025,'4T OHC','150 CC','11/8000',0,'Standard','5 velocidades','/uploads/motos/wanxin-atlw-150.jpg','Red','Motocicleta 150cc con ignición CDI',TRUE)
+VALUES ('WANXIN','WK110-18',2025,'110cc, 4T OHC','110cc','7.5 HP/8000 RPM',0,'Urbana','4 velocidades','/uploads/motos/wk110-18.jpg','Rojo, Negro, Azul','Urbana económica de 110cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','12/6000',NULLIF('N/A','N/A'),'12L','N/A','5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='ATLW 150' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','4.2 L','Disco / Tambor','Analógico','No', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='WK110-18'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- COBRA 150
+-- 26. WK125L-2
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','COBRA 150',2025,'4T OHC','150 CC','11/8000',0,'Standard','5 velocidades','/uploads/motos/wanxin-cobra-150.jpg','Red','Motocicleta 150cc con ignición CDI',TRUE)
+VALUES ('WANXIN','WK125L-2',2025,'125cc, 4T OHC','125cc','10.8 HP/8000 RPM',0,'Street','5 velocidades','/uploads/motos/wk125l-2.jpg','Rojo, Blanco, Azul','Street eficiente de 125cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','12/6000',NULLIF('N/A','N/A'),'12L','N/A','5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='COBRA 150' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','14 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='WK125L-2'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- WK200-G2
+-- 27. WK200-G5
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('WANXIN','WK200-G2',2025,'4T OHC','200 CC','15.5/8000',0,'Standard','5 velocidades','/uploads/motos/wanxin-wk200-g2.jpg','Red','Motocicleta 200cc con ignición CDI',TRUE)
+VALUES ('WANXIN','WK200-G5',2025,'200cc, 4T OHC','200cc','15.5 HP/8000 RPM',0,'Enduro','5 velocidades','/uploads/motos/wk200-g5.jpg','Amarillo, Negro, Azul, Naranja','Enduro multicolor de 200cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
-INSERT INTO motorcycle_specs (motorcycle_id, suspension, max_torque, brakes, fuel_capacity, tires, gearbox, gallery)
-SELECT id,'N/A','16.8/6000',NULLIF('N/A','N/A'),'16L','N/A','5 velocidades',ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='WANXIN' AND m.model='WK200-G2' AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','16 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='WK200-G5'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 28. ATLW 150
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('WANXIN','ATLW 150',2025,'150cc, 4T OHC','150cc','11 HP/8000 RPM',0,'Enduro','5 velocidades','/uploads/motos/atlw-150.jpg','Rojo, Verde, Amarillo, Azul','Enduro colorida de 150cc',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','12 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='ATLW 150'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 29. COBRA 150
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('WANXIN','COBRA 150',2025,'150cc, 4T OHC','150cc','11 HP/8000 RPM',0,'Enduro','5 velocidades','/uploads/motos/cobra-150.jpg','Rojo, Negro, Azul','Enduro compacta Cobra',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','12 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='COBRA 150'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 30. WK200-G2
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('WANXIN','WK200-G2',2025,'200cc, 4T OHC','200cc','15.5 HP/8000 RPM',0,'Enduro','5 velocidades','/uploads/motos/wk200-g2.jpg','Rojo, Negro, Azul','Enduro clásica de 200cc',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','16 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='WANXIN' AND m.model='WK200-G2'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- =============================================================
 -- Ajuste de secuencias
