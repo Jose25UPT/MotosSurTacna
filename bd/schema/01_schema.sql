@@ -270,105 +270,105 @@ SELECT setval('motorcycle_specs_id_seq', (SELECT MAX(id) FROM motorcycle_specs))
 -- description: 'N/A' para completar más tarde
 -- price_soles: 0 por ausencia de precios
 
--- CATÁLOGO DUCO
+-- CATÁLOGO DUCONDA
 
 -- 1. NEWDUX 150
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('DUCO','NEWDUX 150',2025,'4 tiempos CVT','150cc','8.3 HP/7500 RPM',0,'Scooter','CVT Automática','/uploads/motos/newdux-150.jpg','Varios colores disponibles','Scooter automático con suspensión telescópica',TRUE)
+VALUES ('DUCONDA','NEWDUX 150',2025,'4 tiempos CVT','150cc','8.3 HP/7500 RPM',0,'Scooter','CVT Automática','/uploads/motos/newdux-150.jpg','Varios colores disponibles','Scooter automático con suspensión telescópica',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
 INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
 SELECT id,'Barras telescópicas / Doble amortiguador','No especificado','Disco / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='DUCO' AND m.model='NEWDUX 150'
+WHERE m.brand='DUCONDA' AND m.model='NEWDUX 150'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- 2. DUVI 150
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('DUCO','DUVI 150',2025,'4 tiempos CVT','150cc','26 HP/8500 RPM',0,'Deportiva','CVT Automática','/uploads/motos/duvi-150.jpg','Varios colores disponibles','Deportiva automática con barras invertidas',TRUE)
+VALUES ('DUCONDA','DUVI 150',2025,'4 tiempos CVT','150cc','26 HP/8500 RPM',0,'Deportiva','CVT Automática','/uploads/motos/duvi-150.jpg','Varios colores disponibles','Deportiva automática con barras invertidas',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
 INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
 SELECT id,'Barras invertidas / Monoshock','No especificado','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='DUCO' AND m.model='DUVI 150'
+WHERE m.brand='DUCONDA' AND m.model='DUVI 150'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- 3. SDUX 200
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('DUCO','SDUX 200',2025,'4 tiempos OHC','200cc','17 HP/8000 RPM',0,'Naked','Manual','/uploads/motos/sdux-200.jpg','Varios colores disponibles','Naked deportiva con barras invertidas',TRUE)
+VALUES ('DUCONDA','SDUX 200',2025,'4 tiempos OHC','200cc','17 HP/8000 RPM',0,'Naked','Manual','/uploads/motos/sdux-200.jpg','Varios colores disponibles','Naked deportiva con barras invertidas',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
 INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
 SELECT id,'Barras invertidas / Monoshock','No especificado','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='DUCO' AND m.model='SDUX 200'
+WHERE m.brand='DUCONDA' AND m.model='SDUX 200'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- 4. FORTE 150
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('DUCO','FORTE 150',2025,'4 tiempos CVT','150cc','8.4 HP/7500 RPM',0,'Scooter','CVT Automática','/uploads/motos/forte-150.jpg','Varios colores disponibles','Scooter automático resistente',TRUE)
+VALUES ('DUCONDA','FORTE 150',2025,'4 tiempos CVT','150cc','8.4 HP/7500 RPM',0,'Scooter','CVT Automática','/uploads/motos/forte-150.jpg','Varios colores disponibles','Scooter automático resistente',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
 INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
 SELECT id,'Barras telescópicas / Doble amortiguador','No especificado','Disco / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='DUCO' AND m.model='FORTE 150'
+WHERE m.brand='DUCONDA' AND m.model='FORTE 150'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- 5. HORSE/EMPIRE
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('DUCO','HORSE/EMPIRE',2025,'4 tiempos OHC','150cc','11 HP/8000 RPM',0,'Street','Manual','/uploads/motos/horse-empire.jpg','Varios colores disponibles','Street con barras invertidas',TRUE)
+VALUES ('DUCONDA','HORSE/EMPIRE',2025,'4 tiempos OHC','150cc','11 HP/8000 RPM',0,'Street','Manual','/uploads/motos/horse-empire.jpg','Varios colores disponibles','Street con barras invertidas',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
 INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
 SELECT id,'Barras invertidas / Monoshock','No especificado','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='DUCO' AND m.model='HORSE/EMPIRE'
+WHERE m.brand='DUCONDA' AND m.model='HORSE/EMPIRE'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- 6. DU-R200
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('DUCO','DU-R200',2025,'4 tiempos OHC con balanceador','200cc','17 HP/8000 RPM',0,'Deportiva','Manual','/uploads/motos/du-r200.jpg','Varios colores disponibles','Deportiva con motor balanceado',TRUE)
+VALUES ('DUCONDA','DU-R200',2025,'4 tiempos OHC con balanceador','200cc','17 HP/8000 RPM',0,'Deportiva','Manual','/uploads/motos/du-r200.jpg','Varios colores disponibles','Deportiva con motor balanceado',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
 INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
 SELECT id,'Barras invertidas / Monoshock','No especificado','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='DUCO' AND m.model='DU-R200'
+WHERE m.brand='DUCONDA' AND m.model='DU-R200'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- 7. DU-300
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('DUCO','DU-300',2025,'4 tiempos OHC con balanceador','300cc','21 HP/8500 RPM',0,'Naked','Manual','/uploads/motos/du-300.jpg','Varios colores disponibles','Naked de 300cc con motor balanceado',TRUE)
+VALUES ('DUCONDA','DU-300',2025,'4 tiempos OHC con balanceador','300cc','21 HP/8500 RPM',0,'Naked','Manual','/uploads/motos/du-300.jpg','Varios colores disponibles','Naked de 300cc con motor balanceado',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
 INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
 SELECT id,'Barras invertidas / Monoshock','No especificado','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='DUCO' AND m.model='DU-300'
+WHERE m.brand='DUCONDA' AND m.model='DU-300'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- 8. TEKK 300 PRO
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('DUCO','TEKK 300 PRO',2025,'4 tiempos OHC con balanceador','300cc','27.3 HP/8500 RPM',0,'Deportiva','Manual','/uploads/motos/tekk-300-pro.jpg','Varios colores disponibles','Deportiva Pro de alta potencia',TRUE)
+VALUES ('DUCONDA','TEKK 300 PRO',2025,'4 tiempos OHC con balanceador','300cc','27.3 HP/8500 RPM',0,'Deportiva','Manual','/uploads/motos/tekk-300-pro.jpg','Varios colores disponibles','Deportiva Pro de alta potencia',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
 INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
 SELECT id,'Barras invertidas / Monoshock','No especificado','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='DUCO' AND m.model='TEKK 300 PRO'
+WHERE m.brand='DUCONDA' AND m.model='TEKK 300 PRO'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- 9. DUCO 250 DT
+-- 9. DUCONDA 250 DT
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('DUCO','DUCO 250 DT',2025,'4 tiempos OHC con balanceador','250cc','16 HP/7500 RPM',0,'Enduro','Manual','/uploads/motos/duco-250-dt.jpg','Varios colores disponibles','Enduro DT con motor balanceado',TRUE)
+VALUES ('DUCONDA','DUCO 250 DT',2025,'4 tiempos OHC con balanceador','250cc','16 HP/7500 RPM',0,'Enduro','Manual','/uploads/motos/duco-250-dt.jpg','Varios colores disponibles','Enduro DT con motor balanceado',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
 INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
 SELECT id,'Barras invertidas / Monoshock','No especificado','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='DUCO' AND m.model='DUCO 250 DT'
+WHERE m.brand='DUCONDA' AND m.model='DUCO 250 DT'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- 10. R300
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('DUCO','R300',2025,'4 tiempos OHC con balanceador','300cc','26 HP/8500 RPM',0,'Deportiva','Manual','/uploads/motos/r300.jpg','Varios colores disponibles','Deportiva R de 300cc',TRUE)
+VALUES ('DUCONDA','R300',2025,'4 tiempos OHC con balanceador','300cc','26 HP/8500 RPM',0,'Deportiva','Manual','/uploads/motos/r300.jpg','Varios colores disponibles','Deportiva R de 300cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
 INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
 SELECT id,'Barras invertidas / Monoshock','No especificado','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='DUCO' AND m.model='R300'
+WHERE m.brand='DUCONDA' AND m.model='R300'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
--- 11. DUCO 200DT
+-- 11. DUCONDA 200DT
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('DUCO','DUCO 200DT',2025,'4 tiempos OHC con balanceador','200cc','17 HP/8500 RPM',0,'Enduro','Manual','/uploads/motos/duco-200dt.jpg','Varios colores disponibles','Enduro DT de 200cc',TRUE)
+VALUES ('DUCONDA','DUCO 200DT',2025,'4 tiempos OHC con balanceador','200cc','17 HP/8500 RPM',0,'Enduro','Manual','/uploads/motos/duco-200dt.jpg','Varios colores disponibles','Enduro DT de 200cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
 INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
 SELECT id,'Barras telescópicas / Monoshock','No especificado','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='DUCO' AND m.model='DUCO 200DT'
+WHERE m.brand='DUCONDA' AND m.model='DUCONDA 200DT'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- Ajuste de secuencias opcional
