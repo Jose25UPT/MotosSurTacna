@@ -92,6 +92,14 @@ export default function CatalogPage() {
 
   function capitalize(s: string) { return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase(); }
 
+  // Normalizador reutilizable (coincide con el servicio)
+  const slugify = (v: string) => (v || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, '')
+    .replace(/[^a-z0-9\-]/g, '');
+
   const fetchFirstPage = useCallback(async () => {
     setLoading(true);
     try {
@@ -105,27 +113,78 @@ export default function CatalogPage() {
       setPage(1);
       recomputeMetrics(items);
       const brandNames = Array.isArray(brandData)
-        ? brandData.map(b => typeof b === "string" ? b : (b as any).brand)
+        ? brandData.map(b => typeof b === 'string' ? b : (b as any).brand)
         : [];
       setBrands(brandNames);
-      console.log(`🟢 Primera página motos=${items.length} total=${t}`, items[0]);
+      console.log(`🟢 Primera página motos=${items.length} total=${t}`);
     } catch (e) {
       console.error('❌ Error cargando catálogo:', e);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [recomputeMetrics]);
 
-  useEffect(() => { fetchFirstPage(); }, [fetchFirstPage]);
+  // Carga progresiva enfocada a una marca si viene ?brand=
+  const fetchFocusedBrand = useCallback(async (brandParam: string) => {
+    setLoading(true);
+    try {
+      const target = slugify(brandParam);
+      const accumulated: Motorcycle[] = [];
+      let pageCursor = 1;
+      let hasMoreLocal = true;
+      let totalLocal = 0;
+      const MAX_SCAN_PAGES = 100; // tope amplio para explorar todas las páginas si es necesario
 
-  // Tomar marca inicial desde el query param ?brand=
+      while (hasMoreLocal && pageCursor <= MAX_SCAN_PAGES) {
+        const { items, has_more, total } = await getMotorcycles(pageCursor, PAGE_LIMIT);
+        totalLocal = total;
+        // Fusionar evitando duplicados
+        const ids = new Set(accumulated.map(m => m.id));
+        for (const m of items) if (!ids.has(m.id)) accumulated.push(m);
+        // ¿Ya tenemos al menos una moto de la marca objetivo?
+        const found = accumulated.some(m => slugify((m as any).brand_slug || (m as any).brand || (m as any).marca) === target);
+        if (found) {
+          hasMoreLocal = false; // detener
+        } else {
+          hasMoreLocal = has_more;
+          pageCursor += 1;
+        }
+      }
+      setMotorcycles(accumulated);
+      setPage(pageCursor);
+      setHasMore(pageCursor * PAGE_LIMIT < totalLocal);
+      setTotal(totalLocal);
+      recomputeMetrics(accumulated);
+      // cargar lista de marcas (independiente)
+      try {
+        const brandsRaw = await getBrands();
+        const brandNames = Array.isArray(brandsRaw)
+          ? brandsRaw.map(b => typeof b === 'string' ? b : (b as any).brand)
+          : [];
+        setBrands(brandNames);
+      } catch {}
+      // Log diagnóstico: primeras 10 marcas detectadas en el acumulado
+      try {
+        const uniq = Array.from(new Set(accumulated.map(m => slugify((m as any).brand_slug || (m as any).brand || (m as any).marca))));
+        console.log(`🎯 Carga enfocada marca='${brandParam}' páginas=${pageCursor} motos=${accumulated.length} marcasDetectadas=${uniq.slice(0,10).join(',')}${uniq.length>10?'...':''}`);
+      } catch {}
+    } catch (e) {
+      console.error('❌ Error carga enfocada marca:', e);
+    } finally {
+      setLoading(false);
+    }
+  }, [recomputeMetrics]);
+
+  // Cargar datos iniciales: si hay ?brand= usamos carga enfocada; si no, la primera página
   useEffect(() => {
     const qBrand = searchParams?.get('brand');
     if (qBrand && qBrand.trim()) {
-      // aceptar slug o nombre; normalizar a clave comparable
       setSelectedBrand(qBrand);
+      fetchFocusedBrand(qBrand);
+    } else {
+      fetchFirstPage();
     }
-  }, [searchParams]);
+  }, [searchParams, fetchFirstPage, fetchFocusedBrand]);
 
   // Debounce searchInput -> searchQuery
   useEffect(() => {
@@ -161,8 +220,9 @@ export default function CatalogPage() {
       .replace(/\s+/g, '') // quitar espacios
       .replace(/[^a-z0-9\-]/g, ''); // permitir guiones (slugs)
     const selectedKey = key(selectedBrand);
+    const yearActive = (minYear && maxYear) && !(yearRange[0] === minYear && yearRange[1] === maxYear);
     return motorcycles.filter(m => {
-      const mBrandKey = key((m as any).brand ?? (m as any).marca ?? '');
+      const mBrandKey = key((m as any).brand_slug ?? (m as any).brand ?? (m as any).marca ?? '');
       const brandOk = selectedBrand === 'all'
         || mBrandKey === selectedKey
         || mBrandKey.includes(selectedKey)
@@ -180,9 +240,13 @@ export default function CatalogPage() {
       if (rawPrice !== undefined && rawPrice !== null) {
         priceNum = parseFloat(String(rawPrice).replace(/[^0-9.]/g, '')) || 0;
       }
-      const priceOk = priceNum >= priceRange[0] && priceNum <= priceRange[1];
-      // año
-      const yearOk = !yearRange[0] || !yearRange[1] || (m.year >= yearRange[0] && m.year <= yearRange[1]);
+      // Precio: si el rango está en [0,0] lo tratamos como "sin filtro"
+      const priceOk = (priceRange[0] === 0 && priceRange[1] === 0)
+        || (priceNum >= priceRange[0] && priceNum <= priceRange[1]);
+      // año: si la moto no tiene año, NO la excluimos
+      const mYear = Number((m as any).year ?? (m as any).anio ?? (m as any).año ?? (m as any).ano ?? 0) || 0;
+      // Solo activar el filtro de año si el usuario cambió respecto al rango completo
+      const yearOk = !yearActive || !mYear || (mYear >= yearRange[0] && mYear <= yearRange[1]);
       // estilos
       const styleOk = !selectedStyles.length || (m.style && selectedStyles.includes(capitalize(m.style)));
       // cilindrada bucket
@@ -200,13 +264,20 @@ export default function CatalogPage() {
       }
       return brandOk && searchOk && priceOk && yearOk && styleOk && dispOk;
     });
-  }, [motorcycles, selectedBrand, searchQuery, priceRange, yearRange, selectedStyles, selectedDisplacements]);
+  }, [motorcycles, selectedBrand, searchQuery, priceRange, yearRange, selectedStyles, selectedDisplacements, minYear, maxYear]);
 
   useEffect(() => {
     if (!loading) {
       console.log(`🔍 Filtrado -> visibles=${filteredMotorcycles.length} / cargadas=${motorcycles.length}`);
+      if (selectedBrand !== 'all' && filteredMotorcycles.length === 0 && motorcycles.length) {
+        try {
+          const norm = (s: string) => (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,'').replace(/[^a-z0-9\-]/g,'');
+          const have = Array.from(new Set(motorcycles.map(m => norm((m as any).brand_slug || (m as any).brand || (m as any).marca)))).slice(0,20);
+          console.log(`⚠️ Marca seleccionada='${selectedBrand}' normalizada='${norm(selectedBrand)}' disponibles=[${have.join(',')}]`);
+        } catch {}
+      }
     }
-  }, [filteredMotorcycles, motorcycles, loading]);
+  }, [filteredMotorcycles, motorcycles, loading, selectedBrand]);
 
   const filterProps = {
     searchQuery: searchInput,
@@ -281,18 +352,33 @@ export default function CatalogPage() {
             </div>
           ) : (
             <>
-              <MotorcycleGrid motorcycles={filteredMotorcycles} />
-              <div className="mt-8 flex flex-col items-center gap-4">
-                {hasMore && (
-                  <Button disabled={loadingMore} onClick={loadMore} className="w-48">
-                    {loadingMore && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    {loadingMore ? 'Cargando...' : 'Cargar más'}
-                  </Button>
-                )}
-                {!hasMore && filteredMotorcycles.length > 0 && (
-                  <p className="text-sm text-muted-foreground">No hay más resultados.</p>
-                )}
-              </div>
+              {filteredMotorcycles.length === 0 ? (
+                <div className="w-full py-16 flex flex-col items-center justify-center text-center border border-dashed border-border rounded-xl bg-muted/20">
+                  <p className="text-lg font-semibold">No encontramos resultados</p>
+                  <p className="text-sm text-muted-foreground mt-1 max-w-md">
+                    {selectedBrand !== 'all' ? `No hay motos disponibles para la marca "${selectedBrand}" con los filtros actuales.` : 'Ajusta los filtros o intenta buscar por otro término.'}
+                  </p>
+                  <div className="mt-4 flex gap-2">
+                    <Button variant="outline" onClick={handleResetFilters}>Quitar filtros</Button>
+                    <Button onClick={fetchFirstPage}>Recargar catálogo</Button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <MotorcycleGrid motorcycles={filteredMotorcycles} />
+                  <div className="mt-8 flex flex-col items-center gap-4">
+                    {hasMore && (
+                      <Button disabled={loadingMore} onClick={loadMore} className="w-48">
+                        {loadingMore && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        {loadingMore ? 'Cargando...' : 'Cargar más'}
+                      </Button>
+                    )}
+                    {!hasMore && filteredMotorcycles.length > 0 && (
+                      <p className="text-sm text-muted-foreground">No hay más resultados.</p>
+                    )}
+                  </div>
+                </>
+              )}
             </>
           )}
         </div>

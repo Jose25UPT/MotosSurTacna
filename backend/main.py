@@ -651,9 +651,13 @@ def get_marcas():
     conn = get_db_connection()
     try:
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cursor:
-            cursor.execute("SELECT brand, about FROM brand_info")
-            marcas = cursor.fetchall()
-        return marcas
+            # Obtener marcas únicas directamente de motorcycles (no de brand_info)
+            # para garantizar que todas las marcas con motos aparezcan
+            cursor.execute("SELECT DISTINCT brand FROM motorcycles WHERE brand IS NOT NULL AND brand != '' ORDER BY brand")
+            rows = cursor.fetchall()
+            # Devolver solo los nombres de marca como array simple
+            brands = [row["brand"] for row in rows]
+        return brands
     finally:
         conn.close()
 

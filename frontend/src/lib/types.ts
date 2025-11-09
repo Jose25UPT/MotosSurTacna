@@ -22,6 +22,7 @@ export type BrandData<T> = Record<string, T[]>;
 export interface Motorcycle {
   id: string;
   brand: string;
+  brand_slug?: string;
   model: string;
   price_soles: string;
   year: number;

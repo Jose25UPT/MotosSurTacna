@@ -81,6 +81,65 @@ function getAuthHeaders() {
     return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
+// --- Brand normalization helpers ---
+function slugifyBrand(v: string): string {
+    return String(v || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/\s+/g, '')
+        .replace(/[^a-z0-9\-]/g, '');
+}
+
+const brandAliases: Record<string, string> = {
+    // Advance (todas las variantes en minúsculas como key)
+    'advance': 'Advance',
+    'motosadvance': 'Advance',
+    'advanceperu': 'Advance',
+    'advancemotos': 'Advance',
+    'advancemotocicletas': 'Advance',
+    'motos advance': 'Advance',
+    // B52 (todas las variantes en minúsculas como key)
+    'b52': 'B52',
+    'b52motos': 'B52',
+    'b52motocicletas': 'B52',
+    'b52motorcycles': 'B52',
+    'motos b52': 'B52',
+    'b 52': 'B52',
+    'b-52': 'B52',
+    // Ultravip
+    'ultravip': 'Ultravip',
+    'ultravipmotocicletas': 'Ultravip',
+    'ultra': 'Ultravip',
+    'ultra vip': 'Ultravip',
+    // Duconda
+    'duconda': 'Duconda',
+    'duconda motos': 'Duconda',
+    // JCH
+    'jch': 'JCH',
+    'jchmotos': 'JCH',
+    // Rezzio
+    'rezzio': 'Rezzio',
+    'rezziomotocicletas': 'Rezzio',
+    'rezziomotorcycles': 'Rezzio',
+    // Wanxin
+    'wanxin': 'Wanxin',
+    'wanxín': 'Wanxin',
+    'wanxinmotos': 'Wanxin',
+    // Sonlink
+    'sonlink': 'Sonlink',
+    'son link': 'Sonlink',
+    'sonlinkmotos': 'Sonlink',
+};
+
+function canonicalizeBrand(input: string): { name: string; slug: string } {
+    const raw = String(input || '');
+    const key = slugifyBrand(raw);
+    const canonicalName = brandAliases[key] || (raw.trim() ? raw.trim() : '');
+    const slug = slugifyBrand(canonicalName || raw);
+    return { name: canonicalName, slug };
+}
+
 export interface PaginatedMotorcycles {
     items: Motorcycle[];
     total: number;
@@ -113,7 +172,8 @@ export async function getMotorcycles(page: number = 1, limit: number = 20): Prom
 
     const mapped = rawItems.map((moto: any) => {
         // Unificar campos del backend (es/eng)
-        const brand = moto.brand ?? moto.marca ?? '';
+        const brandRaw = moto.brand ?? moto.marca ?? '';
+        const { name: brand, slug: brand_slug } = canonicalizeBrand(brandRaw);
         const model = moto.model ?? moto.modelo ?? '';
         const price_soles = moto.price_soles ?? moto.precio_soles ?? 0;
         const year = Number(moto.year ?? moto.anio ?? moto.año ?? moto.ano ?? 0) || 0;
@@ -137,9 +197,10 @@ export async function getMotorcycles(page: number = 1, limit: number = 20): Prom
         }
         const description = moto.description ?? moto.descripcion ?? '';
 
-        return {
+        const obj = {
             ...moto,
             brand,
+            brand_slug,
             model,
             price_soles,
             year,
@@ -150,6 +211,7 @@ export async function getMotorcycles(page: number = 1, limit: number = 20): Prom
             description,
             imageUrl,
         } as Motorcycle;
+        return obj;
     });
 
     const effectiveTotal = payload.total ?? payload.count ?? mapped.length;
@@ -157,7 +219,13 @@ export async function getMotorcycles(page: number = 1, limit: number = 20): Prom
     const effectiveLimit = payload.limit ?? limit;
     const hasMore = payload.has_more ?? (effectiveTotal ? (effectivePage * effectiveLimit) < effectiveTotal : false);
 
-    console.log(`🔎 Normalizado -> items:${mapped.length} total:${effectiveTotal} page:${effectivePage} has_more:${hasMore}`);
+    // Diagnóstico adicional: mostrar primeros slugs únicos detectados
+    try {
+        const uniqueBrands = Array.from(new Set(mapped.map(m => (m as any).brand_slug || m.brand))).slice(0, 15);
+        console.log(`🔎 Normalizado -> items:${mapped.length} total:${effectiveTotal} page:${effectivePage} has_more:${hasMore} brands=[${uniqueBrands.join(',')}]`);
+    } catch {
+        console.log(`🔎 Normalizado -> items:${mapped.length} total:${effectiveTotal} page:${effectivePage} has_more:${hasMore}`);
+    }
 
     return {
         items: mapped,
@@ -186,7 +254,8 @@ export async function getMotorcycleById(id: string | number): Promise<Motorcycle
     const moto = await res.json();
 
     // Normalizar campos clave
-    const brand = moto.brand ?? moto.marca ?? '';
+    const brandRaw = moto.brand ?? moto.marca ?? '';
+    const { name: brand, slug: brand_slug } = canonicalizeBrand(brandRaw);
     const model = moto.model ?? moto.modelo ?? '';
     const price_soles = moto.price_soles ?? moto.precio_soles ?? 0;
     const year = Number(moto.year ?? moto.anio ?? moto.año ?? moto.ano ?? 0) || 0;
@@ -211,6 +280,7 @@ export async function getMotorcycleById(id: string | number): Promise<Motorcycle
     return {
         ...moto,
         brand,
+        brand_slug,
         model,
         price_soles,
         year,
@@ -230,7 +300,17 @@ export async function getBrands(): Promise<string[]> {
     });
     handle401(res);
     if (!res.ok) throw new Error('Error al obtener marcas');
-    return await res.json();
+    const rawBrands = await res.json();
+    // Normalizar las marcas usando canonicalizeBrand para consistencia
+    const normalized = Array.isArray(rawBrands)
+        ? rawBrands.map(b => {
+            const brandStr = typeof b === 'string' ? b : (b.brand || String(b));
+            const { name } = canonicalizeBrand(brandStr);
+            return name;
+        })
+        : [];
+    // Eliminar duplicados y ordenar
+    return Array.from(new Set(normalized)).sort();
 }
 
 // Función para añadir motocicleta usando el endpoint de tu backend

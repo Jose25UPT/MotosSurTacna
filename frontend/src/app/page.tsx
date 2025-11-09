@@ -423,7 +423,7 @@ function CategoryCard({ category }: { category: CategoryStyle }) {
 
           {/* Brillo animado en hover */}
           <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500">
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-[1200ms]" />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform [animation-duration:1200ms]" />
           </div>
         </div>
       </div>
