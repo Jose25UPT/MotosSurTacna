@@ -112,19 +112,44 @@ export async function getMotorcycles(page: number = 1, limit: number = 20): Prom
     }
 
     const mapped = rawItems.map((moto: any) => {
+        // Unificar campos del backend (es/eng)
+        const brand = moto.brand ?? moto.marca ?? '';
+        const model = moto.model ?? moto.modelo ?? '';
+        const price_soles = moto.price_soles ?? moto.precio_soles ?? 0;
+        const year = Number(moto.year ?? moto.anio ?? moto.año ?? moto.ano ?? 0) || 0;
+        const engine = moto.engine ?? moto.cilindrada ?? '';
+        const displacement = moto.displacement ?? moto.cilindrada ?? '';
+        const style = moto.style ?? moto.estilo ?? '';
+        const transmission = moto.transmission ?? moto.transmision ?? '';
+
+        // Imagen: aceptar image_url o imagen
+        let rawImage: string = moto.image_url ?? moto.imagen ?? '';
         let imageUrl = '';
-        if (moto.image_url && moto.image_url.trim()) {
-            // Mantener URLs absolutas válidas temporales
-            if (moto.image_url.startsWith('http://') || moto.image_url.startsWith('https://')) {
-                try { new URL(moto.image_url); imageUrl = moto.image_url; } catch { imageUrl = ''; }
-            } else if (moto.image_url.startsWith('/uploads/')) {
-                // Ya que usamos proxy /api, NO concatenamos API_URL para evitar romper paths.
-                imageUrl = moto.image_url; // ejemplo: /uploads/moto.jpg
-            } else if (moto.image_url.startsWith('/')) {
-                imageUrl = moto.image_url;
+        if (rawImage && String(rawImage).trim()) {
+            const val = String(rawImage);
+            if (val.startsWith('http://') || val.startsWith('https://')) {
+                try { new URL(val); imageUrl = val; } catch { imageUrl = ''; }
+            } else if (val.startsWith('/uploads/')) {
+                imageUrl = val;
+            } else if (val.startsWith('/')) {
+                imageUrl = val;
             }
         }
-        return { ...moto, imageUrl, price_soles: moto.price_soles || 0 } as Motorcycle;
+        const description = moto.description ?? moto.descripcion ?? '';
+
+        return {
+            ...moto,
+            brand,
+            model,
+            price_soles,
+            year,
+            engine,
+            displacement,
+            style,
+            transmission,
+            description,
+            imageUrl,
+        } as Motorcycle;
     });
 
     const effectiveTotal = payload.total ?? payload.count ?? mapped.length;
@@ -159,32 +184,43 @@ export async function getMotorcycleById(id: string | number): Promise<Motorcycle
     handle401(res);
     if (!res.ok) throw new Error('Moto no encontrada');
     const moto = await res.json();
-    
-    // Mapear image_url a imageUrl y construir URL completa
+
+    // Normalizar campos clave
+    const brand = moto.brand ?? moto.marca ?? '';
+    const model = moto.model ?? moto.modelo ?? '';
+    const price_soles = moto.price_soles ?? moto.precio_soles ?? 0;
+    const year = Number(moto.year ?? moto.anio ?? moto.año ?? moto.ano ?? 0) || 0;
+    const engine = moto.engine ?? moto.cilindrada ?? '';
+    const displacement = moto.displacement ?? moto.cilindrada ?? '';
+    const style = moto.style ?? moto.estilo ?? '';
+    const transmission = moto.transmission ?? moto.transmision ?? '';
+    const description = moto.description ?? moto.descripcion ?? '';
+
+    // Mapear imagen (image_url o imagen)
+    let rawImage: string = moto.image_url ?? moto.imagen ?? '';
     let imageUrl = '';
-    
-    if (moto.image_url && moto.image_url.trim()) {
-        // Si ya es una URL completa (http/https), usarla tal como está
-        if (moto.image_url.startsWith('http://') || moto.image_url.startsWith('https://')) {
-            // Verificar si la URL externa es válida
-            try {
-                new URL(moto.image_url);
-                imageUrl = moto.image_url;
-            } catch {
-                console.warn(`URL externa inválida para moto ${moto.id}: ${moto.image_url}`);
-                imageUrl = '';
-            }
-        } else if (moto.image_url.startsWith('/uploads/') || moto.image_url.startsWith('/')) {
-            // Mantener rutas relativas (servidas por backend bajo el mismo dominio del proxy)
-            imageUrl = moto.image_url;
+    if (rawImage && String(rawImage).trim()) {
+        const val = String(rawImage);
+        if (val.startsWith('http://') || val.startsWith('https://')) {
+            try { new URL(val); imageUrl = val; } catch { imageUrl = ''; }
+        } else if (val.startsWith('/uploads/') || val.startsWith('/')) {
+            imageUrl = val;
         }
     }
-    
+
     return {
         ...moto,
+        brand,
+        model,
+        price_soles,
+        year,
+        engine,
+        displacement,
+        style,
+        transmission,
+        description,
         imageUrl,
-        price_soles: moto.price_soles || 0
-    };
+    } as Motorcycle;
 }
 
 export async function getBrands(): Promise<string[]> {

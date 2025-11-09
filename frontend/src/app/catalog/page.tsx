@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect, useCallback } from 'react';
+import { useSearchParams } from 'next/navigation';
 import type { Motorcycle } from '@/lib/types';
 import MotorcycleGrid from "@/components/motorcycle-grid";
 import MotorcycleFilters from "@/components/motorcycle-filters";
@@ -20,6 +21,7 @@ export default function CatalogPage() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
   const [total, setTotal] = useState(0);
+  const searchParams = useSearchParams();
 
   // Estados para rangos dinámicos
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 0]);
@@ -116,6 +118,15 @@ export default function CatalogPage() {
 
   useEffect(() => { fetchFirstPage(); }, [fetchFirstPage]);
 
+  // Tomar marca inicial desde el query param ?brand=
+  useEffect(() => {
+    const qBrand = searchParams?.get('brand');
+    if (qBrand && qBrand.trim()) {
+      // aceptar slug o nombre; normalizar a clave comparable
+      setSelectedBrand(qBrand);
+    }
+  }, [searchParams]);
+
   // Debounce searchInput -> searchQuery
   useEffect(() => {
     const id = setTimeout(() => setSearchQuery(searchInput), 300);
@@ -143,14 +154,31 @@ export default function CatalogPage() {
 
   // Filtrado client-side sobre lo que ya se cargó (páginas acumuladas)
   const filteredMotorcycles = useMemo(() => {
-    const normalize = (s: string) => s.toLowerCase().trim();
+    const normalize = (s: string) => (s ?? '').toLowerCase().trim();
+    const key = (s: string) => normalize(s)
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '') // quitar acentos
+      .replace(/\s+/g, '') // quitar espacios
+      .replace(/[^a-z0-9\-]/g, ''); // permitir guiones (slugs)
+    const selectedKey = key(selectedBrand);
     return motorcycles.filter(m => {
-      const brandOk = selectedBrand === 'all' || normalize(m.brand) === normalize(selectedBrand);
-      const searchOk = !searchQuery.trim() || m.model.toLowerCase().includes(searchQuery.toLowerCase()) || (selectedBrand === 'all' && m.brand.toLowerCase().includes(searchQuery.toLowerCase()));
+      const mBrandKey = key((m as any).brand ?? (m as any).marca ?? '');
+      const brandOk = selectedBrand === 'all'
+        || mBrandKey === selectedKey
+        || mBrandKey.includes(selectedKey)
+        || selectedKey.includes(mBrandKey)
+        // tolerar variantes comunes (espacios vs guiones)
+        || mBrandKey.replace(/-/g,'') === selectedKey.replace(/-/g,'');
+      const mModel = ((m as any).model ?? (m as any).modelo ?? '').toString();
+      const mBrand = ((m as any).brand ?? (m as any).marca ?? '').toString();
+      const searchOk = !searchQuery.trim() ||
+        mModel.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (selectedBrand === 'all' && mBrand.toLowerCase().includes(searchQuery.toLowerCase()));
       // precio
       let priceNum = 0;
-      if (m.price_soles !== undefined && m.price_soles !== null) {
-        priceNum = parseFloat(String(m.price_soles).replace(/[^0-9.]/g, '')) || 0;
+      const rawPrice = (m as any).price_soles ?? (m as any).precio_soles;
+      if (rawPrice !== undefined && rawPrice !== null) {
+        priceNum = parseFloat(String(rawPrice).replace(/[^0-9.]/g, '')) || 0;
       }
       const priceOk = priceNum >= priceRange[0] && priceNum <= priceRange[1];
       // año

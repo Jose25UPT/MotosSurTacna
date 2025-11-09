@@ -102,6 +102,30 @@ const brandLogos: BrandItem[] = [
   { name: 'Wanxin', slug: 'wanxin', logo: '/assets/wanxin.jpg', accent: 'blue' },
 ];
 
+// Resolve logo path for a brand name using known static list or heuristics
+function slugifyName(name: string) {
+  return name
+    .toLowerCase()
+    .replace(/\s+/g, '')
+    .replace(/[^a-z0-9\-]/g, '');
+}
+
+function resolveBrandLogo(name: string): string {
+  // Try to find in the static list first (case-insensitive)
+  const found = brandLogos.find(b => b.name.toLowerCase() === name.toLowerCase());
+  if (found) return found.logo;
+
+  // Common extensions to try (we won't check existence at runtime; next/image will fallback to onError)
+  const slug = slugifyName(name);
+  const exts = ['.png', '.jpg', '.webp', '.svg'];
+  for (const e of exts) {
+    const path = `/assets/${slug}${e}`;
+    // Return the first candidate; if it doesn't exist it'll fallback to initials in the card
+    return path;
+  }
+  return '/assets/2.svg';
+}
+
 
 export default function Home() {
   const [featuredMotorcycles, setFeaturedMotorcycles] = useState<Motorcycle[]>([]);
@@ -237,9 +261,16 @@ export default function Home() {
             </p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4 md:gap-6 place-items-center">
-            {brandLogos.map((brand) => (
-              <BrandLogoCard key={brand.slug} brand={brand} />
-            ))}
+            {
+              // Si el backend devolvió marcas dinámicas, mapearlas a objetos BrandItem
+              (brands && brands.length ? brands.map((bName) => {
+                const name = typeof bName === 'string' ? bName : (bName as any).brand || String(bName);
+                const slug = slugifyName(name);
+                return { name, slug, logo: resolveBrandLogo(name), accent: 'primary' } as BrandItem;
+              }) : brandLogos).map((brand) => (
+                <BrandLogoCard key={brand.slug || brand.name} brand={brand} />
+              ))
+            }
           </div>
         </div>
       </section>
@@ -446,7 +477,7 @@ function BrandLogoCard({ brand }: { brand: BrandItem }) {
 
   return (
     <Link
-      href={`/catalog?brand=${encodeURIComponent(brand.name)}`}
+      href={`/catalog?brand=${encodeURIComponent((brand as any).slug || brand.name)}`}
       className="group w-full max-w-[260px] focus:outline-none flex flex-col items-center"
       aria-label={`Ver modelos de ${brand.name}`}
     >
