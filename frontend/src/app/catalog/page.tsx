@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect, useCallback } from 'react';
+import { useState, useMemo, useEffect, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import type { Motorcycle } from '@/lib/types';
 import MotorcycleGrid from "@/components/motorcycle-grid";
@@ -11,7 +11,7 @@ import { getMotorcycles, getBrands, getAllMotorcyclesAccum } from '@/lib/data.se
 
 const PAGE_LIMIT = 20;
 
-export default function CatalogPage() {
+function CatalogContent() {
   const [motorcycles, setMotorcycles] = useState<Motorcycle[]>([]);
   const [brands, setBrands] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -422,5 +422,17 @@ function ActiveFiltersBar(props: {
       {props.displacements.map(d => <Badge key={d} label={d} onClear={() => props.onRemoveDisp(d)} />)}
       <button onClick={props.onResetAll} className="ml-2 text-xs text-blue-600 hover:underline font-medium">Reset</button>
     </div>
+  );
+}
+
+export default function CatalogPage() {
+  return (
+    <Suspense fallback={
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 py-8 md:py-12 flex-grow flex items-center justify-center">
+        <Loader2 className="h-10 w-10 animate-spin text-primary" />
+      </div>
+    }>
+      <CatalogContent />
+    </Suspense>
   );
 }
