@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, ShieldAlert } from "lucide-react";
+import { Menu, ShieldAlert, Home, Grid2X2, Wrench, MapPin } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -44,12 +44,12 @@ export default function Header() {
   }, [lastScrollY]);
 
 
-  const navLinks = [
-    { href: "/", label: "Inicio" },
-    { href: "/catalog", label: "Catálogo" },
-    { href: "/accesorios", label: "Accesorios" },
-    { href: "/tiendas", label: "Nuestras Tiendas" },
-    { href: "/fraud-report", label: "Reportar Fraude" },
+  const navLinks: Array<{ href: string; label: string; icon?: React.ComponentType<{ className?: string }>; } > = [
+    { href: "/", label: "Inicio", icon: Home },
+    { href: "/catalog", label: "Catálogo", icon: Grid2X2 },
+    { href: "/accesorios", label: "Accesorios", icon: Wrench },
+    { href: "/tiendas", label: "Nuestras Tiendas", icon: MapPin },
+    { href: "/fraud-report", label: "Reportar Fraude", icon: ShieldAlert },
   ];
   
 
@@ -96,12 +96,18 @@ export default function Header() {
         <div className="md:hidden">
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="text-primary-foreground hover:bg-black/10 hover:text-primary-foreground">
-                <Menu className="h-6 w-6" />
-                <span className="sr-only">Open menu</span>
+              <Button
+                variant="ghost"
+                className="h-12 px-4 rounded-xl bg-white/10 text-white hover:bg-white/20 border border-white/20 flex items-center gap-2"
+              >
+                <Menu className="h-7 w-7" />
+                <span className="text-base font-bold tracking-wide">Menú</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="bg-gradient-to-br from-primary to-accent text-primary-foreground">
+            <SheetContent
+              side="right"
+              className="w-[92vw] sm:max-w-sm bg-gradient-to-br from-primary to-accent text-primary-foreground p-6"
+            >
               <SheetHeader>
                 <SheetTitle className="sr-only">Menú Principal</SheetTitle>
                 <Link href="/" className="flex items-center gap-2 mb-4" onClick={() => setIsMobileMenuOpen(false)}>
@@ -119,18 +125,19 @@ export default function Header() {
                   </div>
                 </Link>
               </SheetHeader>
-              <div className="flex flex-col gap-4">
-                {navLinks.map((link) => (
+              <nav className="mt-2 flex flex-col gap-3">
+                {navLinks.map(({ href, label, icon: Icon }) => (
                   <Link
-                    key={link.href}
-                    href={link.href}
-                    className="text-lg font-medium text-primary-foreground/80 transition-colors hover:text-primary-foreground"
+                    key={href}
+                    href={href}
                     onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center gap-4 px-4 py-4 rounded-xl bg-white/10 hover:bg-white/15 text-black text-[18px] font-bold tracking-wide border border-white/20"
                   >
-                    {link.label}
+                    {Icon ? <Icon className="w-6 h-6 text-white/90" /> : null}
+                    <span>{label}</span>
                   </Link>
                 ))}
-              </div>
+              </nav>
             </SheetContent>
           </Sheet>
         </div>
