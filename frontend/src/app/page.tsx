@@ -251,24 +251,31 @@ export default function Home() {
       
 
 
-  <section className="bg-secondary/10 pt-6 md:pt-8 pb-12 md:pb-12">
-        <div className="container mx-auto px-2">
-          <div className="text-center mb-10">
-            <Search className="mx-auto h-12 w-12 text-primary mb-4" />
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Busca tu Moto por Marca</h2>
-            <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-              Las mejores marcas del mercado en un solo lugar.
-            </p>
+  <section className="relative bg-gradient-to-b from-background via-secondary/5 to-secondary/10 py-16 md:py-24 overflow-hidden">
+        {/* Decoración de fondo */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(251,191,36,0.05),transparent_50%),radial-gradient(circle_at_70%_60%,rgba(59,130,246,0.05),transparent_50%)]" />
+        
+        <div className="container mx-auto px-4 relative z-10">
+          {/* Header mejorado */}
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 mb-6 ring-4 ring-primary/10">
+              <Search className="h-8 w-8 text-primary" />
+            </div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-headline uppercase tracking-wider bg-gradient-to-r from-foreground via-foreground/90 to-foreground/80 bg-clip-text text-transparent mb-4">
+              Busca tu Moto por Marca
+            </h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-6" />
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4 md:gap-6 place-items-center">
+
+          {/* Grid de marcas mejorado */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8 max-w-6xl mx-auto">
             {
-              // Si el backend devolvió marcas dinámicas, mapearlas a objetos BrandItem
               (brands && brands.length ? brands.map((bName) => {
                 const name = typeof bName === 'string' ? bName : (bName as any).brand || String(bName);
                 const slug = slugifyName(name);
                 return { name, slug, logo: resolveBrandLogo(name), accent: 'primary' } as BrandItem;
               }) : brandLogos).map((brand) => (
-                <BrandLogoCard key={brand.slug || brand.name} brand={brand} />
+                <BrandLogoCard key={brand.slug || brand.name} brand={brand} variant={3} />
               ))
             }
           </div>
@@ -431,7 +438,7 @@ function CategoryCard({ category }: { category: CategoryStyle }) {
   );
 }
 
-function BrandLogoCard({ brand }: { brand: BrandItem }) {
+function BrandLogoCard({ brand, variant = 7 }: { brand: BrandItem; variant?: 1 | 2 | 3 | 4 | 5 | 6 | 7 }) {
   const initials = brand.name
     .split(' ')
     .map((w) => w[0])
@@ -440,108 +447,141 @@ function BrandLogoCard({ brand }: { brand: BrandItem }) {
     .toUpperCase();
 
   const cardRef = useRef<HTMLDivElement | null>(null);
-  const glowRef = useRef<HTMLDivElement | null>(null);
   const [imgOk, setImgOk] = useState(true);
+  const [logoSrc, setLogoSrc] = useState(brand.logo);
+  const imgRef = useRef<HTMLImageElement | null>(null);
+  const [isLightLogo, setIsLightLogo] = useState(false);
+  function handleImgError(e: React.SyntheticEvent<HTMLImageElement>) {
+    const el = e.currentTarget;
+    if (!el.src.includes('/assets/2.svg')) {
+      el.src = '/assets/2.svg';
+    }
+    setImgOk(false);
+  }
+  const [isHovered, setIsHovered] = useState(false);
 
-  const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const el = cardRef.current;
-    const glow = glowRef.current;
-    if (!el || !glow) return;
-    const rect = el.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const px = (x / rect.width) * 100;
-    const py = (y / rect.height) * 100;
-    // Tilt suave
-    const tiltX = ((py - 50) / 50) * -6; // -6deg a 6deg
-    const tiltY = ((px - 50) / 50) * 6;
-    el.style.transform = `perspective(700px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
-    // Glow sigue al mouse
-    glow.style.setProperty('--mx', `${px}%`);
-    glow.style.setProperty('--my', `${py}%`);
-  };
+  // Detectar si el logo es demasiado claro (mayoritariamente blanco) para darle contorno / invertir.
+  useEffect(() => {
+    const img = imgRef.current;
+    if (!img) return;
+    if (!img.complete) {
+      img.onload = () => {
+        tryDetectLightness(img);
+      };
+      return;
+    }
+    tryDetectLightness(img);
+  }, [logoSrc]);
 
-  const handleLeave = () => {
-    const el = cardRef.current;
-    if (el) el.style.transform = 'perspective(700px) rotateX(0deg) rotateY(0deg)';
-  };
-
-  // Estilo neutro y elegante (sin arcoíris) para el borde del card
-  const accentBorder = 'from-white/30 via-white/10 to-transparent dark:from-white/10 dark:via-white/5';
-
-  // Glow sutil y uniforme
-  const accentGlow = '255, 255, 255';
-
-  // Etiqueta (badge) neutra y elegante
-  const badgeClasses = 'bg-white/80 text-foreground/80 border-border backdrop-blur-sm dark:bg-white/10 dark:text-white/90 dark:border-white/15';
+  function tryDetectLightness(img: HTMLImageElement) {
+    try {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      ctx.drawImage(img, 0, 0);
+      const { data } = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      let lightPixels = 0;
+      let total = 0;
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        const a = data[i + 3];
+        if (a < 50) continue; // ignorar transparente
+        total++;
+        const lum = (0.299 * r + 0.587 * g + 0.114 * b);
+        if (lum > 230) lightPixels++; // muy claro
+      }
+      if (total > 50) {
+        const ratio = lightPixels / total;
+        setIsLightLogo(ratio > 0.55); // si más del 55% es blanco muy claro
+      }
+    } catch {
+      /* silencioso */
+    }
+  }
 
   return (
     <Link
       href={`/catalog?brand=${encodeURIComponent((brand as any).slug || brand.name)}`}
-      className="group w-full max-w-[260px] focus:outline-none flex flex-col items-center"
+      className="group w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-3xl transition-all duration-500"
       aria-label={`Ver modelos de ${brand.name}`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      <div
-        className={`relative rounded-2xl p-[1.5px] bg-gradient-to-br ${accentBorder} transition-transform duration-300 will-change-transform w-full`}
-        onMouseMove={handleMove}
-        onMouseLeave={handleLeave}
-        ref={cardRef}
-      >
-  <div className="relative h-36 w-full rounded-[calc(1rem-1.5px)] overflow-hidden bg-card text-card-foreground shadow-sm grid place-items-center">
-          {/* Glow dinámico controlado por variables CSS */}
-          <div
-            ref={glowRef}
-            className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
-            style={{
-              background:
-                'radial-gradient(380px circle at var(--mx,50%) var(--my,50%), rgba(' +
-                accentGlow +
-                ',0.10) 0%, rgba(' +
-                accentGlow +
-                ',0.0) 55%)',
-            }}
-          />
-
-          {/* Contenido (solo logo) */}
-          <div className="relative w-full h-full flex items-center justify-center px-4">
-            <div className="relative w-full h-24 transition-transform duration-300 group-hover:scale-[1.05]">
-              <Image
-                src={brand.logo}
-                alt={`${brand.name} logo`}
-                fill
-                priority={false}
-                className={`object-contain ${imgOk ? 'opacity-100' : 'opacity-0'} transition-opacity duration-200 saturate-110 contrast-105`}
-                onError={() => setImgOk(false)}
-                onLoad={() => setImgOk(true)}
-              />
-              {/* Placeholder con iniciales solo si no hay imagen */}
-              {!imgOk && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-10 h-10 rounded-full bg-muted/60 backdrop-blur-sm flex items-center justify-center border border-border">
-                    <span className="text-sm font-extrabold tracking-wide text-foreground/80">
-                      {initials}
-                    </span>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Shine en hover */}
-          <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[calc(1rem-1.5px)]">
-            <div className="absolute -inset-[40%] bg-[conic-gradient(from_180deg_at_50%_50%,rgba(255,255,255,0.0),rgba(255,255,255,0.3),rgba(255,255,255,0.0))] opacity-0 group-hover:opacity-30 transition-opacity duration-500 rotate-[-8deg]" />
+  {/* Marco exterior oscuro y discreto: violeta profundo → azul marino */}
+  <div className="rounded-3xl p-[4px] bg-gradient-to-br from-[#4c1d95] to-[#1e3a8a] hover:from-[#5b21b6] hover:to-[#1e40af] transition-colors duration-300 shadow-sm">
+    <div className="rounded-[calc(1.5rem-4px)] bg-white dark:bg-neutral-900 flex flex-col items-center gap-4 p-1">
+        {/* Card minimalista (sin efectos): borde fino y fondo limpio */}
+  <div className="relative w-32 h-44 md:w-36 md:h-52 lg:w-40 lg:h-56 flex items-center justify-center rounded-2xl overflow-hidden group bg-white dark:bg-neutral-900 shadow-sm transition-shadow duration-300 hover:shadow-lg">
+          {/* Logo / fallback */}
+          {imgOk ? (
+            <Image
+              src={brand.logo}
+              alt={`${brand.name} logo`}
+              width={200}
+              height={200}
+              className="relative z-10 object-contain max-w-[82%] max-h-[82%] transition-transform duration-500 group-hover:scale-105"
+              onError={() => setImgOk(false) as any}
+              unoptimized
+            />
+          ) : (
+            <span className="relative z-10 text-xl font-semibold tracking-wide bg-gradient-to-br from-yellow-400 to-amber-500 bg-clip-text text-transparent">
+              {initials}
+            </span>
+          )}
+          {/* Sin capas extra ni animaciones */}
+        </div>
+          {/* Chips variantes 1-7 para evaluación */}
+          <div className="w-full flex justify-center -mt-1">
+            {variant === 1 && (
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-[12px] text-xs sm:text-sm font-semibold uppercase tracking-wider text-white bg-gradient-to-r from-fuchsia-600 to-blue-600 shadow-sm hover:shadow-md hover:brightness-110">
+                {brand.name}
+                <ArrowRight className="w-3.5 h-3.5 text-white/90" />
+              </span>
+            )}
+            {variant === 2 && (
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-[12px] text-xs sm:text-sm font-semibold uppercase tracking-wider text-white/95 bg-gradient-to-r from-fuchsia-700/50 to-blue-700/50 backdrop-blur-md border border-white/15 shadow-sm hover:border-white/25">
+                {brand.name}
+                <ArrowRight className="w-3.5 h-3.5 text-white/90" />
+              </span>
+            )}
+            {variant === 3 && (
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-[12px] text-xs sm:text-sm font-semibold uppercase tracking-wider text-white bg-[#1f2a44] border border-[#2a3552] shadow-sm hover:bg-[#233052]">
+                {brand.name}
+                <ArrowRight className="w-3.5 h-3.5 text-white/90" />
+              </span>
+            )}
+            {variant === 4 && (
+              <span className="relative inline-flex items-center gap-2 px-4 py-2 rounded-[12px] text-xs sm:text-sm font-semibold uppercase tracking-wider border border-neutral-300 bg-white/90 text-neutral-800">
+                {brand.name}
+                <ArrowRight className="w-3.5 h-3.5 text-neutral-600" />
+                <span className="pointer-events-none absolute left-4 right-4 bottom-1 h-0.5 bg-gradient-to-r from-fuchsia-600 to-blue-600" />
+              </span>
+            )}
+            {variant === 5 && (
+              <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[12px] text-xs sm:text-sm font-medium uppercase tracking-wider border border-neutral-300 bg-white/85 dark:bg-neutral-900/80 backdrop-blur-sm shadow-sm transition-all duration-300 transform group-hover:scale-[1.02] hover:border-neutral-400">
+                <span className="text-foreground/80 group-hover:text-foreground transition-colors duration-300">{brand.name}</span>
+                <ArrowRight className="w-4 h-4 text-neutral-500 group-hover:translate-x-0.5 transition-transform duration-300" />
+              </span>
+            )}
+            {variant === 6 && (
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium border border-neutral-300/70 bg-white dark:bg-neutral-900 text-foreground/85 transition-all duration-300 hover:border-neutral-400">
+                {brand.name}
+                <ArrowRight className="w-4 h-4 text-neutral-500/80" />
+              </span>
+            )}
+            {variant === 7 && (
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-[12px] text-xs sm:text-sm font-medium uppercase tracking-wider border border-neutral-300 text-neutral-700 bg-white/85 dark:bg-neutral-900/80 transition-all duration-300 hover:translate-x-[1px]">
+                {brand.name}
+                <ArrowRight className="w-3.5 h-3.5 text-neutral-600" />
+              </span>
+            )}
           </div>
         </div>
       </div>
-
-      {/* Etiqueta fuera del card */}
-      <div className="-mt-8 w-full flex justify-center">
-        <span
-          className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold shadow-md border ${badgeClasses} transition-transform duration-200 transform group-hover:-translate-y-1`}
-        >
-          {brand.name}
-        </span>
-      </div>
-    </Link>
+      </Link>
   );
 }
