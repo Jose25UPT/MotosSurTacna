@@ -1003,127 +1003,127 @@ SELECT setval('motorcycle_specs_id_seq', (SELECT COALESCE(MAX(id),1) FROM motorc
 
 -- 1. ENDURO 200X
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('GENERIC','ENDURO 200X',2025,'Monocilíndrico OHC 4T','200cc','16 HP/7500 RPM',0,'Enduro','Cadena','/uploads/motos/enduro-200x.jpg','Rojo','Enduro con arranque eléctrico y pedal',TRUE)
+VALUES ('ADVANCE','ENDURO 200X',2025,'Monocilíndrico OHC 4T','200cc','16 HP/7500 RPM',0,'Enduro','Cadena','/uploads/motos/enduro-200x.jpg','Rojo','Enduro con arranque eléctrico y pedal',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
 INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
 SELECT id,'No especificado','14 L','Disco / Tambor','Analógico','No', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='GENERIC' AND m.model='ENDURO 200X'
+WHERE m.brand='ADVANCE' AND m.model='ENDURO 200X'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- 2. TEKEN 250
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('GENERIC','TEKEN 250',2025,'Monocilíndrico OHC 4T','249cc','20 HP/7500 RPM',0,'Deportiva','Cadena','/uploads/motos/teken-250.jpg','Rojo, Verde, Negro','Deportiva de 250cc con doble disco',TRUE)
+VALUES ('ADVANCE','TEKEN 250',2025,'Monocilíndrico OHC 4T','249cc','20 HP/7500 RPM',0,'Deportiva','Cadena','/uploads/motos/teken-250.jpg','Rojo, Verde, Negro','Deportiva de 250cc con doble disco',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
 INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
 SELECT id,'No especificado','14 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='GENERIC' AND m.model='TEKEN 250'
+WHERE m.brand='ADVANCE' AND m.model='TEKEN 250'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- 3. ADVENGER 200Z
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('GENERIC','ADVENGER 200Z',2025,'Monocilíndrico OHC 4T','198cc','14.3 HP/7500 RPM',0,'Adventure','Cadena','/uploads/motos/advenger-200z.jpg','Rojo, Negro','Adventure con arranque eléctrico',TRUE)
+VALUES ('ADVANCE','ADVENGER 200Z',2025,'Monocilíndrico OHC 4T','198cc','14.3 HP/7500 RPM',0,'Adventure','Cadena','/uploads/motos/advenger-200z.jpg','Rojo, Negro','Adventure con arranque eléctrico',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
 INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
 SELECT id,'No especificado','14 L','Disco / Tambor','Analógico','No', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='GENERIC' AND m.model='ADVENGER 200Z'
+WHERE m.brand='ADVANCE' AND m.model='ADVENGER 200Z'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- IMAGEN 2
 
 -- 4. NINDIA 200S
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('GENERIC','NINDIA 200S',2025,'Monocilíndrico OHC 4T','200cc','17.20 HP/7500 RPM',0,'Street','Cadena','/uploads/motos/nindia-200s.jpg','Verde, Naranja, Blanco','Street con tablero digital',TRUE)
+VALUES ('ADVANCE','NINDIA 200S',2025,'Monocilíndrico OHC 4T','200cc','17.20 HP/7500 RPM',0,'Street','Cadena','/uploads/motos/nindia-200s.jpg','Verde, Naranja, Blanco','Street con tablero digital',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
 INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
 SELECT id,'No especificado','14 L','Disco / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='GENERIC' AND m.model='NINDIA 200S'
+WHERE m.brand='ADVANCE' AND m.model='NINDIA 200S'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- 5. JAGUAR 200
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('GENERIC','JAGUAR 200',2025,'Monocilíndrico OHC 4T','200cc','15.7 HP/7500 RPM',0,'Street','Cadena','/uploads/motos/jaguar-200.jpg','Rojo, Verde, Negro','Street deportiva de 200cc',TRUE)
+VALUES ('ADVANCE','JAGUAR 200',2025,'Monocilíndrico OHC 4T','200cc','15.7 HP/7500 RPM',0,'Street','Cadena','/uploads/motos/jaguar-200.jpg','Rojo, Verde, Negro','Street deportiva de 200cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
 INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
 SELECT id,'No especificado','14 L','Disco / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='GENERIC' AND m.model='JAGUAR 200'
+WHERE m.brand='ADVANCE' AND m.model='JAGUAR 200'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- 6. ZEUS 200Z
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('GENERIC','ZEUS 200Z',2025,'Monocilíndrico OHC 4T','200cc','17.20 HP/7500 RPM',0,'Naked','Cadena','/uploads/motos/zeus-200z.jpg','Rojo, Negro','Naked con doble disco y tablero digital',TRUE)
+VALUES ('ADVANCE','ZEUS 200Z',2025,'Monocilíndrico OHC 4T','200cc','17.20 HP/7500 RPM',0,'Naked','Cadena','/uploads/motos/zeus-200z.jpg','Rojo, Negro','Naked con doble disco y tablero digital',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
 INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
 SELECT id,'No especificado','15 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='GENERIC' AND m.model='ZEUS 200Z'
+WHERE m.brand='ADVANCE' AND m.model='ZEUS 200Z'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- IMAGEN 3
 
 -- 7. NINDIA 250 R7
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('GENERIC','NINDIA 250 R7',2025,'Monocilíndrico OHC 4T','250cc','18 HP/7500 RPM',0,'Deportiva','Cadena','/uploads/motos/nindia-250-r7.jpg','Marrón, Negro','Deportiva R7 con doble disco',TRUE)
+VALUES ('ADVANCE','NINDIA 250 R7',2025,'Monocilíndrico OHC 4T','250cc','18 HP/7500 RPM',0,'Deportiva','Cadena','/uploads/motos/nindia-250-r7.jpg','Marrón, Negro','Deportiva R7 con doble disco',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
 INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
 SELECT id,'No especificado','14 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='GENERIC' AND m.model='NINDIA 250 R7'
+WHERE m.brand='ADVANCE' AND m.model='NINDIA 250 R7'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- 8. NINDIA 250
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('GENERIC','NINDIA 250',2025,'Monocilíndrico OHC 4T','249.6cc','15.4 HP/7500 RPM',0,'Naked','Cadena','/uploads/motos/nindia-250.jpg','Verde, Azul, Rojo, Negro','Naked versátil de 250cc',TRUE)
+VALUES ('ADVANCE','NINDIA 250',2025,'Monocilíndrico OHC 4T','249.6cc','15.4 HP/7500 RPM',0,'Naked','Cadena','/uploads/motos/nindia-250.jpg','Verde, Azul, Rojo, Negro','Naked versátil de 250cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
 INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
 SELECT id,'No especificado','14 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='GENERIC' AND m.model='NINDIA 250'
+WHERE m.brand='ADVANCE' AND m.model='NINDIA 250'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- IMAGEN 4
 
 -- 9. BULTACO 250
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('GENERIC','BULTACO 250',2025,'Monocilíndrico OHC 4T','250cc','16.3 HP/7500 RPM',0,'Scrambler','Cadena','/uploads/motos/bultaco-250.jpg','Negro','Scrambler retro de 250cc',TRUE)
+VALUES ('ADVANCE','BULTACO 250',2025,'Monocilíndrico OHC 4T','250cc','16.3 HP/7500 RPM',0,'Scrambler','Cadena','/uploads/motos/bultaco-250.jpg','Negro','Scrambler retro de 250cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
 INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
 SELECT id,'No especificado','14 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='GENERIC' AND m.model='BULTACO 250'
+WHERE m.brand='ADVANCE' AND m.model='BULTACO 250'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- 10. SCRAMPER 250
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('GENERIC','SCRAMPER 250',2025,'Monocilíndrico OHC 4T','250cc','16 HP/7500 RPM',0,'Scrambler','Cadena','/uploads/motos/scramper-250.jpg','Blanco, Negro','Scrambler moderna de 250cc',TRUE)
+VALUES ('ADVANCE','SCRAMPER 250',2025,'Monocilíndrico OHC 4T','250cc','16 HP/7500 RPM',0,'Scrambler','Cadena','/uploads/motos/scramper-250.jpg','Blanco, Negro','Scrambler moderna de 250cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
 INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
 SELECT id,'No especificado','14 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='GENERIC' AND m.model='SCRAMPER 250'
+WHERE m.brand='ADVANCE' AND m.model='SCRAMPER 250'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- IMAGEN 5
 
 -- 11. AD150 T-6
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('GENERIC','AD150 T-6',2025,'Monocilíndrico OHC 4T','150cc','9.3 HP/7500 RPM',0,'Scooter','Automática','/uploads/motos/ad150-t6.jpg','Rojo, Negro','Scooter automático de 150cc',TRUE)
+VALUES ('ADVANCE','AD150 T-6',2025,'Monocilíndrico OHC 4T','150cc','9.3 HP/7500 RPM',0,'Scooter','Automática','/uploads/motos/ad150-t6.jpg','Rojo, Negro','Scooter automático de 150cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
 INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
 SELECT id,'No especificado','6 L','Disco / Tambor','Analógico','No', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='GENERIC' AND m.model='AD150 T-6'
+WHERE m.brand='ADVANCE' AND m.model='AD150 T-6'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- 12. SUPER MEGAN 125
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('GENERIC','SUPER MEGAN 125',2025,'Monocilíndrico OHC 4T','125cc','9.3 HP/7500 RPM',0,'Scooter','Semi automática','/uploads/motos/super-megan-125.jpg','Azul, Rojo, Negro','Scooter semiautomático de 125cc',TRUE)
+VALUES ('ADVANCE','SUPER MEGAN 125',2025,'Monocilíndrico OHC 4T','125cc','9.3 HP/7500 RPM',0,'Scooter','Semi automática','/uploads/motos/super-megan-125.jpg','Azul, Rojo, Negro','Scooter semiautomático de 125cc',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
 INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
 SELECT id,'No especificado','6 L','Disco / Tambor','Analógico','No', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='GENERIC' AND m.model='SUPER MEGAN 125'
+WHERE m.brand='ADVANCE' AND m.model='SUPER MEGAN 125'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- 13. ASHLEY 125
 INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
-VALUES ('GENERIC','ASHLEY 125',2025,'Monocilíndrico OHC 4T','125cc','9.3 HP/7500 RPM',0,'Scooter','Semi automática','/uploads/motos/ashley-125.jpg','Rojo, Negro','Scooter semiautomático compacto',TRUE)
+VALUES ('ADVANCE','ASHLEY 125',2025,'Monocilíndrico OHC 4T','125cc','9.3 HP/7500 RPM',0,'Scooter','Semi automática','/uploads/motos/ashley-125.jpg','Rojo, Negro','Scooter semiautomático compacto',TRUE)
 ON CONFLICT (brand, model) DO NOTHING;
 INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
 SELECT id,'No especificado','6 L','Disco / Tambor','Analógico','No', ARRAY[]::text[] FROM motorcycles m
-WHERE m.brand='GENERIC' AND m.model='ASHLEY 125'
+WHERE m.brand='ADVANCE' AND m.model='ASHLEY 125'
 AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 
 -- Ajuste de secuencias
@@ -1753,3 +1753,472 @@ AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
 SELECT setval('motorcycles_id_seq', (SELECT COALESCE(MAX(id),1) FROM motorcycles));
 SELECT setval('motorcycle_specs_id_seq', (SELECT COALESCE(MAX(id),1) FROM motorcycle_specs));
 
+
+
+-- =============================================================
+-- =============================================================
+-- CATÁLOGO NAMI
+-- =============================================================
+-- =============================================================
+-- 1. ACERO 200
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','ACERO 200',2025,'Monocilíndrico 4T','200cc','16 HP/6500 RPM',0,'Naked','6 velocidades','/uploads/motos/acero-200.jpg','Varios colores disponibles','Naked con refrigeración por aire',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica Hidráulica / Monoshock','15 L','Disco / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='ACERO 200'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 2. BULER R1 250
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','BULER R1 250',2025,'Monocilíndrico 4T','200cc','22 HP/6500 RPM',0,'Deportiva','6 velocidades','/uploads/motos/buler-r1-250.jpg','Varios colores disponibles','Deportiva con doble disco delantero',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica / Monoshock','14.5 L','Doble Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='BULER R1 250'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 3. BULER R7 200
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','BULER R7 200',2025,'Monocilíndrico 4T','200cc','18.5 HP/7500 RPM',0,'Deportiva','6 velocidades','/uploads/motos/buler-r7-200.jpg','Varios colores disponibles','Deportiva con enfriador de aceite',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica / Monoshock','14.5 L','Doble Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='BULER R7 200'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 4. BULER R10 250
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','BULER R10 250',2025,'Monocilíndrico 4T','250cc','19 HP/6500 RPM',0,'Deportiva','6 velocidades','/uploads/motos/buler-r10-250.jpg','Varios colores disponibles','Deportiva R10 con suspensión invertida',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica Invertida / Monoshock','16.5 L','Doble Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='BULER R10 250'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 5. BULER R10 300
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','BULER R10 300',2025,'Monocilíndrico 4T 4 Válvulas','300cc','28 HP/8500 RPM',0,'Deportiva','6 velocidades','/uploads/motos/buler-r10-300.jpg','Varios colores disponibles','Deportiva 300cc con inyección',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica Invertida / Monoshock','16.5 L','Doble Disco / Disco','Digital TFT','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='BULER R10 300'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 6. BULER R10 300 INYECTADA
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','BULER R10 300 INYECTADA',2025,'Monocilíndrico 4T 4 Válvulas','300cc','28 HP/8500 RPM',0,'Deportiva','6 velocidades','/uploads/motos/buler-r10-300-inyectada.jpg','Varios colores disponibles','Deportiva 300cc inyectada con CarPlay y Android Auto',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica Invertida / Monoshock','16.5 L','Doble Disco / Disco','Digital TFT','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='BULER R10 300 INYECTADA'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 7. BULER R10 400 INYECTADA
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','BULER R10 400 INYECTADA',2025,'Bicilíndrica enfriada por agua','400cc','35 HP/8500 RPM',0,'Deportiva','6 velocidades','/uploads/motos/buler-r10-400-inyectada.jpg','Varios colores disponibles','Deportiva bicilíndrica 400cc con ABS y TFT',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica Invertida / Monoshock','16.5 L','ABS Doble Disco / ABS Disco','Digital TFT','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='BULER R10 400 INYECTADA'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 8. GT 250
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','GT 250',2025,'Monocilíndrico 4T 4 Válvulas','250cc','23 HP/6000 RPM',0,'Deportiva','6 velocidades','/uploads/motos/gt-250.jpg','Varios colores disponibles','GT 250 con suspensión invertida y tablero TFT',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica Invertida / Monoshock','13.5 L','Disco / Disco','Digital TFT','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='GT 250'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 9. CR 200
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','CR 200',2025,'Monocilíndrico 4T','200cc','16 HP/6500 RPM',0,'Naked','6 velocidades','/uploads/motos/cr-200.jpg','Varios colores disponibles','Naked CR 200 con suspensión invertida',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica Invertida / Monoshock','11 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='CR 200'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 10. CR 250
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','CR 250',2025,'Monocilíndrico 4T','250cc','20 HP/6500 RPM',0,'Naked','6 velocidades','/uploads/motos/cr-250.jpg','Varios colores disponibles','Naked CR 250 con suspensión invertida',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica Invertida / Monoshock','11 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='CR 250'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 11. JUK 200
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','JUK 200',2025,'Monocilíndrico 4T','200cc','16 HP/6500 RPM',0,'Naked','6 velocidades','/uploads/motos/juk-200.jpg','Varios colores disponibles','Naked Juk 200 con arranque eléctrico y pedal',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica Hidráulica / Monoshock','15 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='JUK 200'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 12. JUK 250
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','JUK 250',2025,'Monocilíndrico 4T','250cc','18.5 HP/7500 RPM',0,'Naked','6 velocidades','/uploads/motos/juk-250.jpg','Varios colores disponibles','Naked Juk 250 con enfriador de aceite y tablero TFT',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica Invertida / Monoshock','12.5 L','Disco / Disco','Digital TFT','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='JUK 250'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 13. DRAKO 250
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','DRAKO 250',2025,'Monocilíndrico 4T','200cc','16 HP/6500 RPM',0,'Naked','6 velocidades','/uploads/motos/drako-250.jpg','Varios colores disponibles','Naked Drako con suspensión invertida',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica Invertida / Monoshock','13 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='DRAKO 250'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 14. PLUS 200
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','PLUS 200',2025,'Monocilíndrico 4T','200cc','16 HP/6500 RPM',0,'Naked','6 velocidades','/uploads/motos/plus-200.jpg','Varios colores disponibles','Naked Plus 200 con suspensión hidráulica',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica Hidráulica / Monoshock','12 L','Disco / Disco','Digital','No', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='PLUS 200'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 15. TEKKEN 250
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','TEKKEN 250',2025,'Monocilíndrico 4T','250cc','18.2 HP/7500 RPM',0,'Enduro','6 velocidades','/uploads/motos/tekken-250.jpg','Varios colores disponibles','Enduro Tekken 250 con doble disco delantero',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica Invertida / Monoshock','14 L','Doble Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='TEKKEN 250'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 16. TEKKEN 300
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','TEKKEN 300',2025,'Monocilíndrico 4T 4 Válvulas','300cc','27 HP/8500 RPM',0,'Enduro','6 velocidades','/uploads/motos/tekken-300.jpg','Varios colores disponibles','Enduro Tekken 300 con enfriador de aceite y tablero TFT',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica Invertida / Monoshock','12.5 L','Disco / Disco','Digital TFT','No', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='TEKKEN 300'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 17. HORUS 125
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','HORUS 125',2025,'Monocilíndrico 4T','124cc','8.5 HP/6500 RPM',0,'Scooter','4 velocidades','/uploads/motos/horus-125.jpg','Varios colores disponibles','Scooter Horus 125 económico',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica / Amortiguador','3.5 L','Disco / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='HORUS 125'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 18. HORUS 150
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','HORUS 150',2025,'Monocilíndrico 4T','150cc','10 HP/5500 RPM',0,'Scooter','4 velocidades','/uploads/motos/horus-150.jpg','Varios colores disponibles','Scooter Horus 150 con enfriador de aceite',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica / Amortiguador','4.5 L','Disco / Tambor','Analógico','No', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='HORUS 150'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 19. MT 200
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','MT 200',2025,'Monocilíndrico 4T','200cc','No especificado',0,'Naked','6 velocidades','/uploads/motos/mt-200.jpg','Varios colores disponibles','Naked MT 200 (AGOTADO)',FALSE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','No especificado','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='MT 200'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 20. VELOX 200
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','VELOX 200',2025,'Monocilíndrico 4T','200cc','No especificado',0,'Deportiva','6 velocidades','/uploads/motos/velox-200.jpg','Varios colores disponibles','Deportiva Velox 200 (AGOTADO)',FALSE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','No especificado','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='VELOX 200'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 21. MURANO 200
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','MURANO 200',2025,'Monocilíndrico 4T','200cc','13.8 HP/6500 RPM',0,'Scooter','5 velocidades','/uploads/motos/murano-200.jpg','Varios colores disponibles','Scooter Murano 200 con suspensión invertida',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica Invertida / Monoshock','8 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='MURANO 200'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 22. EVOQ 250
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','EVOQ 250',2025,'Monocilíndrico 4T','250cc','18.5 HP/6500 RPM',0,'Naked','6 velocidades','/uploads/motos/evoq-250.jpg','Varios colores disponibles','Naked Evoq 250 con doble disco delantero',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica Invertida / Monoshock','17 L','Doble Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='EVOQ 250'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 23. MSX 125
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','MSX 125',2025,'Monocilíndrico 4T','124cc','9.5 HP/5500 RPM',0,'Mini','4 velocidades','/uploads/motos/msx-125.jpg','Varios colores disponibles','Mini MSX 125 con suspensión invertida',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica Invertida / Monoshock','6 L','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='MSX 125'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 24. VENTUR 200
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','VENTUR 200',2025,'Monocilíndrico 4T','200cc','16 HP/6500 RPM',0,'Street','6 velocidades','/uploads/motos/ventur-200.jpg','Varios colores disponibles','Street Ventur 200 con arranque eléctrico y pedal',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica Hidráulica / Amortiguador','15 L','Disco / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='VENTUR 200'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 25. ADES 200
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','ADES 200',2025,'Monocilíndrico 4T','200cc','No especificado',0,'Naked','6 velocidades','/uploads/motos/ades-200.jpg','Varios colores disponibles','Naked Ades 200 (AGOTADO)',FALSE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','No especificado','Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='ADES 200'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 26. RIO 250
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','RIO 250',2025,'Monocilíndrico 4T','250cc','18.2 HP/7500 RPM',0,'Enduro','6 velocidades','/uploads/motos/rio-250.jpg','Varios colores disponibles','Enduro Rio 250 con doble disco delantero',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica Invertida / Monoshock','14 L','Doble Disco / Disco','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='RIO 250'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 27. RUSO 200
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','RUSO 200',2025,'Monocilíndrico 4T','200cc','16 HP/6500 RPM',0,'Enduro','6 velocidades','/uploads/motos/ruso-200.jpg','Varios colores disponibles','Enduro Ruso 200 con arranque eléctrico y patada',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica Invertida / Monoshock','12.5 L','Disco / Tambor','Digital','No', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='RUSO 200'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 28. OPTIMUS 200
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','OPTIMUS 200',2025,'Monocilíndrico 4T','200cc','16 HP/6500 RPM',0,'Enduro','6 velocidades','/uploads/motos/optimus-200.jpg','Varios colores disponibles','Enduro Optimus 200 con suspensión invertida',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica Invertida / Monoshock','12.5 L','Disco / Tambor','Digital','No', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='OPTIMUS 200'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 29. OPTIMUS 200-X
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','OPTIMUS 200-X',2025,'Monocilíndrico 4T','200cc','16 HP/6500 RPM',0,'Enduro','6 velocidades','/uploads/motos/optimus-200-x.jpg','Varios colores disponibles','Enduro Optimus 200-X versión especial',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica Invertida / Monoshock','12.5 L','Disco / Tambor','Digital','No', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='OPTIMUS 200-X'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 30. JOG 125
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','JOG 125',2025,'Monocilíndrico 4T','150cc','10.5 HP/7500 RPM',0,'Scooter','Automática','/uploads/motos/jog-125.jpg','Varios colores disponibles','Scooter Jog 125 automático',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica / Amortiguador','4 L','Disco / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='JOG 125'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 31. CLIT 150
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','CLIT 150',2025,'Monocilíndrico 4T','150cc','No especificado',0,'Street','Manual','/uploads/motos/clit-150.jpg','Varios colores disponibles','Street Clit 150 (AGOTADO)',FALSE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'No especificado','No especificado','Disco / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='CLIT 150'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 32. ODIN 125
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','ODIN 125',2025,'Monocilíndrico 4T','124cc','8.5 HP/6500 RPM',0,'Scooter','4 velocidades','/uploads/motos/odin-125.jpg','Varios colores disponibles','Scooter Odin 125 con arranque eléctrico y patada',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica / Amortiguador','3.5 L','Disco / Tambor','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='ODIN 125'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 33. RAPTOR 300
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','RAPTOR 300',2025,'Monocilíndrico 4T','300cc','21 HP/4500 RPM',0,'ATV','5 velocidades','/uploads/motos/raptor-300.jpg','Varios colores disponibles','ATV Raptor 300 con refrigeración por agua',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica / Muelles','25 L','Tambor / Tambor','Analógico','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='RAPTOR 300'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 34. RAPTOR 350
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('NAMI','RAPTOR 350',2025,'Monocilíndrico 4T','350cc','24 HP/5500 RPM',0,'ATV','5 velocidades','/uploads/motos/raptor-350.jpg','Varios colores disponibles','ATV Raptor 350 con refrigeración por agua',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla Telescópica / Muelles','25 L','Tambor / Tambor','Analógico','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='NAMI' AND m.model='RAPTOR 350'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+
+
+
+
+
+-- =============================================================
+-- =============================================================
+-- ZONTES
+-- =============================================================
+-- =============================================================
+
+-- CATÁLOGO ZONTES
+
+-- 1. G1-155
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('ZONTES','G1-155',2025,'Monocilíndrico SOHC 4 válvulas','155cc','17.4 HP/8500 RPM',0,'Naked','6 velocidades','/uploads/motos/g1-155.jpg','Varios colores disponibles','Naked con refrigeración líquida y ABS Bosch 9.1',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Telescópica invertida / Monoshock','20 L','Disco ABS / Disco ABS','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ZONTES' AND m.model='G1-155'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 2. U-155
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('ZONTES','U-155',2025,'Monocilíndrico SOHC 4 válvulas','155cc','17.4 HP/8500 RPM',0,'Naked','6 velocidades','/uploads/motos/u-155.jpg','Varios colores disponibles','Naked U-155 con refrigeración líquida y ABS Bosch',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Telescópica invertida / Monoshock','12.5 L','Disco ABS / Disco ABS','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ZONTES' AND m.model='U-155'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 3. U1-155
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('ZONTES','U1-155',2025,'Monocilíndrico SOHC 4 válvulas','155cc','18.7 HP/9250 RPM',0,'Adventure','6 velocidades','/uploads/motos/u1-155.jpg','Varios colores disponibles','Adventure con refrigeración líquida y aros de rayos',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Telescópica invertida / Monoshock','12.5 L','Disco ABS / Disco ABS','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ZONTES' AND m.model='U1-155'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 4. GK-155
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('ZONTES','GK-155',2025,'Monocilíndrico SOHC 4 válvulas','155cc','17.4 HP/8500 RPM',0,'Adventure','6 velocidades','/uploads/motos/gk-155.jpg','Varios colores disponibles','Adventure con Bluetooth, USB y sensores de presión de llantas',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas / Monoshock con gas nitrox','17 L','Disco ABS / Disco ABS','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ZONTES' AND m.model='GK-155'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 5. M-310
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('ZONTES','M-310',2025,'Monocilíndrico SOHC 4 válvulas','309cc','33 HP/7500 RPM',0,'Scooter','Automática continua','/uploads/motos/m-310.jpg','Varios colores disponibles','Scooter automático con parabrisas electrónico y app Zontes',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras telescópicas reforzadas / Doble amortiguador reforzado','12 L','Disco ABS / Disco ABS','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ZONTES' AND m.model='M-310'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 6. GK-350
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('ZONTES','GK-350',2025,'Monocilíndrico DOHC 4 válvulas','348cc','39 HP/9500 RPM',0,'Adventure','6 velocidades','/uploads/motos/gk-350.jpg','Varios colores disponibles','Adventure 350 con doble refrigeración y frenos J-Juan',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas 43mm / Monoshock con gas nitrox','17 L','Disco ABS J-Juan / Disco ABS J-Juan','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ZONTES' AND m.model='GK-350'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 7. R-350
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('ZONTES','R-350',2025,'Monocilíndrico DOHC 4 válvulas','348cc','39 HP/9500 RPM',0,'Deportiva','6 velocidades','/uploads/motos/r-350.jpg','Varios colores disponibles','Deportiva R-350 con frenos J-Juan y app Zontes',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas 43mm / Monoshock con gas nitrox','15 L','Disco ABS J-Juan / Disco ABS J-Juan','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ZONTES' AND m.model='R-350'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 8. V1-350
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('ZONTES','V1-350',2025,'Monocilíndrico DOHC 4 válvulas','348cc','39 HP/9500 RPM',0,'Cruiser','6 velocidades','/uploads/motos/v1-350.jpg','Varios colores disponibles','Cruiser con monobrazo de aluminio y tablero TFT',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas 43mm / Monoshock con gas nitrox y varillaje','15 L','Disco ABS J-Juan / Disco ABS J-Juan','Digital TFT','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ZONTES' AND m.model='V1-350'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 9. X-350
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('ZONTES','X-350',2025,'Monocilíndrico DOHC 4 válvulas','348cc','39 HP/9500 RPM',0,'Adventure','6 velocidades','/uploads/motos/x-350.jpg','Varios colores disponibles','Adventure X-350 con parabrisas electrónico',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas 43mm / Monoshock con gas nitrox','19 L','Disco ABS J-Juan / Disco ABS J-Juan','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ZONTES' AND m.model='X-350'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 10. T-350
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('ZONTES','T-350',2025,'Monocilíndrico DOHC 4 válvulas','348cc','39 HP/9500 RPM',0,'Adventure','6 velocidades','/uploads/motos/t-350.jpg','Varios colores disponibles','Adventure touring con parabrisas electrónico y aros de radios',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Barras invertidas 43mm / Monoshock con gas nitrox','19 L','Disco ABS J-Juan / Disco ABS J-Juan','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ZONTES' AND m.model='T-350'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 11. C-200
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('ZONTES','C-200',2025,'Monocilíndrico DOHC 4 válvulas','198cc','22 HP/8500 RPM',0,'Cruiser','6 velocidades','/uploads/motos/c-200.jpg','Varios colores disponibles','Cruiser C-200 con refrigeración líquida',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquillas telescópicas / Amortiguadores laterales','16.5 L','Disco ABS / Disco ABS','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ZONTES' AND m.model='C-200'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 12. D-155
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('ZONTES','D-155',2025,'Monocilíndrico SOHC 4 válvulas','155cc','18.8 HP/9250 RPM',0,'Scooter','Automática continua','/uploads/motos/d-155.jpg','Varios colores disponibles','Scooter automático D-155 con refrigeración líquida',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla telescópica / Amortiguadores laterales','12 L','Disco ABS / Disco ABS','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ZONTES' AND m.model='D-155'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 13. G1-200
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('ZONTES','G1-200',2025,'Monocilíndrico SOHC 4 válvulas','198cc','21.6 HP/9000 RPM',0,'Naked','6 velocidades','/uploads/motos/g1-200.jpg','Varios colores disponibles','Naked G1-200 con refrigeración líquida y ABS',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla invertida / Monoshock','20 L','Disco ABS / Disco ABS','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ZONTES' AND m.model='G1-200'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 14. G-368
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('ZONTES','G-368',2025,'Monocilíndrico SOHC 4 válvulas','367.6cc','38.8 HP/7500 RPM',0,'Scooter','Automática continua','/uploads/motos/g-368.jpg','Varios colores disponibles','Maxiscooter G-368 con refrigeración líquida',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla invertida / Amortiguadores laterales','17.5 L','Disco ABS / Disco ABS','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ZONTES' AND m.model='G-368'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 15. 703 RR
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('ZONTES','703 RR',2025,'Tricilíndrico DOHC 12 válvulas','699cc','95 HP/11200 RPM',0,'Deportiva','6 velocidades quickshift','/uploads/motos/703-rr.jpg','Varios colores disponibles','Deportiva tricilíndrica con control de tracción y quickshift',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla invertida / Monoshock','16 L','Doble disco ABS / Disco ABS','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ZONTES' AND m.model='703 RR'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
+
+-- 16. 703 F
+INSERT INTO motorcycles (brand, model, year, engine, displacement, power, price_soles, style, transmission, image_url, color, description, is_active)
+VALUES ('ZONTES','703 F',2025,'Tricilíndrico DOHC 12 válvulas','699cc','95 HP/10000 RPM',0,'Adventure','6 velocidades quickshifter','/uploads/motos/703-f.jpg','Varios colores disponibles','Adventure tricilíndrica con suspensión Marzocchi y aros de radios',TRUE)
+ON CONFLICT (brand, model) DO NOTHING;
+INSERT INTO motorcycle_specs (motorcycle_id, suspension, fuel_capacity, brakes, dashboard, led_lights, gallery)
+SELECT id,'Horquilla telescópica invertida / Monoshock Marzocchi','22 L','Disco ABS J-Juan / Disco ABS J-Juan','Digital','Sí', ARRAY[]::text[] FROM motorcycles m
+WHERE m.brand='ZONTES' AND m.model='703 F'
+AND NOT EXISTS (SELECT 1 FROM motorcycle_specs s WHERE s.motorcycle_id=m.id);
