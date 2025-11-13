@@ -274,22 +274,32 @@ export default function Home() {
             <div className="w-24 h-1 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-6" />
           </div>
 
-          {/* Grid de marcas mejorado */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8 max-w-6xl mx-auto">
-            {
-              (brands && brands.length ? brands.map((bName) => {
-                const raw = typeof bName === 'string' ? bName : (bName as any).brand || String(bName);
-                const { name } = canonicalizeBrand(raw);
-                const slug = slugifyName(name);
-                const logo = resolveBrandLogo(name);
-                if (!logo) {
-                  console.log('⚠️ Logo no resuelto para', name);
-                }
-                return { name, slug, logo, accent: 'primary' } as BrandItem;
-              }) : brandLogos).map((brand) => (
-                <BrandLogoCard key={brand.slug || brand.name} brand={brand} variant={3} />
-              ))
-            }
+          {/* Carrusel de marcas */}
+          <div className="relative max-w-6xl mx-auto">
+            <Carousel
+              opts={{ align: "start", loop: true }}
+              plugins={[Autoplay({ delay: 3800, stopOnInteraction: false, stopOnMouseEnter: true })]}
+              className="w-full"
+            >
+              <CarouselContent>
+                {(brands && brands.length ? brands.map((bName) => {
+                  const raw = typeof bName === 'string' ? bName : (bName as any).brand || String(bName);
+                  const { name } = canonicalizeBrand(raw);
+                  const slug = slugifyName(name);
+                  const logo = resolveBrandLogo(name);
+                  if (!logo) {
+                    console.log('⚠️ Logo no resuelto para', name);
+                  }
+                  return { name, slug, logo, accent: 'primary' } as BrandItem;
+                }) : brandLogos).map((brand) => (
+                  <CarouselItem key={brand.slug || brand.name} className="basis-1/2 sm:basis-1/3 lg:basis-1/4 xl:basis-1/5">
+                    <BrandLogoCard brand={brand} variant={3} />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="hidden sm:flex -left-6 md:-left-10" />
+              <CarouselNext className="hidden sm:flex -right-6 md:-right-10" />
+            </Carousel>
           </div>
         </div>
       </section>
@@ -337,10 +347,22 @@ export default function Home() {
                 Una selección de nuestras motos más populares. Encuentra la tuya.
                </p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              {featuredMotorcycles.map(motorcycle => (
-                <MotorcycleCard key={motorcycle.id} motorcycle={motorcycle} largeWidth />
-              ))}
+            <div className="relative">
+              <Carousel
+                opts={{ align: "start", loop: true }}
+                plugins={[Autoplay({ delay: 4200, stopOnInteraction: false, stopOnMouseEnter: true })]}
+                className="w-full"
+              >
+                <CarouselContent>
+                  {featuredMotorcycles.map((motorcycle) => (
+                    <CarouselItem key={motorcycle.id} className="basis-[85%] sm:basis-1/2 lg:basis-1/3">
+                      <MotorcycleCard motorcycle={motorcycle} largeWidth />
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious className="hidden sm:flex -left-4 md:-left-10" />
+                <CarouselNext className="hidden sm:flex -right-4 md:-right-10" />
+              </Carousel>
             </div>
             <div className="text-center mt-12">
                 <Button
