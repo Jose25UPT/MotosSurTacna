@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getMotorcycles, getBrands } from "@/lib/data.service";
+import { getMotorcycles, getBrands, canonicalizeBrand } from "@/lib/data.service";
 import FraudWarningDialog from '@/components/fraud-warning-dialog';
 import type { Motorcycle, PromoImage } from '@/lib/types';
 import MotorcycleCard from '@/components/motorcycle-card';
@@ -160,9 +160,11 @@ export default function Home() {
         }
   const randomMotorcycles = getRandomItems(pool, 4);
   setFeaturedMotorcycles(randomMotorcycles);
-  // Unir marcas del backend con nuevas marcas importantes (Zontes, Nami)
+  // Normalizar todas las marcas y añadir las nuevas si faltan
+  const normalizedBackend = (brandData || []).map(b => canonicalizeBrand(b).name);
   const extraBrands = ['Zontes', 'Nami'];
-  const mergedBrands = Array.from(new Set([...(brandData || []), ...extraBrands]));
+  const mergedBrands = Array.from(new Set([...normalizedBackend, ...extraBrands]));
+  console.log('🗂 Marcas (normalizadas+extras):', mergedBrands);
   setBrands(mergedBrands);
       } catch (e) {
         console.error('Error cargando destacados:', e);
@@ -276,9 +278,14 @@ export default function Home() {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8 max-w-6xl mx-auto">
             {
               (brands && brands.length ? brands.map((bName) => {
-                const name = typeof bName === 'string' ? bName : (bName as any).brand || String(bName);
+                const raw = typeof bName === 'string' ? bName : (bName as any).brand || String(bName);
+                const { name } = canonicalizeBrand(raw);
                 const slug = slugifyName(name);
-                return { name, slug, logo: resolveBrandLogo(name), accent: 'primary' } as BrandItem;
+                const logo = resolveBrandLogo(name);
+                if (!logo) {
+                  console.log('⚠️ Logo no resuelto para', name);
+                }
+                return { name, slug, logo, accent: 'primary' } as BrandItem;
               }) : brandLogos).map((brand) => (
                 <BrandLogoCard key={brand.slug || brand.name} brand={brand} variant={3} />
               ))

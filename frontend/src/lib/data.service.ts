@@ -138,7 +138,7 @@ const brandAliases: Record<string, string> = {
     'namimotos': 'Nami',
 };
 
-function canonicalizeBrand(input: string): { name: string; slug: string } {
+export function canonicalizeBrand(input: string): { name: string; slug: string } {
     const raw = String(input || '');
     const key = slugifyBrand(raw);
     const canonicalName = brandAliases[key] || (raw.trim() ? raw.trim() : '');
