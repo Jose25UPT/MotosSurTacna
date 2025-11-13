@@ -1633,10 +1633,6 @@ SELECT setval('motorcycle_specs_id_seq', (SELECT COALESCE(MAX(id),1) FROM motorc
 -- * brakes: si ya se inserta correctamente no es necesario UPDATE, salvo que queramos reforzar
 -- * max_speed: se almacena como texto igual que en legacy
 -- =============================================================
-
-CATÁLOGO B52 - 2025   :  Split rr 110 , porto 125 ,Apolonia 180 , augusta 200 , augusta 250 , motox 200 , montesa 200 , campera 150 , campera 250 , bombardier 200 , Texas 250 , 
-nitrox t3 250 , 
-
 -- CATÁLOGO B52 - 2025
 
 -- 1. SPLIT RR 110
