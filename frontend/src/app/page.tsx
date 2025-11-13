@@ -160,12 +160,22 @@ export default function Home() {
         }
   const randomMotorcycles = getRandomItems(pool, 4);
   setFeaturedMotorcycles(randomMotorcycles);
-  // Normalizar todas las marcas y añadir las nuevas si faltan
-  const normalizedBackend = (brandData || []).map(b => canonicalizeBrand(b).name);
-  const extraBrands = ['Zontes', 'Nami'];
-  const mergedBrands = Array.from(new Set([...normalizedBackend, ...extraBrands]));
-  console.log('🗂 Marcas (normalizadas+extras):', mergedBrands);
-  setBrands(mergedBrands);
+        // Normalizar todas las marcas y asegurar presencia de marcas clave + estáticas
+        const normalizedBackend = (brandData || []).map(b => canonicalizeBrand(b).name);
+        const extraBrands = ['Zontes', 'Nami'];
+        const staticKnown = brandLogos.map(b => b.name);
+        // Orden preferente: estáticas conocidas, luego backend normalizado, luego extras
+        const orderedUnion: string[] = [];
+        const pushUnique = (arr: string[]) => {
+          for (const n of arr) {
+            if (n && !orderedUnion.includes(n)) orderedUnion.push(n);
+          }
+        };
+        pushUnique(staticKnown);
+        pushUnique(normalizedBackend);
+        pushUnique(extraBrands);
+        console.log('🗂 Marcas (unificadas):', orderedUnion);
+        setBrands(orderedUnion);
       } catch (e) {
         console.error('Error cargando destacados:', e);
       }
