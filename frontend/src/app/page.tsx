@@ -174,8 +174,21 @@ export default function Home() {
         pushUnique(staticKnown);
         pushUnique(normalizedBackend);
         pushUnique(extraBrands);
-        console.log('🗂 Marcas (unificadas):', orderedUnion);
-        setBrands(orderedUnion);
+        // Orden solicitado para logos (normalizado):
+        // sonink -> Sonlink, yltra -> Ultravip, reziio -> Rezzio
+        const PRIORITY_ORDER = ['Sonlink', 'JCH', 'Advance', 'Ultravip', 'Wanxin', 'B52', 'Rezzio', 'Zontes', 'Nami'];
+        const priorityIndex = new Map<string, number>(PRIORITY_ORDER.map((n, i) => [n, i]));
+        const orderedSorted = [...orderedUnion].sort((a, b) => {
+          const ca = canonicalizeBrand(a).name;
+          const cb = canonicalizeBrand(b).name;
+          const ia = priorityIndex.has(ca) ? (priorityIndex.get(ca) as number) : Number.POSITIVE_INFINITY;
+          const ib = priorityIndex.has(cb) ? (priorityIndex.get(cb) as number) : Number.POSITIVE_INFINITY;
+          if (ia !== ib) return ia - ib;
+          // fallback alfabético estable
+          return ca.localeCompare(cb);
+        });
+        console.log('🗂 Marcas (orden final):', orderedSorted);
+        setBrands(orderedSorted);
       } catch (e) {
         console.error('Error cargando destacados:', e);
       }
