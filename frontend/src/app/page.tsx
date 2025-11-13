@@ -158,9 +158,12 @@ export default function Home() {
           }
           return result.slice(0, n);
         }
-        const randomMotorcycles = getRandomItems(pool, 4);
-        setFeaturedMotorcycles(randomMotorcycles);
-        setBrands(brandData);
+  const randomMotorcycles = getRandomItems(pool, 4);
+  setFeaturedMotorcycles(randomMotorcycles);
+  // Unir marcas del backend con nuevas marcas importantes (Zontes, Nami)
+  const extraBrands = ['Zontes', 'Nami'];
+  const mergedBrands = Array.from(new Set([...(brandData || []), ...extraBrands]));
+  setBrands(mergedBrands);
       } catch (e) {
         console.error('Error cargando destacados:', e);
       }

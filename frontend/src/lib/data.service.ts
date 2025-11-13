@@ -130,6 +130,12 @@ const brandAliases: Record<string, string> = {
     'sonlink': 'Sonlink',
     'son link': 'Sonlink',
     'sonlinkmotos': 'Sonlink',
+    // Zontes
+    'zontes': 'Zontes',
+    'zontesmotos': 'Zontes',
+    // Nami
+    'nami': 'Nami',
+    'namimotos': 'Nami',
 };
 
 function canonicalizeBrand(input: string): { name: string; slug: string } {
