@@ -100,6 +100,8 @@ const brandLogos: BrandItem[] = [
   { name: 'Rezzio', slug: 'rezzio', logo: '/assets/rezzio.png', accent: 'violet' },
   { name: 'Sonlink', slug: 'sonlink', logo: '/assets/sonlink.webp', accent: 'primary' },
   { name: 'Wanxin', slug: 'wanxin', logo: '/assets/wanxin.jpg', accent: 'blue' },
+  { name: 'Zontes', slug: 'zontes', logo: '/assets/zontes.jpg', accent: 'blue' },
+  { name: 'Nami', slug: 'nami', logo: '/assets/nami.webp', accent: 'primary' },
 ];
 
 // Resolve logo path for a brand name using known static list or heuristics
