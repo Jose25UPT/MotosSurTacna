@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect, useCallback, useRef, Suspense } from 'react';
+import { useState, useMemo, useEffect, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import type { Motorcycle } from '@/lib/types';
 import MotorcycleGrid from "@/components/motorcycle-grid";
@@ -211,32 +211,6 @@ function CatalogContent() {
     }
   };
 
-  // Sentinel para infinite scroll
-  const sentinelRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const el = sentinelRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
-          // Respetar guards internos de loadMore (loadingMore/hasMore)
-          loadMore();
-        }
-      },
-      {
-        root: null,
-        // Disparar un poco antes de llegar al final para sensación fluida
-        rootMargin: '200px 0px',
-        threshold: 0.1,
-      }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-    // intentionally not including loadMore in deps to avoid rebinds; guards inside loadMore
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hasMore, loadingMore]);
-
   // Filtrado client-side sobre lo que ya se cargó (páginas acumuladas)
   const filteredMotorcycles = useMemo(() => {
     const normalize = (s: string) => (s ?? '').toLowerCase().trim();
@@ -392,21 +366,12 @@ function CatalogContent() {
               ) : (
                 <>
                   <MotorcycleGrid motorcycles={filteredMotorcycles} />
-                  {/* Infinite scroll sentinel + fallback botón */}
                   <div className="mt-8 flex flex-col items-center gap-4">
                     {hasMore && (
-                      <>
-                        <div ref={sentinelRef} className="h-6 w-full" aria-hidden />
-                        {loadingMore && (
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <Loader2 className="h-4 w-4 animate-spin" /> Cargando más...
-                          </div>
-                        )}
-                        <Button disabled={loadingMore} onClick={loadMore} variant="outline" className="w-48">
-                          {loadingMore && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                          {loadingMore ? 'Cargando...' : 'Cargar más'}
-                        </Button>
-                      </>
+                      <Button disabled={loadingMore} onClick={loadMore} className="w-48">
+                        {loadingMore && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        {loadingMore ? 'Cargando...' : 'Cargar más'}
+                      </Button>
                     )}
                     {!hasMore && filteredMotorcycles.length > 0 && (
                       <p className="text-sm text-muted-foreground">No hay más resultados.</p>

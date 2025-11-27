@@ -68,19 +68,10 @@ export default function Header() {
         </Alert>
       )}
       <div className="container mx-auto flex h-20 max-w-7xl items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
-          <img src="/assets/2.svg" alt="Logo Motossur" className="h-12 w-auto" />
-          <div className="flex flex-col leading-tight ml-2 select-none">
-            <span className="font-headline text-2xl md:text-3xl font-black tracking-widest flex">
-              <span className="text-[#E53935]">MOTOS</span>
-              <span className="text-foreground ml-1">SUR</span>
-            </span>
-            <span className="flex items-center justify-center gap-2 mt-[-2px]">
-              <span className="block w-6 h-1 bg-[#E53935] rounded-full md:w-10 md:h-1"></span>
-              <span className="font-headline text-xs md:text-sm text-foreground tracking-widest font-bold">TACNA</span>
-              <span className="block w-6 h-1 bg-[#E53935] rounded-full md:w-10 md:h-1"></span>
-            </span>
-          </div>
+          <Link href="/" className="flex items-center" onClick={() => setIsMobileMenuOpen(false)}>
+              <span className="inline-flex items-center justify-center rounded-md bg-primary p-2 shadow-sm">
+                <img src="/assets/logomotossur/sinfondo (2).png" alt="Logo Motossur Tacna" className="h-16 w-auto" />
+              </span>
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-lg font-bold">
           {navLinks.map((link) => (
@@ -110,19 +101,10 @@ export default function Header() {
             >
               <SheetHeader>
                 <SheetTitle className="sr-only">Menú Principal</SheetTitle>
-                <Link href="/" className="flex items-center gap-2 mb-4" onClick={() => setIsMobileMenuOpen(false)}>
-                  <img src="/assets/2.svg" alt="Logo Motossur" className="h-10 w-auto" />
-                  <div className="flex flex-col leading-tight ml-2 select-none">
-                    <span className="font-headline text-lg font-black tracking-widest flex">
-                      <span className="text-[#E53935]">MOTOS</span>
-                      <span className="text-foreground ml-1">SUR</span>
-                    </span>
-                    <span className="flex items-center justify-center gap-2 mt-[-2px]">
-                      <span className="block w-4 h-0.5 bg-[#E53935] rounded-full"></span>
-                      <span className="font-headline text-xs text-foreground tracking-widest font-bold">TACNA</span>
-                      <span className="block w-4 h-0.5 bg-[#E53935] rounded-full"></span>
-                    </span>
-                  </div>
+                <Link href="/" className="flex items-center mb-4" onClick={() => setIsMobileMenuOpen(false)}>
+                  <span className="inline-flex items-center justify-center rounded-md bg-primary p-2 shadow-sm">
+                    <img src="/assets/logomotossur/sinfondo (2).png" alt="Logo Motossur Tacna" className="h-12 w-auto" />
+                  </span>
                 </Link>
               </SheetHeader>
               <nav className="mt-2 flex flex-col gap-3">
