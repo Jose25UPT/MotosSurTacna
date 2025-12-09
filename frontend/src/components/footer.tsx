@@ -75,44 +75,36 @@ const contactInfo = [
 
 export default function Footer() {
   return (
-    <footer className="bg-primary text-foreground font-body font-semibold">
-      <div className="container mx-auto max-w-[1280px] px-6 md:px-8 py-12">
+    <footer className="bg-gradient-to-t from-neutral-900 to-neutral-700 text-white font-body font-semibold">
+      <div className="container mx-auto max-w-[1280px] px-6 md:px-10 py-16">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-y-[32px] md:gap-y-[40px] md:gap-x-[64px] items-start">
           
-          <div className="col-span-12 md:col-span-4 xl:col-span-4 space-y-5">
-            <Link href="/" className="flex items-center gap-3">
-              <img src="/assets/2.svg" alt="Logo Motossur" className="h-16 w-auto" />
-              <div className="flex flex-col leading-tight ml-2 select-none">
-                <span className="font-headline text-2xl md:text-3xl font-black tracking-widest flex">
-                  <span className="text-[#E53935]">MOTOS</span>
-                  <span className="text-foreground ml-1">SUR</span>
-                </span>
-                <span className="flex items-center justify-center gap-2 mt-[-2px]">
-                  <span className="block w-6 h-1 bg-[#E53935] rounded-full md:w-10 md:h-1"></span>
-                  <span className="font-headline text-xs md:text-sm text-foreground tracking-widest font-extrabold">TACNA</span>
-                  <span className="block w-6 h-1 bg-[#E53935] rounded-full md:w-10 md:h-1"></span>
-                </span>
-              </div>
+          <div className="col-span-12 md:col-span-4 xl:col-span-4 space-y-5 md:items-center md:text-center">
+            <Link href="/" className="flex justify-center items-center">
+              <span className="inline-flex items-center justify-center rounded-md bg-transparent p-0 shadow-none">
+                <img src="/assets/logomotossur/file.svg" alt="Logo Motossur" className="h-24 w-auto" />
+              </span>
             </Link>
-            <p className="text-base text-foreground">"Motor, calle y actitud. Eso es MOTOSSUR."</p>
-      <div className="flex items-start gap-3 pt-2">
-        <Clock className="h-5 w-5 mt-1 flex-shrink-0 text-primary" />
-        <div className="text-sm text-foreground">
-          <p><strong>Lunes a Viernes:</strong> 8:00 AM - 8:00 PM</p>
-          <p><strong>Sábado:</strong> 9:00 AM - 6:00 PM</p>
-          <p><strong>Domingo:</strong> 9:00 AM - 4:00 PM</p>
-        </div>
-      </div>
+            <p className="text-base text-white/90">"Motor, calle y actitud. Eso es MOTOSSUR."</p>
+            <h4 className="font-headline text-lg text-white tracking-wider font-extrabold mt-2">Horario</h4>
+            <div className="flex items-start gap-3 pt-1 md:justify-center">
+              <Clock className="h-5 w-5 mt-1 flex-shrink-0 text-red-600" />
+              <div className="text-sm text-white/90">
+                <p><strong>Lunes a Viernes:</strong> 8:00 AM - 8:00 PM</p>
+                <p><strong>Sábado:</strong> 9:00 AM - 6:00 PM</p>
+                <p><strong>Domingo:</strong> 9:00 AM - 4:00 PM</p>
+              </div>
+            </div>
           </div>
           
-          <div className="col-span-12 md:col-span-3 xl:col-span-3 space-y-5 md:border-l md:border-foreground/20 md:pl-[64px]">
-            <h4 className="font-headline text-lg text-foreground tracking-wider font-extrabold">Enlaces Útiles</h4>
+          <div className="col-span-12 md:col-span-3 xl:col-span-3 space-y-5 md:border-l md:border-white/10 md:pl-[64px]">
+            <h4 className="font-headline text-lg text-white tracking-wider font-extrabold">Enlaces Útiles</h4>
             <ul className="space-y-2">
               {usefulLinks.map(link => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="relative inline-block text-sm text-foreground transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/50 rounded-sm after:absolute after:left-0 after:-bottom-0.5 after:h-[2px] after:w-0 after:bg-foreground/70 after:transition-all after:duration-300 hover:after:w-full"
+                    className="relative inline-block text-sm text-white/90 transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600/50 rounded-sm after:absolute after:left-0 after:-bottom-0.5 after:h-[2px] after:w-0 after:bg-red-600/70 after:transition-all after:duration-300 hover:after:w-full hover:text-white"
                   >
                     {link.label}
                   </Link>
@@ -121,8 +113,8 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div className="col-span-12 md:col-span-3 xl:col-span-3 space-y-5 md:border-l md:border-foreground/20 md:pl-[64px]">
-            <h4 className="font-headline text-lg text-foreground tracking-wider font-extrabold">Contacto</h4>
+          <div className="col-span-12 md:col-span-3 xl:col-span-3 space-y-5 md:border-l md:border-white/10 md:pl-[64px]">
+            <h4 className="font-headline text-lg text-white tracking-wider font-extrabold">Contacto</h4>
             <ul className="space-y-3.5">
               {contactInfo.map(item => (
                 <li key={item.text}>
@@ -130,12 +122,12 @@ export default function Footer() {
                     href={item.href} 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/50 rounded-sm"
+                    className="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600/50 rounded-sm"
                   >
                     <span className="inline-flex h-7 w-7 items-center justify-center">
                       <item.icon className={`h-5 w-5 ${item.color}`} />
                     </span>
-                    <span className="relative inline-block text-sm text-foreground transition-colors duration-300 after:absolute after:left-0 after:-bottom-0.5 after:h-[2px] after:w-0 after:bg-foreground/70 after:transition-all after:duration-300 group-hover:after:w-full">
+                    <span className="relative inline-block text-sm text-white/90 transition-colors duration-300 after:absolute after:left-0 after:-bottom-0.5 after:h-[2px] after:w-0 after:bg-red-600/70 after:transition-all after:duration-300 group-hover:after:w-full group-hover:text-white">
                       {item.text}
                     </span>
                   </a>
@@ -144,8 +136,8 @@ export default function Footer() {
             </ul>
           </div>
           
-          <div className="col-span-12 md:col-span-2 xl:col-span-2 space-y-5 md:border-l md:border-foreground/20 md:pl-[64px]">
-            <h4 className="font-headline text-lg text-foreground tracking-wider font-extrabold">Síguenos</h4>
+          <div className="col-span-12 md:col-span-2 xl:col-span-2 space-y-5 md:border-l md:border-white/10 md:pl-[64px]">
+            <h4 className="font-headline text-lg text-white tracking-wider font-extrabold">Síguenos</h4>
             <div className="flex items-center space-x-6">
               {socialLinks.map(link => (
                 <a 
@@ -153,7 +145,7 @@ export default function Footer() {
                   href={link.href}
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="text-gray-400 hover:scale-110 transition-transform duration-300"
+                  className="text-white/70 hover:scale-110 transition-transform duration-300"
                   aria-label={link.name}
                 >
                   <link.icon />
@@ -167,7 +159,7 @@ export default function Footer() {
                     <li key={link.label}>
                       <Link
                         href={link.href}
-                        className="relative inline-block text-sm text-foreground transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/50 rounded-sm after:absolute after:left-0 after:-bottom-0.5 after:h-[2px] after:w-0 after:bg-foreground/70 after:transition-all after:duration-300 hover:after:w-full"
+                        className="relative inline-block text-sm text-white/90 transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600/50 rounded-sm after:absolute after:left-0 after:-bottom-0.5 after:h-[2px] after:w-0 after:bg-red-600/70 after:transition-all after:duration-300 hover:after:w-full hover:text-white"
                       >
                         {link.label}
                       </Link>
@@ -178,8 +170,8 @@ export default function Footer() {
           </div>
         </div>
         
-        <div className="mt-12 pt-8 border-t border-primary text-center">
-          <div className="flex flex-col items-center justify-center gap-2 text-xs text-foreground">
+        <div className="mt-12 pt-8 border-t border-white/20 text-center">
+          <div className="flex flex-col items-center justify-center gap-2 text-xs text-white/80">
             <div className="text-sm font-semibold">
                 Varnox Tech.
             </div>

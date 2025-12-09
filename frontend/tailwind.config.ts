@@ -15,32 +15,32 @@ export default {
         code: ['monospace'],
       },
       colors: {
-        background: '#FFFFFF', // Fondo principal blanco
-        foreground: '#000000', // Texto y detalles oscuros
+        background: '#FFFFFF',
+        foreground: '#000000',
         primary: {
-          DEFAULT: '#FFD700', // Amarillo racing (acento principal)
-          foreground: '#000000',
+          DEFAULT: '#DC2626', // Rojo principal
+          foreground: '#FFFFFF',
         },
         card: {
           DEFAULT: '#FFFFFF',
           foreground: '#000000',
         },
         accent: {
-          DEFAULT: '#FFD700',
-          foreground: '#000000',
+          DEFAULT: '#DC2626', // Usamos el mismo rojo como acento
+          foreground: '#FFFFFF',
         },
-        border: '#FFD700',
-        input: '#FFD700',
-        ring: '#FFD700',
+        border: '#DC2626',
+        input: '#DC2626',
+        ring: '#DC2626',
         sidebar: {
-          DEFAULT: '#FFFFFF',
-          foreground: '#000000',
-          primary: '#FFD700',
-          'primary-foreground': '#000000',
-          accent: '#FFD700',
-          'accent-foreground': '#000000',
-          border: '#FFD700',
-          ring: '#FFD700',
+          DEFAULT: '#000000', // Sidebar negro
+          foreground: '#FFFFFF',
+          primary: '#DC2626',
+          'primary-foreground': '#FFFFFF',
+          accent: '#DC2626',
+          'accent-foreground': '#FFFFFF',
+          border: '#DC2626',
+          ring: '#DC2626',
         },
       },
       borderRadius: {

@@ -25,13 +25,11 @@ export default function MotorcycleCard({ motorcycle, large, largeWidth }: Motorc
   return (
     <Card
       className={`relative group flex flex-col overflow-hidden rounded-xl
-        bg-gradient-to-b from-stone-50 to-stone-100 dark:from-neutral-900 dark:to-neutral-900 backdrop-blur-[2px]
-        ring-1 ring-neutral-200/80 dark:ring-neutral-800 shadow-[0_6px_20px_rgba(0,0,0,0.06)] transition-all duration-300
-        hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,0,0,0.14)] hover:ring-primary/30
-        after:content-[''] after:absolute after:inset-x-0 after:top-0 after:h-[3px]
-        after:bg-gradient-to-r after:from-neutral-300 after:via-neutral-100 after:to-transparent dark:after:from-neutral-700 dark:after:via-neutral-600 after:opacity-90
-        w-full max-w-full min-h-[420px] text-base
-        ${large ? 'md:min-h-[420px] mx-auto' : ''}
+        bg-gradient-to-b from-white to-neutral-100 dark:from-neutral-950 dark:to-neutral-900 backdrop-blur-[2px]
+        shadow-[0_6px_20px_rgba(0,0,0,0.10)] transition-all duration-300
+        hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,0,0,0.20)]
+        w-full max-w-full min-h-[440px] text-base
+        ${large ? 'md:min-h-[460px] mx-auto' : ''}
       `}
     >
       <CardHeader className="p-0">
@@ -57,21 +55,21 @@ export default function MotorcycleCard({ motorcycle, large, largeWidth }: Motorc
               Sin imagen
             </div>
           )}
-          {/* Marca en la esquina superior izquierda sobre la imagen */}
-          <Badge variant="secondary" className="absolute top-2 left-2 z-10 text-xs px-3 py-1 shadow-md bg-black/75 text-white rounded-md ring-1 ring-white/10">
+          {/* Marca en esquina superior izquierda y precio en esquina superior derecha */}
+          <Badge variant="secondary" className="absolute top-2 left-2 z-10 text-xs px-3 py-1 shadow-md bg-white/90 text-black rounded-md ring-1 ring-neutral-200">
             {motorcycle.brand}
           </Badge>
         </div>
         <div className="p-4 pb-2">
-           <CardTitle className="text-xl font-bold leading-tight mb-2">{motorcycle.model}</CardTitle>
+           <CardTitle className="text-xl font-bold leading-tight mb-2 text-black dark:text-white">{motorcycle.model}</CardTitle>
+           <div className="flex items-center justify-between">
+             <Badge className="bg-neutral-200 text-black dark:bg-neutral-800 dark:text-white">{motorcycle.year}</Badge>
+             <Badge className="bg-red-600 text-white text-base md:text-lg px-4 py-2">S/ {motorcycle.price_soles}</Badge>
+           </div>
         </div>
       </CardHeader>
       <CardContent className="flex-grow p-4 pt-2">
         <div className="space-y-2 text-sm text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <DollarSign className="w-4 h-4 text-primary" />
-            <span className="font-semibold text-foreground text-base">S/ {motorcycle.price_soles}</span>
-          </div>
           <div className="flex items-center gap-2">
             <Calendar className="w-4 h-4 text-primary" />
             <span>Año: {motorcycle.year}</span>
@@ -85,18 +83,33 @@ export default function MotorcycleCard({ motorcycle, large, largeWidth }: Motorc
             <Info className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
             <p className="leading-relaxed text-sm line-clamp-3">{motorcycle.description}</p>
           </div>
+          <div className="flex gap-2 pt-2">
+            <Badge className="bg-neutral-100 text-black ring-1 ring-neutral-300 dark:bg-neutral-800 dark:text-white">{motorcycle.displacement || motorcycle.engine || 'Motor'}</Badge>
+            <Badge className="bg-neutral-100 text-black ring-1 ring-neutral-300 dark:bg-neutral-800 dark:text-white">{motorcycle.transmission || 'Transmisión'}</Badge>
+          </div>
         </div>
       </CardContent>
-      <CardFooter className="p-4 bg-stone-100/80 dark:bg-neutral-800/50 mt-auto flex gap-2">
-        <Button asChild className="w-full text-white bg-primary hover:bg-primary/80" size="sm" variant="outline">
+      <CardFooter className="p-4 mt-auto flex items-center gap-2">
+        <Button
+          asChild
+          size="sm"
+          variant="ghost"
+          className="flex-1 text-red-600 hover:bg-red-600/10 hover:text-red-700 font-semibold rounded-md h-10"
+        >
           <Link href={`/catalog/${motorcycle.id}`}>
-            <Eye className="mr-2 h-4 w-4"/>
+            <Eye className="mr-2 h-4 w-4" />
             Ver Detalles
           </Link>
         </Button>
-        <Button asChild size="sm" variant="outline" className="text-white bg-green-500 hover:bg-green-600 flex-shrink-0 px-3 border-none">
+        <Button
+          asChild
+          size="sm"
+          variant="ghost"
+          className="text-green-600 hover:bg-green-600/10 hover:text-green-700 rounded-md h-10 px-3"
+        >
           <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
             <WhatsApp className="h-5 w-5" />
+            <span className="hidden md:inline ml-2 font-semibold">WhatsApp</span>
           </a>
         </Button>
       </CardFooter>

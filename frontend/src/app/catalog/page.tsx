@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect, useCallback, Suspense } from 'react';
+import { useState, useMemo, useEffect, useCallback, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import type { Motorcycle } from '@/lib/types';
 import MotorcycleGrid from "@/components/motorcycle-grid";
@@ -8,6 +8,7 @@ import MotorcycleFilters from "@/components/motorcycle-filters";
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { getMotorcycles, getBrands, getAllMotorcyclesAccum } from '@/lib/data.service';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 
 const PAGE_LIMIT = 20;
 
@@ -22,6 +23,8 @@ function CatalogContent() {
   const [hasMore, setHasMore] = useState(false);
   const [total, setTotal] = useState(0);
   const searchParams = useSearchParams();
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const didMountRef = useRef(false);
 
   // Estados para rangos dinámicos
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 0]);
@@ -186,6 +189,19 @@ function CatalogContent() {
     }
   }, [searchParams, fetchFirstPage, fetchFocusedBrand]);
 
+  // Re-cargar datos cuando cambia la marca desde los filtros (cliente espera resultados de toda la base)
+  useEffect(() => {
+    if (!didMountRef.current) {
+      didMountRef.current = true;
+      return;
+    }
+    if (selectedBrand && selectedBrand !== 'all') {
+      fetchFocusedBrand(selectedBrand);
+    } else {
+      fetchFirstPage();
+    }
+  }, [selectedBrand, fetchFocusedBrand, fetchFirstPage]);
+
   // Debounce searchInput -> searchQuery
   useEffect(() => {
     const id = setTimeout(() => setSearchQuery(searchInput), 300);
@@ -322,9 +338,23 @@ function CatalogContent() {
       </header>
 
       <div className="w-full mb-6">
-        <div className="relative flex flex-col gap-4 rounded-xl border border-white/10 bg-neutral-900/60 supports-[backdrop-filter]:backdrop-blur-md shadow-[0_10px_40px_-20px_rgba(0,0,0,0.6)] p-4 md:p-5 before:content-[''] before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-yellow-400/70 before:via-amber-300/60 before:to-yellow-400/70">
-          <MotorcycleFilters {...filterProps} horizontal />
-          {/* Badges filtros activos */}
+        <div className="flex items-center justify-between gap-4">
+          <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+            <SheetTrigger asChild>
+              <Button className="bg-red-600 hover:bg-red-700 text-white">Filtros</Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-[92vw] sm:max-w-md bg-neutral-900 text-white">
+              <SheetHeader>
+                <SheetTitle className="text-white">Filtrar catálogo</SheetTitle>
+              </SheetHeader>
+              <div className="mt-4">
+                <MotorcycleFilters {...filterProps} horizontal={false} closeSheet={() => setIsFilterOpen(false)} />
+              </div>
+            </SheetContent>
+          </Sheet>
+          <div className="text-sm text-white/80">Resultados: {filteredMotorcycles.length} / {total}</div>
+        </div>
+        <div className="mt-3">
           <ActiveFiltersBar
             brand={selectedBrand !== 'all' ? selectedBrand : null}
             search={searchQuery || null}
@@ -406,7 +436,7 @@ function ActiveFiltersBar(props: {
   const any = props.brand || props.search || props.priceChanged || props.yearChanged || props.styles.length || props.displacements.length;
   if (!any) return null;
   const Badge = ({ label, onClear }: { label: string; onClear: () => void }) => (
-    <span className="flex items-center gap-1 bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-medium border border-yellow-300">
+    <span className="flex items-center gap-1 bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-medium border border-red-300">
       {label}
       <button aria-label="Quitar filtro" onClick={onClear} className="hover:text-red-600 transition-colors">✕</button>
     </span>
@@ -420,7 +450,7 @@ function ActiveFiltersBar(props: {
       {props.yearChanged && <Badge label="Año" onClear={props.onRemoveYear} />}
       {props.styles.map(s => <Badge key={s} label={s} onClear={() => props.onRemoveStyle(s)} />)}
       {props.displacements.map(d => <Badge key={d} label={d} onClear={() => props.onRemoveDisp(d)} />)}
-      <button onClick={props.onResetAll} className="ml-2 text-xs text-blue-600 hover:underline font-medium">Reset</button>
+      <button onClick={props.onResetAll} className="ml-2 text-xs text-red-600 hover:underline font-medium">Reset</button>
     </div>
   );
 }

@@ -55,7 +55,7 @@ export default function Header() {
 
   return (
     <header className={cn(
-        "sticky top-0 z-50 w-full border-b transition-all duration-300 border-border/40 bg-gradient-to-r from-primary to-accent text-primary-foreground",
+      "sticky top-0 z-50 w-full border-b transition-all duration-300 border-border/40 bg-gradient-to-r from-black via-black to-white text-white",
         isHidden ? '-translate-y-full' : 'translate-y-0'
     )}>
       {MAINTENANCE_MODE && (
@@ -67,10 +67,10 @@ export default function Header() {
           </AlertDescription>
         </Alert>
       )}
-      <div className="container mx-auto flex h-20 max-w-7xl items-center justify-between px-4">
+      <div className="container mx-auto flex h-32 max-w-7xl items-center justify-between px-4">
           <Link href="/" className="flex items-center" onClick={() => setIsMobileMenuOpen(false)}>
-              <span className="inline-flex items-center justify-center rounded-md bg-primary p-2 shadow-sm">
-                <img src="/assets/logomotossur/sinfondo (2).png" alt="Logo Motossur Tacna" className="h-16 w-auto" />
+              <span className="inline-flex items-center justify-center rounded-md bg-black p-4 shadow-sm">
+                <img src="/assets/logomotossur/file.svg" alt="Logo Motossur Tacna" className="h-24 w-auto" />
               </span>
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-lg font-bold">
@@ -78,7 +78,7 @@ export default function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-primary-foreground/90 transition-colors hover:text-primary-foreground hover:scale-105 font-headline tracking-wider"
+              className="text-white/90 transition-colors hover:text-white hover:scale-105 font-headline tracking-wider"
             >
               {link.label}
             </Link>
@@ -97,13 +97,13 @@ export default function Header() {
             </SheetTrigger>
             <SheetContent
               side="right"
-              className="w-[92vw] sm:max-w-sm bg-gradient-to-br from-primary to-accent text-primary-foreground p-6"
+              className="w-[92vw] sm:max-w-sm bg-gradient-to-br from-black via-black to-white text-white p-6"
             >
               <SheetHeader>
                 <SheetTitle className="sr-only">Menú Principal</SheetTitle>
                 <Link href="/" className="flex items-center mb-4" onClick={() => setIsMobileMenuOpen(false)}>
-                  <span className="inline-flex items-center justify-center rounded-md bg-primary p-2 shadow-sm">
-                    <img src="/assets/logomotossur/sinfondo (2).png" alt="Logo Motossur Tacna" className="h-12 w-auto" />
+                  <span className="inline-flex items-center justify-center rounded-md bg-black p-3 shadow-sm">
+                    <img src="/assets/logomotossur/file.svg" alt="Logo Motossur Tacna" className="h-16 w-auto" />
                   </span>
                 </Link>
               </SheetHeader>
@@ -113,7 +113,7 @@ export default function Header() {
                     key={href}
                     href={href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="flex items-center gap-4 px-4 py-4 rounded-xl bg-white/10 hover:bg-white/15 text-black text-[18px] font-bold tracking-wide border border-white/20"
+                    className="flex items-center gap-4 px-4 py-4 rounded-xl bg-white/10 hover:bg-white/15 text-white text-[18px] font-bold tracking-wide border border-white/20"
                   >
                     {Icon ? <Icon className="w-6 h-6 text-white/90" /> : null}
                     <span>{label}</span>

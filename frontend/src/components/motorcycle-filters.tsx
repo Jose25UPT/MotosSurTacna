@@ -49,7 +49,113 @@ export default function MotorcycleFilters({
     setSelectedDisplacements = () => {},
     onReset = () => {}
 }: MotorcycleFiltersProps & { horizontal?: boolean }) {
-            if (!horizontal) return null;
+            // Variante vertical (sidebar / sheet)
+            if (!horizontal) {
+                const priceBuckets = getPriceBuckets(maxPrice);
+                const yearBuckets = getYearBuckets(minYear, maxYear);
+                const isPriceSelected = (min: number, max: number) => priceRange[0] === min && priceRange[1] === max;
+                const isYearSelected = (min: number, max: number) => yearRange[0] === min && yearRange[1] === max;
+                return (
+                    <div className="w-full flex flex-col gap-5">
+                        <div className="space-y-3">
+                            <label htmlFor="search-input-vert" className="text-xs font-medium tracking-wide text-white/90">Buscar</label>
+                            <div className="relative">
+                                <Input
+                                    id="search-input-vert"
+                                    type="text"
+                                    placeholder="Busca por modelo o marca..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    className="h-12 w-full rounded-md pl-4 pr-12 bg-white text-gray-900 placeholder:text-gray-500 shadow-md ring-1 ring-black/5 focus-visible:ring-2 focus-visible:ring-red-600"
+                                />
+                                <Search className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label htmlFor="brand-select-vert" className="text-xs font-medium tracking-wide text-white/90">Marca</label>
+                            <Select value={selectedBrand} onValueChange={setSelectedBrand}>
+                                <SelectTrigger id="brand-select-vert" className="bg-white text-black border-red-600 hover:bg-neutral-50">
+                                    <SelectValue placeholder="Filtrar por marca" />
+                                </SelectTrigger>
+                                <SelectContent className="bg-white text-black border border-neutral-300 shadow-xl">
+                                    <SelectItem value="all" className="text-black data-[highlighted]:bg-red-600 data-[highlighted]:text-white focus:bg-red-600 focus:text-white">Todas las Marcas</SelectItem>
+                                    {brands.map(brand => (
+                                        <SelectItem key={brand} value={brand} className="text-black data-[highlighted]:bg-red-600 data-[highlighted]:text-white focus:bg-red-600 focus:text-white">{brand}</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-xs font-medium tracking-wide text-white/90">Estilos</label>
+                            <MultiCheckboxPopover
+                                options={stylesOptions}
+                                selected={selectedStyles}
+                                setSelected={setSelectedStyles}
+                                placeholder="Todos"
+                                emptyLabel="Sin estilos"
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-xs font-medium tracking-wide text-white/90">Cilindrada</label>
+                            <MultiCheckboxPopover
+                                options={displacementOptions}
+                                selected={selectedDisplacements}
+                                setSelected={setSelectedDisplacements}
+                                placeholder="Todas"
+                                emptyLabel="Sin datos"
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-xs font-medium tracking-wide text-white/90">Precio</label>
+                            <div className="flex flex-wrap gap-2">
+                                {priceBuckets.map((b, idx) => (
+                                    <button
+                                        key={idx}
+                                        type="button"
+                                        onClick={() => setPriceRange([b.min, b.max])}
+                                        className={`px-3 py-1.5 rounded-full text-xs border transition-colors ${isPriceSelected(b.min, b.max) ? 'bg-red-600 text-white border-red-600' : 'bg-white text-neutral-800 border-neutral-300 hover:bg-neutral-50'}`}
+                                    >
+                                        {b.label}
+                                    </button>
+                                ))}
+                            </div>
+                            <span className="mt-1 block text-[11px] text-white/80">Seleccionado: S/{priceRange[0].toLocaleString()} - S/{priceRange[1].toLocaleString()}</span>
+                        </div>
+
+                        {minYear !== 0 && maxYear !== 0 && (
+                            <div className="space-y-2">
+                                <label className="text-xs font-medium tracking-wide text-white/90">Año</label>
+                                <div className="flex flex-wrap gap-2">
+                                    {yearBuckets.map((b, idx) => (
+                                        <button
+                                            key={idx}
+                                            type="button"
+                                            onClick={() => setYearRange([b.min, b.max])}
+                                            className={`px-3 py-1.5 rounded-full text-xs border transition-colors ${isYearSelected(b.min, b.max) ? 'bg-red-600 text-white border-red-600' : 'bg-white text-neutral-800 border-neutral-300 hover:bg-neutral-50'}`}
+                                        >
+                                            {b.label}
+                                        </button>
+                                    ))}
+                                </div>
+                                <span className="mt-1 block text-[11px] text-white/80">Seleccionado: {yearRange[0]} - {yearRange[1]}</span>
+                            </div>
+                        )}
+
+                        <div className="pt-2 grid grid-cols-2 gap-2">
+                            <Button variant="default" onClick={closeSheet} className="w-full bg-red-600 hover:bg-red-700 text-white">
+                                Ver {resultCount} Motos
+                            </Button>
+                            <Button variant="outline" onClick={onReset} className="w-full text-xs flex items-center justify-center gap-1 bg-white/5 border-white/20 text-white hover:bg-white/10">
+                                <RefreshCcw className="h-3 w-3" /> Reset
+                            </Button>
+                        </div>
+                    </div>
+                );
+            }
 
             // Buckets de precio y año para botones por rangos
             const priceBuckets = getPriceBuckets(maxPrice);
@@ -73,7 +179,7 @@ export default function MotorcycleFilters({
                             placeholder="Busca por modelo o marca..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="h-12 md:h-14 w-full rounded-full pl-14 pr-12 bg-white text-gray-900 placeholder:text-gray-500 shadow-md ring-1 ring-black/5 focus-visible:ring-2 focus-visible:ring-yellow-500"
+                            className="h-12 md:h-14 w-full rounded-full pl-14 pr-12 bg-white text-gray-900 placeholder:text-gray-500 shadow-md ring-1 ring-black/5 focus-visible:ring-2 focus-visible:ring-red-600"
                         />
                         <Search className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                     </div>
@@ -85,13 +191,13 @@ export default function MotorcycleFilters({
                     <div className="flex flex-col">
                         <label htmlFor="brand-select" className="text-xs font-medium mb-1 tracking-wide text-white/90">Marca</label>
                         <Select value={selectedBrand} onValueChange={setSelectedBrand}>
-                                    <SelectTrigger id="brand-select" className="min-w-[200px] bg-yellow-400 text-black border-yellow-500 hover:bg-yellow-500">
+                                    <SelectTrigger id="brand-select" className="min-w-[200px] bg-white text-black border-red-600 hover:bg-neutral-50">
                                 <SelectValue placeholder="Filtrar por marca" />
                             </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="all">Todas las Marcas</SelectItem>
+                            <SelectContent className="bg-white text-black border border-neutral-300 shadow-xl">
+                                <SelectItem value="all" className="text-black data-[highlighted]:bg-red-600 data-[highlighted]:text-white focus:bg-red-600 focus:text-white">Todas las Marcas</SelectItem>
                                 {brands.map(brand => (
-                                    <SelectItem key={brand} value={brand}>{brand}</SelectItem>
+                                    <SelectItem key={brand} value={brand} className="text-black data-[highlighted]:bg-red-600 data-[highlighted]:text-white focus:bg-red-600 focus:text-white">{brand}</SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>
@@ -130,7 +236,7 @@ export default function MotorcycleFilters({
                                             key={idx}
                                             type="button"
                                             onClick={() => setPriceRange([b.min, b.max])}
-                                            className={`px-3 py-1.5 rounded-full text-xs border transition-colors ${isPriceSelected(b.min, b.max) ? 'bg-yellow-300 text-yellow-900 border-yellow-500' : 'bg-white/5 text-white/90 border-white/15 hover:bg-white/10'}`}
+                                            className={`px-3 py-1.5 rounded-full text-xs border transition-colors ${isPriceSelected(b.min, b.max) ? 'bg-red-600 text-white border-red-600' : 'bg-white text-neutral-800 border-neutral-300 hover:bg-neutral-50'}`}
                                         >
                                             {b.label}
                                         </button>
@@ -149,7 +255,7 @@ export default function MotorcycleFilters({
                                                 key={idx}
                                                 type="button"
                                                 onClick={() => setYearRange([b.min, b.max])}
-                                                className={`px-3 py-1.5 rounded-full text-xs border transition-colors ${isYearSelected(b.min, b.max) ? 'bg-yellow-300 text-yellow-900 border-yellow-500' : 'bg-white/5 text-white/90 border-white/15 hover:bg-white/10'}`}
+                                                className={`px-3 py-1.5 rounded-full text-xs border transition-colors ${isYearSelected(b.min, b.max) ? 'bg-red-600 text-white border-red-600' : 'bg-white text-neutral-800 border-neutral-300 hover:bg-neutral-50'}`}
                                             >
                                                 {b.label}
                                             </button>
@@ -195,14 +301,14 @@ function MultiCheckboxPopover({
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button variant="outline" className="justify-between min-w-[200px] bg-yellow-400 text-black border-yellow-500 hover:bg-yellow-500">
+                <Button variant="outline" className="justify-between min-w-[200px] bg-white text-black border-neutral-300 hover:bg-neutral-50">
                     <span className="truncate text-left">
                         {selected.length === 0 ? placeholder : `${selected.length} seleccionados`}
                     </span>
                     <ChevronDown className="h-4 w-4" />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-56 p-2 flex flex-col gap-2 bg-yellow-200 text-yellow-900 border-yellow-400">
+            <PopoverContent className="w-56 p-2 flex flex-col gap-2 bg-white text-black border-neutral-200">
                 {options.length === 0 && (
                     <span className="text-xs text-muted-foreground px-1 py-2">{emptyLabel}</span>
                 )}
@@ -213,7 +319,7 @@ function MultiCheckboxPopover({
                             type="button"
                             key={opt}
                             onClick={() => toggle(opt)}
-                            className={`flex items-center justify-between text-xs px-2 py-1.5 rounded-md border transition-colors ${active ? 'bg-yellow-300 border-yellow-500 font-semibold text-yellow-900' : 'bg-yellow-100 hover:bg-yellow-200 border-yellow-300 text-yellow-900'}`}
+                            className={`flex items-center justify-between text-xs px-2 py-1.5 rounded-md border transition-colors ${active ? 'bg-red-600 border-red-600 font-semibold text-white' : 'bg-white hover:bg-neutral-50 border-neutral-300 text-neutral-800'}`}
                         >
                             <span>{opt}</span>
                             {active && <span className="text-[10px]">✔</span>}
@@ -223,11 +329,11 @@ function MultiCheckboxPopover({
                 {selected.length > 0 && (
                     <div className="flex flex-wrap gap-1 pt-1">
                         {selected.map(s => (
-                            <Badge key={s} variant="secondary" className="text-[10px] px-1 py-0.5 flex gap-1 items-center bg-yellow-300 text-yellow-900 border border-yellow-500">
+                            <Badge key={s} variant="secondary" className="text-[10px] px-1 py-0.5 flex gap-1 items-center bg-red-600 text-white border border-red-600">
                                 {s}
                                 <span
                                     onClick={() => toggle(s)}
-                                    className="cursor-pointer hover:text-destructive"
+                                    className="cursor-pointer hover:text-white/80"
                                 >✕</span>
                             </Badge>
                         ))}
