@@ -30,6 +30,7 @@ export default function MotorcycleDetailClient({ motorcycle }: { motorcycle: Mot
   const motoRef = useRef<HTMLImageElement | null>(null);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [hideMoto, setHideMoto] = useState(false);
 
   useEffect(() => {
     const scroller = scrollerRef.current;
@@ -40,6 +41,9 @@ export default function MotorcycleDetailClient({ motorcycle }: { motorcycle: Mot
       const scrollTop = scroller.scrollTop;
       const docHeight = scroller.scrollHeight - scroller.clientHeight;
       const scrollProgress = docHeight > 0 ? scrollTop / docHeight : 0;
+
+      // Ocultar moto cuando está en galería (después del 80% del scroll)
+      setHideMoto(scrollProgress > 0.75);
 
       if (moto) {
         const scale = 1 + scrollProgress * 0.05;
@@ -121,7 +125,7 @@ export default function MotorcycleDetailClient({ motorcycle }: { motorcycle: Mot
   return (
     <>
       {/* Imagen central fija */}
-      <div className="hero">
+      <div className={`hero ${hideMoto ? 'hero-hidden' : ''}`}>
         {motoImage && (
           <Image
             src={motoImage}
@@ -239,15 +243,18 @@ export default function MotorcycleDetailClient({ motorcycle }: { motorcycle: Mot
           justify-content: center;
           pointer-events: none;
           z-index: 5;
+          transition: opacity 0.4s ease;
+        }
+        .hero-hidden {
+          opacity: 0;
+          pointer-events: none;
         }
         .moto {
           width: 520px;
           height: auto;
           filter: drop-shadow(0 25px 50px rgba(0,0,0,0.5));
           transition: transform 0.3s ease, filter 0.2s ease;
-          background: #fff;
-          padding: 20px;
-          border-radius: 4px;
+          background: transparent;
         }
         .scroll-container {
           height: 100vh;
@@ -288,8 +295,8 @@ export default function MotorcycleDetailClient({ motorcycle }: { motorcycle: Mot
           cursor: pointer; transition: all 0.3s ease; text-decoration: none; border-radius: 6px; font-weight: 600;
         }
         .btn-learn:hover { background: #128c4e; }
-        .content-left { left: calc(50% - 620px); top: 50%; transform: translateY(-50%) translateX(-100%); width: 340px; max-height: 80vh; overflow-y: auto; }
-        .content-right { right: calc(50% - 620px); top: 50%; transform: translateY(-50%) translateX(100%); width: 340px; max-height: 80vh; overflow-y: auto; }
+        .content-left { left: 60px; top: 50%; transform: translateY(-50%) translateX(-30px); width: 380px; max-height: 75vh; overflow-y: auto; padding: 30px; background: rgba(0,0,0,0.4); border-radius: 12px; }
+        .content-right { right: 60px; top: 50%; transform: translateY(-50%) translateX(30px); width: 380px; max-height: 75vh; overflow-y: auto; padding: 30px; background: rgba(0,0,0,0.4); border-radius: 12px; }
         .card-white { background: transparent; }
         .card-title { font-size: 24px; font-weight: 800; color: #fff; letter-spacing: 2px; margin-bottom: 22px; border-bottom: 2px solid rgba(255,255,255,0.3); padding-bottom: 12px; }
         .specs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 24px; }
@@ -307,8 +314,8 @@ export default function MotorcycleDetailClient({ motorcycle }: { motorcycle: Mot
         .content.active { opacity: 1; }
         .content-top.active { transform: translateX(-50%) translateY(0); }
         .content-center.active { transform: translateX(-50%) translateY(0); }
-        .content-left.active { transform: translateY(-50%) translateX(0); }
-        .content-right.active { transform: translateY(-50%) translateX(0); }
+        .content-left.active { transform: translateY(-50%) translateX(0); opacity: 1; }
+        .content-right.active { transform: translateY(-50%) translateX(0); opacity: 1; }
         .content-bottom.active { transform: translateY(0); }
         .scroll-container::-webkit-scrollbar { width: 6px; }
         .scroll-container::-webkit-scrollbar-thumb { background: #555; border-radius: 3px; }
@@ -327,8 +334,8 @@ export default function MotorcycleDetailClient({ motorcycle }: { motorcycle: Mot
         .lb-img { object-fit: contain; }
         .lb-counter { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.6); color: #fff; padding: 8px 20px; border-radius: 20px; }
         @media (max-width: 1200px) {
-          .content-left { left: 20px; }
-          .content-right { right: 20px; }
+          .content-left { left: 30px; width: 320px; }
+          .content-right { right: 30px; width: 320px; }
         }
         @media (max-width: 768px) {
           .moto { width: 280px; }
